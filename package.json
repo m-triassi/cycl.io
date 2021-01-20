@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "yarn development",
-        "development": "node_modules/cross-env/src/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "development": "yarn mix",
         "watch": "yarn development --watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
@@ -26,6 +26,7 @@
         "@types/core-js": "^2.5.4",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
+        "@types/react-redux": "^7.1.15",
         "@typescript-eslint/eslint-plugin": "^4.13.0",
         "@typescript-eslint/parser": "^4.13.0",
         "antd": "^4.10.3",
