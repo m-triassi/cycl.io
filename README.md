@@ -80,6 +80,7 @@ that you use [NVM](https://github.com/nvm-sh/nvm) that way you can manage differ
 On either WSL, Ubuntu, MacOS, run the following commands:
 ```shell
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+## You'll probably need to restart your terminal before running the following 2 commands.
 nvm install 14
 nvm alias default 14
 ```
@@ -101,15 +102,16 @@ for the system you are currently running on.
 Open the docker desktop application, goto the Settings, and make sure the WSL checkbox is ticked under "resources"
 
 ### Project set-up
-Next, you'll need an `.env` file, the project includes an `.env.example` file for reference. 
+Finally, you'll need an `.env` file, the project includes an `.env.example` file for reference. 
 **Copy** the example file and rename it to `.env`, the default values of the example files are the ones expected by Sail (see below)
 If you are opting to use some other local environment, you'll need to set the appropriate values.
 
-You'll also need to set an application ID, this can be achieved by Laravel's command line utility, Artisan.
+You'll also need to install the PHP dependencies, and set an application ID, this can be achieved by Laravel's command line utility, Artisan.
 
 From the root of the project directory on you command line you can simply run: 
 ```shell
 cp .env.example .env
+composer install
 php artisan key:generate
 ```
 
