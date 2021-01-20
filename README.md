@@ -46,7 +46,7 @@ First you'll need PHP running on your command line. To do this install it, as we
 
 For MacOS run: 
 ```shell
-brew install php@7.2
+brew install php@7.4
 brew unlink php && brew link php
 
 # Test you're on PHP 7.4
