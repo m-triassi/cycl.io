@@ -1,8 +1,8 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="https://github.com/m-triassi/cycl.io/actions"><img src="https://github.com/m-triassi/cycl.io/workflows/Laravel/badge.svg" alt="Build Status"></a>
+<a href="https://github.com/m-triassi/cycl.io/blob/main/LICENSE"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
 # Cycl.io
@@ -16,14 +16,107 @@ Concordia University
 
 ## Installation
 
-Firstly, you'll need an `.env` file, the project includes an `.env.example` file for reference. 
+### Windows Subsystem for Linux (WSL)
+This project runs best in WSL, so if you're on windows, you'll want to enable this feature. You can find more comprehensive 
+instructions for doing that [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10). But for completeness, here is a summary:
+
+**Note:** Make sure windows is up to date before starting this. You may also need to enable Virtualization in your BIOS
+
+1. Open a power shell window and run `dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart`
+2. in the same power shell  window run `dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart`, Then restart your machine.
+3. Download the latest [WSL2 updates here](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi), and install them.
+4. Back in the power shell run `wsl --set-default-version 2`
+5. Open the Microsoft store, then [navigate to the Ubuntu 20.04 page](https://www.microsoft.com/store/apps/9n6svws3rx71), and click "get".
+6. Once installed, launch the Ubuntu 20.04 App from the start menu and follow the account set-up instructions. Make sure to pick a memorable sudo password. 
+
+After completing the above steps, you should now have an Ubuntu terminal that you can run the rest of the installation in.
+
+### Brew (MacOS only)
+MacOS lacks a native package manager. If you haven't already you'll want to install [brew](https://brew.sh/).
+
+To install brew, in a terminal, simply run:
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Once it completes, you can continue with the installation instructions.
+
+### PHP
+First you'll need PHP running on your command line. To do this install it, as well as some of its dependancies.
+
+For MacOS run: 
+```shell
+brew install php@7.2
+brew unlink php && brew link php
+
+# Test you're on PHP 7.4
+php -v
+# Check that PHP has the correct modules loaded
+# The list should contain at the minimum mbstring, xml, and zip, more is fine
+php -m
+```
+
+For WSL / Ubuntu run: 
+```shell
+sudo apt update
+sudo apt install -y php7.4-cli php7.4-mbstring php7.4-xml php7.4-zip unzip
+```
+
+### Composer
+Next you'll need [Composer](https://getcomposer.org/); it manages all the PHP dependencies for the project, and installs the framework and vendor files.
+
+On either WSL, Ubuntu, MacOS, run the following commands:
+```shell
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+sudo mv composer.phar /usr/local/bin/composer
+```
+
+### Node
+You'll also need node to build the front end, as  well as mange the dependencies there as well. It is highly recommended 
+that you use [NVM](https://github.com/nvm-sh/nvm) that way you can manage different versions of node going forward.  
+
+On either WSL, Ubuntu, MacOS, run the following commands:
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+nvm install 14
+nvm alias default 14
+```
+
+#### Yarn 
+You'll also likely need Yarn, it's generally consided a superior package bundler than NPM.
+
+Simply run: 
+```shell
+npm i -g yarn
+```
+
+### Docker
+This project runs on a set of docker containers orchestrated by [Laravel Sail](https://laravel.com/docs/8.x/sail).
+Before getting started though, you'll need to at least [install Docker](https://www.docker.com/get-started)
+for the system you are currently running on.
+
+**Note:** if you're on WSL / Windows you'll need to make sure that Docker is set up to pass through commands from WSL.
+Open the docker desktop application, goto the Settings, and make sure the WSL checkbox is ticked under "resources"
+
+### Project set-up
+Next, you'll need an `.env` file, the project includes an `.env.example` file for reference. 
 **Copy** the example file and rename it to `.env`, the default values of the example files are the ones expected by Sail (see below)
 If you are opting to use some other local environment, you'll need to set the appropriate values.
 
+You'll also need to set an application ID, this can be achieved by Laravel's command line utility, Artisan.
+
+From the root of the project directory on you command line you can simply run: 
+```shell
+cp .env.example .env
+php artisan key:generate
+```
+
+## Usage
+
 ### Sail 
-This project runs on a set of docker containers orchestrated by [Laravel Sail](https://laravel.com/docs/8.x/sail).
-Before getting started though, you'll need to at least [install Docker](https://www.docker.com/get-started) 
-for the system you are currently running on. Once this is complete, simply run:
+Once all the dependancies have been installed and set-up is complete, from the project root simply run:
 
 ```shell
 ./vendor/bin/sail up -d
@@ -32,11 +125,7 @@ for the system you are currently running on. Once this is complete, simply run:
 At which point, docker will begin to download all the required images and initialize them. The first time this will take a few moments; 
 though subsequent runs should be much quicker. 
 
-**Note:** if you are on Windows, this assumes you are using [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
-with docker passed through to the VM (This is recommended).
-
-### Serve
-You may instead opt to use _Serve_. This requires you have PHP installed on your system, as well as your own MySQL server.
+Once complete, the site should be available at http://localhost! 
 
 ## Learning Laravel
 
