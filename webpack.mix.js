@@ -13,6 +13,7 @@ const mix = require('laravel-mix')
 
 mix.ts('resources/app.tsx', 'public/js')
     .react()
+    .disableNotifications()
     .postCss('resources/app.css', 'public/css', [
         //
     ])

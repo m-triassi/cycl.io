@@ -1,9 +1,9 @@
 {
     "private": true,
     "scripts": {
-        "dev": "yarn development --watch",
+        "dev": "yarn development",
         "development": "node_modules/cross-env/src/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "mix watch",
+        "watch": "yarn development --watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "yarn production",
@@ -11,11 +11,13 @@
     },
     "devDependencies": {
         "@babel/preset-react": "^7.12.10",
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
         "axios": "^0.21",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "prettier": "2.2.1",
+        "react-refresh": "^0.9.0",
         "ts-loader": "^8.0.14"
     },
     "dependencies": {
