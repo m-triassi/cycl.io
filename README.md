@@ -108,11 +108,14 @@ If you are opting to use some other local environment, you'll need to set the ap
 
 You'll also need to install the PHP dependencies, and set an application ID, this can be achieved by Laravel's command line utility, Artisan.
 
+Lastly you'll need to install and build the front end as well.
 From the root of the project directory on you command line you can simply run: 
 ```shell
 cp .env.example .env
 composer install
 php artisan key:generate
+yarn install
+yarn dev
 ```
 
 ## Usage
