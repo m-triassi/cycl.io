@@ -10,7 +10,9 @@ const store = createStore(rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
 const App = () => (
-  <Provider store={store} />
+  <Provider store={store}>
+    <h1>Welcome to Cycl.io</h1>
+  </Provider>
 )
 
 ReactDOM.render(<App />, document.getElementById('root'))
