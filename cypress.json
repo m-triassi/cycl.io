@@ -1,0 +1,13 @@
+{
+    "fixturesFolder": "./cypress/fixtures",
+    "integrationFolder": "./cypress/integration",
+    "pluginsFile": "./cypress/plugins/index.js",
+    "supportFile": "./cypress/support/index.js",
+    "video": false,
+    "viewportWidth": 1920,
+    "viewportHeight": 1080,
+    "numTestsKeptInMemory": 5,
+    "defaultCommandTimeout": 15000,
+    "requestTimeout": 20000,
+    "retries": 3
+}
