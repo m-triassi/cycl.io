@@ -52,14 +52,14 @@ brew unlink php && brew link php
 # Test you're on PHP 7.4
 php -v
 # Check that PHP has the correct modules loaded
-# The list should contain at the minimum mbstring, xml, and zip, more is fine
+# The list should contain at the minimum mbstring, mysql, xml, and zip, more is fine
 php -m
 ```
 
 For WSL / Ubuntu run: 
 ```shell
 sudo apt update
-sudo apt install -y php7.4-cli php7.4-mbstring php7.4-xml php7.4-zip unzip
+sudo apt install -y php7.4-cli php7.4-mbstring php7.4-xml unzip php7.4-zip php7.4-mysql 
 ```
 
 ### Composer
