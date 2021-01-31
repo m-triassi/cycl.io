@@ -79,6 +79,7 @@
           "ts": "never",
           "tsx": "never"
         }
-     ]
+     ],
+     "plugins": ["jest"]
     }
   }
