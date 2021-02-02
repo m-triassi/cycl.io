@@ -1,9 +1,11 @@
+require('alpinejs');
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
-import rootReducer from './models'
-import './app.css'
+import rootReducer from '../models'
+import '../css/app.css'
 
 const store = createStore(rootReducer,
     // @ts-ignore
