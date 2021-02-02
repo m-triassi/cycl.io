@@ -13,4 +13,4 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Run tests
-      run: yarn jest
+      run: yarn jest --passWithNoTests
