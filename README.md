@@ -42,7 +42,7 @@ To install brew, in a terminal, simply run:
 Once it completes, you can continue with the installation instructions.
 
 ### PHP
-First you'll need PHP running on your command line. To do this install it, as well as some of its dependancies.
+First you'll need PHP running on your command line. To do this install it, as well as some of its dependencies.
 
 For MacOS run: 
 ```shell
@@ -121,7 +121,7 @@ yarn dev
 ## Usage
 
 ### Sail 
-Once all the dependancies have been installed and set-up is complete, from the project root simply run:
+Once all the dependencies have been installed and set-up is complete, from the project root simply run:
 
 ```shell
 ./vendor/bin/sail up -d
