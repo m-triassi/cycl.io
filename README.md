@@ -114,6 +114,7 @@ From the root of the project directory on you command line you can simply run:
 cp .env.example .env
 composer install
 php artisan key:generate
+php artisan migrate
 yarn install
 yarn dev
 ```
