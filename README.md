@@ -10,6 +10,9 @@ A web-based ERP system for managing the production and sale of imaginary bikes, 
 
 This Project is built on a React front end and communicates with a REST API running on Laravel.
 
+For Project management purposes Cycl.io, the project name, has been abbreviated to "CYC". You will find the format CYC-XX 
+prepended to many issues in the repository.
+
 ## Purpose
 This Project was created in part to satisfy the requirements of SOEN 390: Software Engineering Team Design Project @ 
 Concordia University
