@@ -1,0 +1,19 @@
+{
+    "modules": [{
+            "name": "Production",
+            "subModules": [
+                "Inventory",
+                "BOM"
+            ]
+        },
+        {
+            "name": "Vendor"
+        },
+        {
+            "name": "Sales"
+        },
+        {
+            "name": "Accounting"
+        }
+    ]
+}

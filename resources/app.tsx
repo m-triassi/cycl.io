@@ -1,11 +1,11 @@
-require('alpinejs');
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
-import rootReducer from '../models'
-import '../css/app.css'
+import rootReducer from './models'
+import './app.css'
+import 'alpinejs'
+import {BasicLayout} from './components'
 
 const store = createStore(rootReducer,
     // @ts-ignore
@@ -13,7 +13,7 @@ const store = createStore(rootReducer,
 
 const App = () => (
   <Provider store={store}>
-    <h1>Welcome to Cycl.io</h1>
+    <BasicLayout />
   </Provider>
 )
 
