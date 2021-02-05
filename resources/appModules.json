@@ -1,5 +1,6 @@
 {
-    "modules": [{
+    "modules": [
+        {
             "name": "Production",
             "subModules": [
                 "Inventory",

@@ -1,6 +1,8 @@
 import {Layout, Menu, Row} from 'antd'
 import React from 'react'
+import SVG from 'react-inlinesvg'
 import appModules from '../../appModules.json'
+import logo from '../../../public/img/logo.svg'
 
 const BasicLayout = () => {
     const {Content, Sider} = Layout
@@ -10,7 +12,9 @@ const BasicLayout = () => {
         <Sider
           theme='light'
           style={{height: '100vh'}}>
-          <Row>LOGO PLACEHOLDER</Row>
+          <Row>
+            <SVG src={logo} />
+          </Row>
           <Menu mode='inline'>
             {appModules.modules.map((module: any) => {
               if (module.subModules) {
