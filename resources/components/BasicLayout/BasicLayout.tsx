@@ -1,8 +1,11 @@
-import {Layout, Menu, Row} from 'antd'
+import {
+Card, Layout, Menu, Row,
+} from 'antd'
 import React from 'react'
 import SVG from 'react-inlinesvg'
 import appModules from '../../appModules.json'
 import logo from '../../../public/img/logo.svg'
+import {AppContent} from '../index'
 
 const BasicLayout = () => {
     const {Content, Sider} = Layout
@@ -33,7 +36,9 @@ const BasicLayout = () => {
           </Menu>
         </Sider>
         <Content style={{margin: '0 16px'}}>
-          <Row>Welcome to Cycl.io</Row>
+          <Card style={{marginTop: '16px', minHeight: '90vh'}}>
+            <AppContent />
+          </Card>
         </Content>
       </Layout>
     )
