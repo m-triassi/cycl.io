@@ -18,7 +18,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "resources",
+    "paths": {
+      "@components": ["components"],
+      "@public": ["../public"],
+      "@types": ["types"],
+    }
   },
   "files": ["index.d.ts"],
   "include": [

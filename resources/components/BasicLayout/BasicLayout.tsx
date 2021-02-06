@@ -5,11 +5,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 import SVG from 'react-inlinesvg'
 import {Link} from 'react-router-dom'
-import appModules from '../../appModules.json'
-import logo from '../../../public/img/logo.svg'
-import {AppContent} from '../index'
-import {RouterStateType} from '../../models/router'
-import {StoreType, DispatchArgumentType} from '../../types'
+import {AppContent} from '@components'
+import logo from '@public/img/logo.svg'
+import appModules from 'appModules.json'
+import {RouterStateType} from 'models/router'
+import {StoreType, DispatchArgumentType} from '@types'
 
 type BasicLayoutPropType = {
   dispatch: (arg: DispatchArgumentType) => void,
