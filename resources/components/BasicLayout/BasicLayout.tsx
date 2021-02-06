@@ -8,11 +8,24 @@ import {Link} from 'react-router-dom'
 import appModules from '../../appModules.json'
 import logo from '../../../public/img/logo.svg'
 import {AppContent} from '../index'
+import {RouterStateType} from '../../models/router'
+import {StoreType, DispatchArgumentType} from '../../types'
+
+type BasicLayoutPropType = {
+  dispatch: (arg: DispatchArgumentType) => void,
+  router: RouterStateType
+}
+
+type ModuleDataType = {
+  name: string,
+  subModules?: ModuleDataType[],
+  url: string
+}
 
 const BasicLayout = ({
   dispatch,
   router,
-}: any) => {
+}: BasicLayoutPropType) => {
     const {Content, Sider} = Layout
     const {Item, SubMenu} = Menu
     return (
@@ -26,11 +39,11 @@ const BasicLayout = ({
             </Link>
           </Row>
           <Menu onClick={(item) => dispatch({type: 'CHANGE_ROUTE', payload: item.key})} mode='inline'>
-            {appModules.modules.map((module: any) => {
+            {appModules.modules.map((module: ModuleDataType) => {
               if (module.subModules) {
                 return (
                   <SubMenu title={module.name}>
-                    {module.subModules.map((subModule: any) => (
+                    {module.subModules.map((subModule: ModuleDataType) => (
                       <Item key={subModule.url}>
                         <Link to={subModule.url}>{subModule.name}</Link>
                       </Item>
@@ -55,7 +68,7 @@ const BasicLayout = ({
     )
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: StoreType) => ({
   router: state.router,
 })
 

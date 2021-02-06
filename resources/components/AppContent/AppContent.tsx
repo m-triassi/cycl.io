@@ -1,4 +1,6 @@
 import React from 'react'
+import {RouterStateType} from '../../models/router'
+
 // import InventoryList from '../index'
 // import BOMList from '../index'
 // import VendorList from '../index'
@@ -6,7 +8,7 @@ import React from 'react'
 // import AccountingList from '../index'
 
 type AppContentPropType = {
-  router: any
+  router: RouterStateType
 }
 
 // this component will be the front end "router", based on url or redux state (TBD), it will render a specific view

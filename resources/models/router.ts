@@ -1,6 +1,10 @@
 import produce from 'immer'
 
-const initialState = {
+export type RouterStateType = {
+  route: string
+}
+
+const initialState: RouterStateType = {
     route: '/',
 }
 

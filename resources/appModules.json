@@ -2,6 +2,7 @@
     "modules": [
         {
             "name": "Production",
+            "url": "/Production",
             "subModules": [
                 {
                     "name": "Inventory",
