@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
+import {BrowserRouter} from 'react-router-dom'
 import rootReducer from './models'
 import './app.css'
 import 'alpinejs'
@@ -13,7 +14,9 @@ const store = createStore(rootReducer,
 
 const App = () => (
   <Provider store={store}>
-    <BasicLayout />
+    <BrowserRouter>
+      <BasicLayout />
+    </BrowserRouter>
   </Provider>
 )
 
