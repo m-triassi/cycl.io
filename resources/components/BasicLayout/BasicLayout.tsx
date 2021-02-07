@@ -6,10 +6,11 @@ import {connect} from 'react-redux'
 import SVG from 'react-inlinesvg'
 import {Link} from 'react-router-dom'
 import {AppContent} from '@components'
-import logo from '@public/img/logo.svg'
 import appModules from 'appModules.json'
 import {RouterStateType} from 'models/router'
 import {StoreType, DispatchArgumentType} from '@types'
+import logo from '@public/img/logo.svg'
+import './BasicLayout.css'
 
 type BasicLayoutPropType = {
   dispatch: (arg: DispatchArgumentType) => void,
@@ -32,8 +33,8 @@ const BasicLayout = ({
       <Layout>
         <Sider
           theme='light'
-          style={{height: '100vh'}}>
-          <Row justify='center' style={{minHeight: 60, minWidth: 200}}>
+          className='Sider'>
+          <Row justify='center' className='Logo'>
             <Link onClick={() => dispatch({type: 'CHANGE_ROUTE', payload: '/'})} to='/'>
               <SVG src={logo} width={100} height={60} />
             </Link>
@@ -59,8 +60,8 @@ const BasicLayout = ({
             })}
           </Menu>
         </Sider>
-        <Content style={{margin: '0 16px'}}>
-          <Card style={{marginTop: '16px', minHeight: '90vh'}}>
+        <Content className='Content'>
+          <Card className='ContentCard'>
             <AppContent router={router} />
           </Card>
         </Content>

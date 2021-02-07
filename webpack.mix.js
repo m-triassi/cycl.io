@@ -1,4 +1,5 @@
 const mix = require('laravel-mix')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 /*
  |--------------------------------------------------------------------------
@@ -20,3 +21,12 @@ mix.ts('resources/app.tsx', 'public/js')
     .react()
     .disableNotifications()
     .postCss('resources/app.css', 'public/css', pluginOptions)
+    .setPublicPath('public')
+    .alias({
+        '@public': 'public',
+    })
+    .webpackConfig({
+        resolve: {
+            plugins: [new TsconfigPathsPlugin({})],
+        },
+    })

@@ -1,0 +1,16 @@
+.Content {
+    margin: 16px;
+}
+
+.Sider {
+    height: 100vh;
+}
+
+.Logo {
+    min-height: 60px;
+    min-width: 200px;
+}
+
+.ContentCard {
+    min-height: 100%;
+}
