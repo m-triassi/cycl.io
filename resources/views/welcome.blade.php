@@ -17,6 +17,10 @@
         <style>
             body {
                 font-family: 'Nunito';
+                height: 100%;
+            }
+            #root {
+                height: 100%;
             }
         </style>
     </head>

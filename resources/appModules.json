@@ -1,0 +1,34 @@
+{
+    "modules": [
+        {
+            "name": "Production",
+            "url": "/Production",
+            "subModules": [
+                {
+                    "name": "Inventory",
+                    "url": "/Production/Inventory"
+                },
+                {
+                    "name": "BOM",
+                    "url": "/Production/BOM"
+                }
+            ]
+        },
+        {
+            "name": "Vendor",
+            "url": "/Vendor"
+        },
+        {
+            "name": "Sales",
+            "url": "/Sales"
+        },
+        {
+            "name": "Accounting",
+            "url": "/Accounting"
+        },
+        {
+            "name": "Settings",
+            "url": "/Settings"
+        }
+    ]
+}
