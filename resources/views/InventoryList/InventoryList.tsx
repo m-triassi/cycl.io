@@ -1,7 +1,6 @@
 import React from 'react'
 import {Button, Col, Input, Row, Table, Typography} from 'antd'
 import styled from 'styled-components'
-import {PlusCircleOutlined} from '@ant-design/icons'
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
