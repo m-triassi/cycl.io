@@ -115,9 +115,11 @@ Lastly you'll need to install and build the front end as well.
 From the root of the project directory on you command line you can simply run: 
 ```shell
 cp .env.example .env
-composer install
 php artisan key:generate
+# You only need to do the above once
+# The below should be done every time to you pull 
 php artisan migrate
+composer install
 yarn install
 yarn dev
 ```
