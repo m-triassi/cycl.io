@@ -1,8 +1,7 @@
 import React from 'react'
-import {RouterStateType} from '../../models/router'
+import {InventoryList} from 'views'
+import {RouterStateType} from 'models/router'
 
-// import InventoryList from '../index'
-// import BOMList from '../index'
 // import VendorList from '../index'
 // import SalesList from '../index'
 // import AccountingList from '../index'
@@ -20,10 +19,7 @@ const AppContent = ({
     let component
     switch (route) {
       case '/Production/Inventory':
-        component = (<h1>Hi inventory</h1>)
-        break
-      case '/Production/BOM':
-        component = (<h1>Hi BOM</h1>)
+        component = (<InventoryList inventory={null} />)
         break
       case '/Vendor':
         component = (<h1>Hi Vendor</h1>)
