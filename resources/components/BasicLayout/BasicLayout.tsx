@@ -1,10 +1,10 @@
 import {
 Card, Layout, Menu, Row,
 } from 'antd'
-import React from 'react'
+import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import SVG from 'react-inlinesvg'
-import {Link} from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 import {AppContent} from '@components'
 import appModules from 'appModules.json'
 import {RouterStateType} from 'models/router'
@@ -29,6 +29,15 @@ const BasicLayout = ({
 }: BasicLayoutPropType) => {
     const {Content, Sider} = Layout
     const {Item, SubMenu} = Menu
+    const {route} = router
+    const location = useLocation()
+
+    useEffect(() => {
+      if (route !== location.pathname) {
+        dispatch({type: 'CHANGE_ROUTE', payload: location.pathname})
+      }
+    }, [location])
+
     return (
       <Layout>
         <Sider
@@ -39,7 +48,7 @@ const BasicLayout = ({
               <SVG src={logo} width={100} height={60} />
             </Link>
           </Row>
-          <Menu onClick={(item) => dispatch({type: 'CHANGE_ROUTE', payload: item.key})} mode='inline'>
+          <Menu selectedKeys={[route]} onClick={(item) => dispatch({type: 'CHANGE_ROUTE', payload: item.key})} mode='inline'>
             {appModules.modules.map((module: ModuleDataType) => {
               if (module.subModules) {
                 return (
