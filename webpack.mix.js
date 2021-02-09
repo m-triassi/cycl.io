@@ -1,4 +1,5 @@
-const mix = require('laravel-mix');
+const mix = require('laravel-mix')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 /*
  |--------------------------------------------------------------------------
@@ -10,12 +11,22 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-
-mix.ts('resources/js/app.tsx', 'public/js')
-    .react()
-    .disableNotifications()
-    .postCss('resources/css/app.css', 'public/css', [
+const pluginOptions = [
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
-]);
+]
+
+mix.ts('resources/app.tsx', 'public/js')
+    .react()
+    .disableNotifications()
+    .postCss('resources/app.css', 'public/css', pluginOptions)
+    .setPublicPath('public')
+    .alias({
+        '@public': 'public',
+    })
+    .webpackConfig({
+        resolve: {
+            plugins: [new TsconfigPathsPlugin({})],
+        },
+    })
