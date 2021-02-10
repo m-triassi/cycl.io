@@ -1,5 +1,5 @@
 import React from 'react'
-import {InventoryList} from 'views'
+import {InventoryList, WelcomePage} from 'views'
 import {RouterStateType} from 'models/router'
 
 // import VendorList from '../index'
@@ -35,7 +35,7 @@ const AppContent = ({
         break
       case '/':
       default:
-        component = (<h1>Welcome to Cycl.io</h1>)
+        component = (<WelcomePage />)
     }
     return component
 }
