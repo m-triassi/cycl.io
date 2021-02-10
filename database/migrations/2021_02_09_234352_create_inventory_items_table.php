@@ -27,6 +27,8 @@ class CreateInventoryItemsTable extends Migration
             $table->string('finish')->nullable();
             $table->string('material')->nullable();
             $table->string('part_number')->nullable();
+            $table->float('lead_time')->nullable();
+            $table->float('labour_cost')->nullable();
             $table->timestamps();
         });
     }
