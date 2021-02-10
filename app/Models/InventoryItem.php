@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryItem extends Model
 {
     use HasFactory;
+
+    public function materials()
+    {
+        return $this->belongsToMany(InventoryItem::class, 'bill_of_materials', 'assembly_id', 'material_id');
+    }
+
+    public function assemblies()
+    {
+        return $this->belongsToMany(InventoryItem::class, 'bill_of_materials', 'material_id', 'assembly_id');
+    }
 }
