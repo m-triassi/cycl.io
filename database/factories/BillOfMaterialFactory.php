@@ -27,9 +27,12 @@ class BillOfMaterialFactory extends Factory
             ->where('material_id', $mat)
             ->first();
 
-        return [
-            'assembly_id' => $assem,
-            'material_id' => $mat
-        ];
+        if ($bill) {
+            return [
+                'assembly_id' => $assem,
+                'material_id' => $mat
+            ];
+        }
+        return [];
     }
 }
