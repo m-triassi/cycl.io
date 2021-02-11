@@ -12,17 +12,17 @@ const WelcomePage = () => (
 
     <Row justify='space-around'>
       <Col span={8}>
-        <Card hoverable title='Inventory Overview' bordered extra={<Link to='/Production/Inventory'>Open</Link>} style={{width: 400}}>
+        <Card hoverable title='Inventory Overview' style={{width: 400}}>
           <p>Preview of inventory</p>
         </Card>
       </Col>
       <Col span={8}>
-        <Card hoverable title='Placeholder Overview' bordered extra={<Link to='/Production/Inventory'>Open</Link>} style={{width: 400}}>
+        <Card hoverable title='Placeholder Overview' style={{width: 400}}>
           <p>Preview of inventory</p>
         </Card>
       </Col>
       <Col span={8}>
-        <Card hoverable title='Placeholder 2 Overview' extra={<Link to='/Production/Inventory'>Open</Link>} style={{width: 400}}>
+        <Card hoverable title='Placeholder 2 Overview' style={{width: 400}}>
           <p>Preview of inventory</p>
         </Card>
       </Col>
