@@ -1,6 +1,5 @@
 import React from 'react'
 import {PageHeader, Card, Row, Col, Divider} from 'antd'
-import {Link} from 'react-router-dom'
 
 const WelcomePage = () => (
   <>
