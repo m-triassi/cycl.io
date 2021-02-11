@@ -7,13 +7,15 @@ import {RouterStateType} from 'models/router'
 // import AccountingList from '../index'
 
 type AppContentPropType = {
-  router: RouterStateType
+  router: RouterStateType,
+  routeToPage: (url: string) => void
 }
 
 // this component will be the front end "router", based on url or redux state (TBD), it will render a specific view
 
 const AppContent = ({
   router,
+  routeToPage
 }: AppContentPropType) => {
     const {route} = router
     let component
@@ -35,7 +37,7 @@ const AppContent = ({
         break
       case '/':
       default:
-        component = (<WelcomePage />)
+        component = (<WelcomePage routeToPage={routeToPage} />)
     }
     return component
 }
