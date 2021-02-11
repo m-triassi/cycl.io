@@ -30,4 +30,6 @@ const WelcomePage = () => (
     </Row>
   </>
 )
+
+WelcomePage.displayName = 'WelcomePage'
 export default WelcomePage
