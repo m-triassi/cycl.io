@@ -4,11 +4,10 @@ import {Link} from 'react-router-dom'
 
 const WelcomePage = () => (
   <>
-    <div style={{}}>
-      <PageHeader
-        className='site-page-header'
-        title='Welcome to Cycl.io' />
-    </div>
+    <PageHeader
+      className='site-page-header'
+      title='Welcome to Cycl.io' />
+
     <Divider>Overview</Divider>
 
     <Row justify='space-around'>
