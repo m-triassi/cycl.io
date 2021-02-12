@@ -7,10 +7,6 @@
                 {
                     "name": "Inventory",
                     "url": "/Production/Inventory"
-                },
-                {
-                    "name": "BOM",
-                    "url": "/Production/BOM"
                 }
             ]
         },
