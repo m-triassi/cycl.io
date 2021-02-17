@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InventoryItemController;
+use App\Http\Controllers\MaterialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,9 @@ use App\Http\Controllers\InventoryItemController;
 */
 
 require __DIR__.'/auth.php';
+
+Route::post('/material', [MaterialController::class, "store"])
+    ->middleware(['auth']);
 
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"])
     ->middleware(['auth']);
