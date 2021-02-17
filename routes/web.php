@@ -16,7 +16,8 @@ use App\Http\Controllers\InventoryItemController;
 
 require __DIR__.'/auth.php';
 
-Route::put('/inventory/{id}', [InventoryItemController::class, "update"]);
+Route::put('/inventory/{id}', [InventoryItemController::class, "update"])
+    ->middleware(['auth']);
 
 Route::get('/token', function () {
     if(config("app.debug")){
