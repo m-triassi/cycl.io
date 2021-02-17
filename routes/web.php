@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InventoryItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 require __DIR__.'/auth.php';
+
+Route::put('/inventory/{id}', [InventoryItemController::class, "update"]);
 
 Route::get('/{path}', function() {
    return view ('main', ['user' => auth()->user()]);
