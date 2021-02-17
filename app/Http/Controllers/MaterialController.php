@@ -65,7 +65,8 @@ class MaterialController extends Controller
      */
     public function show($id)
     {
-        //
+        $inventoryItem = InventoryItem::findOrFail($id);
+        return $inventoryItem->materials()->get();
     }
 
     /**
