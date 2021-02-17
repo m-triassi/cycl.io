@@ -17,7 +17,8 @@ use App\Http\Controllers\MaterialController;
 
 require __DIR__.'/auth.php';
 
-Route::post('/material', [MaterialController::class, "store"]);
+Route::post('/material', [MaterialController::class, "store"])
+    ->middleware(['auth']);
 
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"]);
 
