@@ -9,6 +9,8 @@ class InventoryItem extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function materials()
     {
         return $this->belongsToMany(InventoryItem::class, 'bill_of_materials', 'assembly_id', 'material_id');
