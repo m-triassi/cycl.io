@@ -18,6 +18,14 @@ require __DIR__.'/auth.php';
 
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"]);
 
+Route::get('/token', function () {
+    if(config("app.debug")){
+        return csrf_token();
+    } else {
+        return false;
+    }
+});
+
 Route::get('/{path}', function() {
    return view ('main', ['user' => auth()->user()]);
 })->middleware(['auth'])->where('path', '.*');
