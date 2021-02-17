@@ -20,7 +20,8 @@ require __DIR__.'/auth.php';
 Route::post('/material', [MaterialController::class, "store"])
     ->middleware(['auth']);
 
-Route::put('/inventory/{id}', [InventoryItemController::class, "update"]);
+Route::put('/inventory/{id}', [InventoryItemController::class, "update"])
+    ->middleware(['auth']);
 
 Route::get('/token', function () {
     if(config("app.debug")){
