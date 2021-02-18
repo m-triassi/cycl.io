@@ -23,7 +23,11 @@ Route::post('/material', [MaterialController::class, "store"])
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"])
     ->middleware(['auth']);
 
-Route::get('/materials/{id}', [MaterialController::class, "show"])->middleware(['auth']);
+Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"])
+    ->middleware(['auth']);
+
+Route::get('/materials/{id}', [MaterialController::class, "show"])
+    ->middleware(['auth']);
 
 Route::get('/token', function () {
     if(config("app.debug")){
