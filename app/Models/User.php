@@ -51,4 +51,33 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    /**
+     * Check if the user has one of a given list of roles
+     * @param  string|array  $role one or more role types to check for
+     * @return bool       Returns true is the user's role matches any the provided roles
+     */
+    public function hasRole($roles)
+    {
+        return count(array_intersect($this->roles->pluck('type')->toArray(), (array)$roles))>0;
+    }
+
+    /**
+     * Checks if the user has the role 'admin'
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole(Role::ADMIN);
+    }
+
+    /**
+     * Checks if the user has any kind of role
+     * @return bool
+     */
+    public function hasAnyRole()
+    {
+        return count($this->roles->pluck('type')->toArray()) > 0;
+    }
+
+
 }
