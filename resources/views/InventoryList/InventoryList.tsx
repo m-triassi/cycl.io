@@ -1,5 +1,7 @@
-import React from 'react'
-import {Button, Col, Input, Row, Table, Typography} from 'antd'
+import {Button, Col, Form, Input, InputNumber, Modal, Row, Table, Typography} from 'antd'
+import React, {useState} from 'react'
+import {StoreType, DispatchArgumentType} from '@types'
+import {connect} from 'react-redux'
 import styled from 'styled-components'
 
 const StyledRow = styled(Row)`
@@ -7,12 +9,45 @@ const StyledRow = styled(Row)`
 `
 
 type InventoryListPropType = {
-    inventory: any
+    dispatch: (arg: DispatchArgumentType) => void,
+    inventoryMaterial: any
 }
 
 const InventoryList = ({
-    inventory,
+    dispatch,
+    inventoryMaterial,
 }: InventoryListPropType) => {
+    const {Item} = Form
+    const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
+    const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
+    const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
+    const addInventoryModal = (
+      <Modal
+        visible={isCreateModalVisible}
+        title='Add inventory'
+        onOk={() => {
+            setIsCreateModalVisible(false)
+            resetState()
+        }}
+        onCancel={() => {
+            setIsCreateModalVisible(false)
+            resetState()
+        }}>
+        <Item required label='Title'><Input onChange={(e) => changeFormData('title', e.target.value)} /></Item>
+        <Item required label='Part ID'><Input /></Item>
+        <Item required label='Cost'><InputNumber precision={2} /></Item>
+        <Item required label='Stock'><InputNumber precision={0} /></Item>
+        <Item label='Category'><Input /></Item>
+        <Item label='Size'><Input /></Item>
+        <Item label='Color'><Input /></Item>
+        <Item label='Finish'><Input /></Item>
+        <Item label='Material'><Input /></Item>
+        <Item label='Lead Time'><InputNumber precision={2} /></Item>
+        <Item label='Labor Cost'><InputNumber precision={2} /></Item>
+        <Item label='Sale Price'><InputNumber precision={2} /></Item>
+        <Item label='Description'><Input.TextArea /></Item>
+      </Modal>
+    )
     const columns = [
         {
             title: 'Component',
@@ -67,19 +102,24 @@ const InventoryList = ({
     ]
     return (
       <>
+        {addInventoryModal}
         <Row><Typography.Title>Inventory</Typography.Title></Row>
         <Row>
           <Col span={8}>
             <StyledRow>
-              <Button shape='round'>Create Inventory Item</Button>
+              <Button onClick={() => setIsCreateModalVisible(true)} shape='round'>Create Inventory Item</Button>
             </StyledRow>
             <StyledRow><Input placeholder='search inventory item' /></StyledRow>
           </Col>
         </Row>
-        <Table bordered columns={columns} dataSource={inventory} />
+        <Table bordered columns={columns} dataSource={inventoryMaterial} />
       </>
     )
 }
 
+const mapStateToProps = (state: StoreType) => ({
+    inventoryMaterial: state.inventoryMaterial,
+})
+
 InventoryList.displayName = 'InventoryList'
-export default InventoryList
+export default connect(mapStateToProps)(InventoryList)

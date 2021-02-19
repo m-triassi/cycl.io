@@ -21,7 +21,7 @@ const AppContent = ({
     let component
     switch (route) {
       case '/Production/Inventory':
-        component = (<InventoryList inventory={null} />)
+        component = (<InventoryList />)
         break
       case '/Vendor':
         component = (<h1>Hi Vendor</h1>)
