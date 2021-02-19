@@ -19,6 +19,7 @@ use App\Http\Controllers\UserRoleController;
 require __DIR__.'/auth.php';
 
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"])->middleware(['auth']);
+Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"])->middleware(['auth']);
 
 Route::post('/material', [MaterialController::class, "store"])->middleware(['auth']);
 Route::get('/materials/{id}', [MaterialController::class, "show"])->middleware(['auth']);
