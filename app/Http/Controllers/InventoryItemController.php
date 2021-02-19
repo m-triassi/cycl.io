@@ -63,4 +63,16 @@ class InventoryItemController extends Controller
 
         return $inventoryItem->refresh();
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $inventoryItem = InventoryItem::findOrFail($id);
+        $inventoryItem->delete();
+    }
 }
