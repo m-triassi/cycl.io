@@ -24,8 +24,9 @@ Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"])->m
 Route::post('/material', [MaterialController::class, "store"])->middleware(['auth']);
 Route::get('/materials/{id}', [MaterialController::class, "show"])->middleware(['auth']);
 
-Route::post('/user/roles', [UserRoleController::class, 'store']);
-Route::delete('/user/roles', [UserRoleController::class, 'destroy']);
+Route::post('/user/roles', [UserRoleController::class, 'store'])->middleware(['auth']);
+
+Route::delete('/user/roles', [UserRoleController::class, 'destroy'])->middleware(['auth']);
 
 Route::get('/token', function () {
     if(config("app.debug")){
