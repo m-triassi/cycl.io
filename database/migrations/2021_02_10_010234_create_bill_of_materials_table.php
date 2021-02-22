@@ -15,8 +15,8 @@ class CreateBillOfMaterialsTable extends Migration
     {
         Schema::create('bill_of_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assembly_id')->references('id')->on('inventory_items');
-            $table->foreignId('material_id')->references('id')->on('inventory_items');
+            $table->foreignId('assembly_id')->references('id')->on('inventory_items')->onDelete('cascade');
+            $table->foreignId('material_id')->references('id')->on('inventory_items')->onDelete('cascade');
             $table->timestamps();
 
             $table->unique(['assembly_id', 'material_id']);
