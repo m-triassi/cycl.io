@@ -11,6 +11,40 @@ use Illuminate\Http\Request;
  */
 class InventoryItemController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $items = InventoryItem::query();
+        if ($request->q) {
+            $items = $items
+                ->where("title", "like", "%{$request->q}%")
+                ->orWhere("Description", "like", "%{$request->q}%");
+        }
+
+        $filters = $request->only([
+            "size",
+            "color",
+            "category",
+            "cost",
+            "sale_price",
+            "material",
+            "finish",
+            "labour_cost"
+        ]);
+
+        if ($filters) {
+            foreach ($filters as $filter => $value) {
+                $items = $items->where($filter, $value);
+            }
+        }
+        return $items->get();
+    }
+
     /**
      * update
      * Updates inventory item information on put request.
