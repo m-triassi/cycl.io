@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InventoryItem;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class InventoryItemController
@@ -62,6 +63,52 @@ class InventoryItemController extends Controller
         $inventoryItem->update($params);
 
         return $inventoryItem->refresh();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                'title' => "required|string",
+                'description' => "required|string",
+                'cost' => "required|string",
+                'sale_price' => "required|numeric",
+
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        $params = $request->only([
+            "supplier_id",
+            "title",
+            "description",
+            "cost",
+            "sale_price",
+            "stock",
+            "category",
+            "size",
+            "color",
+            "finish",
+            "material",
+            "part_number",
+            "lead_time",
+            "labour_cost"
+        ]);
+
+        $item = InventoryItem::create($params);
+        $item->save();
+
+        return $item->refresh();
     }
 
     /**
