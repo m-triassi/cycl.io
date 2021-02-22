@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(RoleSeeder::class);
         // Always create the same user every time for testing purposes
         \App\Models\User::create([
             'name' => "Example User",
