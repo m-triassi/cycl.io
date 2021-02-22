@@ -20,7 +20,8 @@ require __DIR__.'/auth.php';
 Route::post('/material', [MaterialController::class, "store"])
     ->middleware(['auth']);
 
-Route::post('/inventory', [InventoryItemController::class, "store"]);
+Route::post('/inventory', [InventoryItemController::class, "store"])
+    ->middleware(['auth']);
 
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"])
     ->middleware(['auth']);
