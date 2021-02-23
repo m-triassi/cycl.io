@@ -15,9 +15,15 @@ class MaterialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $isAssembly = $request->is_assembly;
+        
+        if($isAssembly){
+            return InventoryItem::has("materials")->get();
+        }
+
+        return InventoryItem::has("assemblies")->get();
     }
 
     /**
