@@ -105,7 +105,7 @@ class MaterialController extends Controller
             ]);
         }
 
-        $assemblyId = $request->assembly_id;
+        $assemblyId = $id;
         $materialIds = $request->material_ids;
 
         $deletedRows = BillOfMaterial::where('assembly_id', $assemblyId)->delete();
@@ -118,10 +118,10 @@ class MaterialController extends Controller
             $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
         }
 
-        foreach($materialIds as $id) {
+        foreach($materialIds as $materialId) {
             $pairs->push([
                 'assembly_id' => $assemblyId,
-                'material_id' => trim($id),
+                'material_id' => trim($materialId),
             ]);
         }
 
