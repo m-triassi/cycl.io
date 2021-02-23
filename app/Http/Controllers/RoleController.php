@@ -58,7 +58,10 @@ class RoleController extends Controller
         $role = Role::create($params);
         $role->save();
 
-        return $role->refresh();
+        return response([
+            'success' => true,
+            'data' => $role->refresh()
+        ]);
 
     }
 

@@ -43,7 +43,10 @@ class InventoryItemController extends Controller
                 $items = $items->where($filter, $value);
             }
         }
-        return $items->get();
+        return response([
+            'success' => true,
+            'data' => $items->get()
+        ]);
     }
 
     /**
@@ -96,7 +99,10 @@ class InventoryItemController extends Controller
 
         $inventoryItem->update($params);
 
-        return $inventoryItem->refresh();
+        return response([
+            'success' => true,
+            'data' => $inventoryItem->refresh()
+        ]);
     }
 
     /**
@@ -142,7 +148,10 @@ class InventoryItemController extends Controller
         $item = InventoryItem::create($params);
         $item->save();
 
-        return $item->refresh();
+        return response([
+            'success' => true,
+            'data' => $item->refresh()
+        ]);
     }
 
     /**
@@ -155,5 +164,9 @@ class InventoryItemController extends Controller
     {
         $inventoryItem = InventoryItem::findOrFail($id);
         $inventoryItem->delete();
+
+        return response([
+            'success' => true
+        ]);
     }
 }
