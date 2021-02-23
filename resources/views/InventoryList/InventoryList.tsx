@@ -121,9 +121,9 @@ const InventoryList = ({
         <Row>
           <Col span={8}>
             <StyledRow>
-              <Button onClick={() => setIsCreateModalVisible(true)} shape='round'>Create Inventory Item</Button>
+              <Button type='primary' onClick={() => setIsCreateModalVisible(true)} shape='round'>Add Inventory Item</Button>
             </StyledRow>
-            <StyledRow><Input placeholder='search inventory item' /></StyledRow>
+            <StyledRow><Input placeholder='Search Inventory Item' /></StyledRow>
           </Col>
         </Row>
         <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
