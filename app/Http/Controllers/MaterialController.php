@@ -95,7 +95,6 @@ class MaterialController extends Controller
 
         try {
             $request->validate([
-                'assembly_id' => 'required|integer|min:1',
                 'material_ids' => 'required'
             ]);
         } catch (ValidationException $e) {
