@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BillOfMaterial;
 use App\Models\InventoryItem;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -72,6 +73,7 @@ class MaterialController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -89,7 +91,42 @@ class MaterialController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //TODO: Refactor: Look into using sync to avoid deleting entries every time we update.
+
+        try {
+            $request->validate([
+                'assembly_id' => 'required|integer|min:1',
+                'material_ids' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        $assemblyId = $request->assembly_id;
+        $materialIds = $request->material_ids;
+
+        $deletedRows = BillOfMaterial::where('assembly_id', $assemblyId)->delete();
+        //$billsOfMaterials = BillOfMaterial::whereIn('assembly_id', $assemblyId)->get();
+
+        $pairs = collect();
+
+        if(is_string($materialIds)) {
+            $materialIds = trim($materialIds," ,");
+            $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
+        }
+
+        foreach($materialIds as $id) {
+            $pairs->push([
+                'assembly_id' => $assemblyId,
+                'material_id' => trim($id),
+            ]);
+        }
+
+        BillOfMaterial::insert($pairs->toArray());
+        return InventoryItem::find($assemblyId)->materials;
     }
 
     /**
