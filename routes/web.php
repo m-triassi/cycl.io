@@ -19,6 +19,8 @@ use App\Http\Controllers\RoleController;
 
 require __DIR__.'/auth.php';
 
+Route::get('/inventory', [InventoryItemController::class, "index"])->middleware(['auth']);
+Route::post('/inventory', [InventoryItemController::class, "store"])->middleware(['auth']);
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"])->middleware(['auth']);
 Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"])->middleware(['auth']);
 

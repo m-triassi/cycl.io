@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InventoryItem;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class InventoryItemController
@@ -11,6 +12,40 @@ use Illuminate\Http\Request;
  */
 class InventoryItemController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $items = InventoryItem::query();
+        if ($request->q) {
+            $items = $items
+                ->where("title", "like", "%{$request->q}%")
+                ->orWhere("Description", "like", "%{$request->q}%");
+        }
+
+        $filters = $request->only([
+            "size",
+            "color",
+            "category",
+            "cost",
+            "sale_price",
+            "material",
+            "finish",
+            "labour_cost"
+        ]);
+
+        if ($filters) {
+            foreach ($filters as $filter => $value) {
+                $items = $items->where($filter, $value);
+            }
+        }
+        return $items->get();
+    }
+
     /**
      * update
      * Updates inventory item information on put request.
@@ -62,6 +97,52 @@ class InventoryItemController extends Controller
         $inventoryItem->update($params);
 
         return $inventoryItem->refresh();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                'title' => "required|string",
+                'description' => "required|string",
+                'cost' => "required|string",
+                'sale_price' => "required|numeric",
+
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        $params = $request->only([
+            "supplier_id",
+            "title",
+            "description",
+            "cost",
+            "sale_price",
+            "stock",
+            "category",
+            "size",
+            "color",
+            "finish",
+            "material",
+            "part_number",
+            "lead_time",
+            "labour_cost"
+        ]);
+
+        $item = InventoryItem::create($params);
+        $item->save();
+
+        return $item->refresh();
     }
 
     /**
