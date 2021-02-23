@@ -1,8 +1,9 @@
 import {Button, Col, Form, Input, InputNumber, Modal, Row, Table, Typography} from 'antd'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
+import {getInventory} from 'services/inventory'
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -10,19 +11,30 @@ const StyledRow = styled(Row)`
 
 type InventoryListPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
-    inventoryMaterial: any
+    InventoryMaterial: any
 }
 
 const InventoryList = ({
     dispatch,
-    inventoryMaterial,
+    InventoryMaterial,
 }: InventoryListPropType) => {
     const {Item} = Form
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
     const onSubmit = () => dispatch({type: 'ADD_INVENTORY'})
+    const fetchInventoryItemList = () => {
+        getInventory().then((response: any) => {
+            const {data} = response
+            if (data.success) {
+              dispatch({type: 'SET_INVENTORY_ITEMS', payload: data.data})
+            }
+          })
+    }
 
+    useEffect(() => {
+        fetchInventoryItemList()
+    }, [])
     const addInventoryModal = (
       <Modal
         visible={isCreateModalVisible}
@@ -53,9 +65,24 @@ const InventoryList = ({
     )
     const columns = [
         {
-            title: 'Component',
-            key: 'component',
-            dataIndex: 'component'
+            title: 'Title',
+            key: 'title',
+            dataIndex: 'title'
+        },
+        {
+            title: 'Cost',
+            key: 'cost',
+            dataIndex: 'cost'
+        },
+        {
+            title: 'Sale price',
+            key: 'sale_price',
+            dataIndex: 'sale_price'
+        },
+        {
+            title: 'Stock',
+            key: 'stock',
+            dataIndex: 'stock'
         },
         {
             title: 'Category',
@@ -66,41 +93,6 @@ const InventoryList = ({
             title: 'Size',
             key: 'size',
             dataIndex: 'size'
-        },
-        {
-            title: 'Color',
-            key: 'color',
-            dataIndex: 'color'
-        },
-        {
-            title: 'Finish',
-            key: 'finish',
-            dataIndex: 'finish'
-        },
-        {
-            title: 'Material',
-            key: 'material',
-            dataIndex: 'material'
-        },
-        {
-            title: 'Purchase Date',
-            key: 'purchaseDate',
-            dataIndex: 'purchaseDate'
-        },
-        {
-            title: 'Provider',
-            key: 'provider',
-            dataIndex: 'provider'
-        },
-        {
-            title: 'Cost',
-            key: 'cost',
-            dataIndex: 'cost'
-        },
-        {
-            title: 'Quantity',
-            key: 'quantity',
-            dataIndex: 'quantity'
         },
     ]
     return (
@@ -115,13 +107,13 @@ const InventoryList = ({
             <StyledRow><Input placeholder='search inventory item' /></StyledRow>
           </Col>
         </Row>
-        <Table bordered columns={columns} dataSource={inventoryMaterial} />
+        <Table bordered columns={columns} dataSource={InventoryMaterial.table} scroll={{x: 'max-content'}} />
       </>
     )
 }
 
 const mapStateToProps = (state: StoreType) => ({
-    inventoryMaterial: state.inventoryMaterial,
+    InventoryMaterial: state.InventoryMaterial,
 })
 
 InventoryList.displayName = 'InventoryList'

@@ -2,7 +2,7 @@ import {RouterStateType} from '../models/router'
 
 export type StoreType = {
     router: RouterStateType,
-    inventoryMaterial: any
+    InventoryMaterial: any
 }
 
 export type DispatchArgumentType = {

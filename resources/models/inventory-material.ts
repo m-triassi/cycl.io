@@ -39,13 +39,16 @@ const initialState: InventoryMaterialStateType = {
         lead_time: 0,
         labour_cost: 0,
     },
-    table: {}
+    table: []
 }
 
 const InventoryMaterial = produce(
   (state, action) => {
     const {type, payload} = action
     switch (type) {
+      case 'SET_INVENTORY_ITEMS':
+        state.table = payload
+        break
       case 'INVENTORY_MATERIAL_CHANGE_FORM_DATA':
         state.form[payload.key] = payload.value
         break
