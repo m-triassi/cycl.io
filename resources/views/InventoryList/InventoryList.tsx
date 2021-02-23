@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-import {getInventory, filterInventory} from 'services/inventory'
 import {InventoryItemStateType} from 'models/inventory'
 
 const StyledRow = styled(Row)`
@@ -25,17 +24,9 @@ const InventoryList = ({
     const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
     const onSubmit = () => dispatch({type: 'ADD_INVENTORY'})
-    const fetchInventoryItemList = () => {
-        getInventory().then((response: any) => {
-            const {data} = response
-            if (data.success) {
-              dispatch({type: 'SET_INVENTORY_ITEMS', payload: data.data})
-            }
-          })
-    }
-
+    const filterInventory = (value: string) => dispatch({type: 'FILTER_INVENTORY_LIST', payload: value})
     useEffect(() => {
-        fetchInventoryItemList()
+      dispatch({type: 'FETCH_INVENTORY_LIST'})
     }, [])
     const addInventoryModal = (
       <Modal
@@ -125,14 +116,7 @@ const InventoryList = ({
             </StyledRow>
             <StyledRow>
               <Input
-                onPressEnter={(e: any) => {
-                filterInventory(e.target.value).then((response: any) => {
-                  const {data} = response
-                  if (data.success) {
-                    dispatch({type: 'SET_INVENTORY_ITEMS', payload: data.data})
-                  }
-                })
-            }}
+                onPressEnter={(e: any) => filterInventory(e.target.value)}
                 placeholder='Search Inventory Item' />
             </StyledRow>
           </Col>
