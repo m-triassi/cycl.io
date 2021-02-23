@@ -46,22 +46,6 @@ const InventoryItem = produce(
   (state, action) => {
     const {type, payload} = action
     switch (type) {
-      case 'FETCH_INVENTORY_LIST':
-        getInventory().then((response: any) => {
-          const {data} = response
-          if (data.success) {
-            state.table = data.data
-          }
-        })
-        break
-      case 'FILTER_INVENTORY_LIST':
-        filterInventory(payload).then((response: any) => {
-          const {data} = response
-          if (data.success) {
-            state.table = data.data
-          }
-        })
-        break
       case 'SET_INVENTORY_ITEMS':
         state.table = payload
         break
