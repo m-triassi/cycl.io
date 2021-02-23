@@ -23,6 +23,7 @@ Route::post('/inventory', [InventoryItemController::class, "store"])->middleware
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"])->middleware(['auth']);
 Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"])->middleware(['auth']);
 
+Route::get('/materials', [MaterialController::class, "index"])->middleware(['auth']);   
 Route::post('/material', [MaterialController::class, "store"])->middleware(['auth']);
 Route::get('/materials/{id}', [MaterialController::class, "show"])->middleware(['auth']);
 
