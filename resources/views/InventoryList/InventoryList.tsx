@@ -1,5 +1,6 @@
 import React from 'react'
-import {Button, Col, Input, Row, Table, Typography} from 'antd'
+import {Button, Col, Input, Row, Table, Typography, Space, Modal} from 'antd'
+import {DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons'
 import styled from 'styled-components'
 
 const StyledRow = styled(Row)`
@@ -10,9 +11,23 @@ type InventoryListPropType = {
     inventory: any
 }
 
+const config = {
+    title: 'Delete Inventory Item',
+    icon: <ExclamationCircleOutlined />,
+    okText: 'Delete',
+    cancelText: 'Cancel',
+    content: (
+      <>
+        <p>This item will be permanantly deleted.</p>
+        <p>Are you sure you want to delete this item?</p>
+      </>
+    ),
+  }
+
 const InventoryList = ({
     inventory,
 }: InventoryListPropType) => {
+    const [modal,contextHolder] = Modal.useModal()
     const columns = [
         {
             title: 'Component',
@@ -64,6 +79,16 @@ const InventoryList = ({
             key: 'quantity',
             dataIndex: 'quantity'
         },
+        {
+            title: 'Action',
+            key: 'action',
+            dataIndex: 'action',
+            render: () => (
+              <Space size='middle'>
+                <Button danger type='text' icon={<DeleteOutlined />} size='large' onClick={() => {modal.confirm(config)}} />
+              </Space>
+              ),
+        },
     ]
     return (
       <>
@@ -77,6 +102,7 @@ const InventoryList = ({
           </Col>
         </Row>
         <Table bordered columns={columns} dataSource={inventory} />
+        {contextHolder}
       </>
     )
 }
