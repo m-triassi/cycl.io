@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BillOfMaterial;
 use App\Models\InventoryItem;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -14,9 +15,21 @@ class MaterialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $isAssembly = $request->is_assembly;
+
+        if($isAssembly){
+            return response([
+                'success' => true,
+                'data' => InventoryItem::has("materials")->get()
+            ]);
+        }
+
+        return response([
+            'success' => true,
+            'data' => InventoryItem::has("assemblies")->get()
+        ]);
     }
 
     /**
@@ -54,7 +67,10 @@ class MaterialController extends Controller
         }
 
         BillOfMaterial::insert($pairs->toArray());
-        return InventoryItem::find($assemblyId)->materials;
+        return response([
+            'success' => true,
+            'data' => InventoryItem::find($assemblyId)->materials
+        ]);
     }
 
     /**
@@ -66,11 +82,15 @@ class MaterialController extends Controller
     public function show($id)
     {
         $inventoryItem = InventoryItem::findOrFail($id);
-        return $inventoryItem->materials()->get();
+        return response([
+            'success' => true,
+            'data' => $inventoryItem->materials()->get()
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
+     *
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -89,7 +109,44 @@ class MaterialController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //TODO: Refactor: Look into using sync to avoid deleting entries every time we update.
+
+        try {
+            $request->validate([
+                'material_ids' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        $assemblyId = $id;
+        $materialIds = $request->material_ids;
+
+        $deletedRows = BillOfMaterial::where('assembly_id', $assemblyId)->delete();
+        //$billsOfMaterials = BillOfMaterial::whereIn('assembly_id', $assemblyId)->get();
+
+        $pairs = collect();
+
+        if(is_string($materialIds)) {
+            $materialIds = trim($materialIds," ,");
+            $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
+        }
+
+        foreach($materialIds as $materialId) {
+            $pairs->push([
+                'assembly_id' => $assemblyId,
+                'material_id' => trim($materialId),
+            ]);
+        }
+
+        BillOfMaterial::insert($pairs->toArray());
+        return response([
+            'success' => true,
+            'data' => InventoryItem::find($assemblyId)->materials
+        ]);
     }
 
     /**
