@@ -1,8 +1,9 @@
 import {RouterStateType} from '../models/router'
+import {InventoryItemStateType} from '../models/inventory'
 
 export type StoreType = {
     router: RouterStateType,
-    InventoryMaterial: any
+    InventoryItem: InventoryItemStateType
 }
 
 export type DispatchArgumentType = {

@@ -1,8 +1,8 @@
 import axios from 'axios'
-import {InventoryMaterialFormDataType} from '../models/inventory-material'
+import {InventoryItemFormDataType} from '../models/inventory'
 import {inventoryRoute} from '.'
 
-export const addInventory = (payload: InventoryMaterialFormDataType) => axios({
+export const addInventory = (payload: InventoryItemFormDataType) => axios({
     url: inventoryRoute,
     method: 'POST',
     data: payload,

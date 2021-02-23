@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux'
 import router from './router'
-import InventoryMaterial from './inventory-material'
+import InventoryItem from './inventory'
 
 const rootReducer = combineReducers({
     router,
-    InventoryMaterial,
+    InventoryItem,
 })
 
 export default rootReducer

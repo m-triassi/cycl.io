@@ -2,47 +2,47 @@ import produce from 'immer'
 import {message} from 'antd'
 import {addInventory} from '../services/inventory'
 
-export type InventoryMaterialFormDataType = {
+export type InventoryItemFormDataType = {
     title: string,
     description: string,
     cost: number,
     sale_price: number,
-    stock: number,
-    category: string ,
-    size: string,
-    color: string,
-    finish: string,
-    material: string,
-    part_number: string,
-    lead_time: number,
-    labour_cost: number,
+    stock?: number,
+    category?: string,
+    size?: string,
+    color?: string,
+    finish?: string,
+    material?: string,
+    part_number?: string,
+    lead_time?: number,
+    labour_cost?: number,
 }
 
-export type InventoryMaterialStateType = {
-  form: InventoryMaterialFormDataType,
+export type InventoryItemStateType = {
+  form: InventoryItemFormDataType,
   table: any
 }
 
-const initialState: InventoryMaterialStateType = {
+const initialState: InventoryItemStateType = {
     form: {
         title: '',
         description: '',
         cost: 0,
         sale_price: 0,
-        stock: 0,
-        category: '',
-        size: '',
-        color: '',
-        finish: '',
-        material: '',
-        part_number: '',
-        lead_time: 0,
-        labour_cost: 0,
+        stock: undefined,
+        category: undefined,
+        size: undefined,
+        color: undefined,
+        finish: undefined,
+        material: undefined,
+        part_number: undefined,
+        lead_time: undefined,
+        labour_cost: undefined,
     },
     table: []
 }
 
-const InventoryMaterial = produce(
+const InventoryItem = produce(
   (state, action) => {
     const {type, payload} = action
     switch (type) {
@@ -61,7 +61,7 @@ const InventoryMaterial = produce(
           if (data.success) {
             message.success('Inventory added')
           } else {
-            message.error(data.error)
+            message.error('Inventory failed to be added')
           }
         })
         break
@@ -72,4 +72,4 @@ const InventoryMaterial = produce(
   {...initialState},
 )
 
-export default InventoryMaterial
+export default InventoryItem

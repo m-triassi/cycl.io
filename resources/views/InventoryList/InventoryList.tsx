@@ -4,6 +4,7 @@ import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {getInventory} from 'services/inventory'
+import {InventoryItemStateType} from 'models/inventory'
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -11,14 +12,15 @@ const StyledRow = styled(Row)`
 
 type InventoryListPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
-    InventoryMaterial: any
+    InventoryItem: InventoryItemStateType
 }
 
 const InventoryList = ({
     dispatch,
-    InventoryMaterial,
+    InventoryItem,
 }: InventoryListPropType) => {
     const {Item} = Form
+    const {form, table} = InventoryItem
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
@@ -38,7 +40,7 @@ const InventoryList = ({
     const addInventoryModal = (
       <Modal
         visible={isCreateModalVisible}
-        title='Add inventory'
+        title='Add inventory item'
         onOk={() => {
             onSubmit()
             setIsCreateModalVisible(false)
@@ -48,41 +50,53 @@ const InventoryList = ({
             setIsCreateModalVisible(false)
             resetState()
         }}>
-        <Item required label='Title'><Input onChange={(e) => changeFormData('title', e.target.value)} /></Item>
-        <Item required label='Part ID'><Input /></Item>
-        <Item required label='Cost'><InputNumber precision={2} /></Item>
-        <Item required label='Stock'><InputNumber precision={0} /></Item>
-        <Item label='Category'><Input /></Item>
-        <Item label='Size'><Input /></Item>
-        <Item label='Color'><Input /></Item>
-        <Item label='Finish'><Input /></Item>
-        <Item label='Material'><Input /></Item>
-        <Item label='Lead Time'><InputNumber precision={2} /></Item>
-        <Item label='Labor Cost'><InputNumber precision={2} /></Item>
-        <Item label='Sale Price'><InputNumber precision={2} /></Item>
-        <Item label='Description'><Input.TextArea /></Item>
+        <Item required label='Title'><Input value={form.title} onChange={(e) => changeFormData('title', e.target.value)} /></Item>
+        <Row>
+          <Col span={12}>
+            <Item required label='Cost'><InputNumber onChange={(value) => changeFormData('cost', value)} value={form.cost} precision={2} /></Item>
+          </Col>
+          <Col span={12}>
+            <Item required label='Sale Price'><InputNumber onChange={(value) => changeFormData('sale_price', value)} value={form.sale_price} precision={2} /></Item>
+          </Col>
+        </Row>
+        <Item required label='Description'><Input.TextArea onChange={(e) => changeFormData('description', e.target.value)} value={form.description} /></Item>
+        <Item label='Category'><Input value={form.category} onChange={(e) => changeFormData('category', e.target.value)} /></Item>
+        <Item label='Size'><Input value={form.size} onChange={(e) => changeFormData('size', e.target.value)} /></Item>
+        <Item label='Part Number'><Input value={form.part_number} onChange={(e) => changeFormData('part_number', e.target.value)} /></Item>
+        <Item label='Stock'><InputNumber value={form.stock} onChange={(value) => changeFormData('stock', value)} precision={0} /></Item>
+        <Item label='Color'><Input value={form.color} onChange={(e) => changeFormData('color', e.target.value)} /></Item>
+        <Item label='Finish'><Input value={form.finish} onChange={(e) => changeFormData('finish', e.target.value)} /></Item>
+        <Item label='Material'><Input value={form.material} onChange={(e) => changeFormData('material', e.target.value)} /></Item>
+        <Row>
+          <Col span={12}>
+            <Item label='Lead Time'><InputNumber onChange={(value) => changeFormData('lead_time', value)} precision={2} value={form.lead_time} /></Item>
+          </Col>
+          <Col span={12}>
+            <Item label='Labour Cost'><InputNumber onChange={(value) => changeFormData('labour_cost', value)} precision={2} value={form.labour_cost} /></Item>
+          </Col>
+        </Row>
       </Modal>
     )
     const columns = [
         {
             title: 'Title',
             key: 'title',
-            dataIndex: 'title'
+            dataIndex: 'title',
+            render: (text: string) => (
+              <Typography.Text strong>{text}</Typography.Text>
+            )
         },
         {
             title: 'Cost',
             key: 'cost',
-            dataIndex: 'cost'
+            dataIndex: 'cost',
+            render: (text: any) => `$${text}`
         },
         {
             title: 'Sale price',
             key: 'sale_price',
-            dataIndex: 'sale_price'
-        },
-        {
-            title: 'Stock',
-            key: 'stock',
-            dataIndex: 'stock'
+            dataIndex: 'sale_price',
+            render: (text: any) => `$${text}`
         },
         {
             title: 'Category',
@@ -93,6 +107,11 @@ const InventoryList = ({
             title: 'Size',
             key: 'size',
             dataIndex: 'size'
+        },
+        {
+            title: 'Stock',
+            key: 'stock',
+            dataIndex: 'stock',
         },
     ]
     return (
@@ -107,13 +126,13 @@ const InventoryList = ({
             <StyledRow><Input placeholder='search inventory item' /></StyledRow>
           </Col>
         </Row>
-        <Table bordered columns={columns} dataSource={InventoryMaterial.table} scroll={{x: 'max-content'}} />
+        <Table bordered columns={columns} dataSource={table} scroll={{x: 'max-content'}} />
       </>
     )
 }
 
 const mapStateToProps = (state: StoreType) => ({
-    InventoryMaterial: state.InventoryMaterial,
+    InventoryItem: state.InventoryItem,
 })
 
 InventoryList.displayName = 'InventoryList'
