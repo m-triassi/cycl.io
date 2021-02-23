@@ -1,4 +1,6 @@
 import produce from 'immer'
+import {message} from 'antd'
+import {addInventory} from '../services/inventory'
 
 export type InventoryMaterialFormDataType = {
     title: string,
@@ -45,11 +47,21 @@ const InventoryMaterial = produce(
     const {type, payload} = action
     switch (type) {
       case 'INVENTORY_MATERIAL_CHANGE_FORM_DATA':
-          state.form[payload.key] = payload.value
-          break
+        state.form[payload.key] = payload.value
+        break
       case 'RESET_INVENTORY_FORM_STATE':
-          state.form = initialState.form
-          break
+        state.form = initialState.form
+        break
+      case 'ADD_INVENTORY':
+        addInventory(state.form).then((response) => {
+          const {data} = response
+          if (data.success) {
+            message.success('Inventory added')
+          } else {
+            message.error(data.error)
+          }
+        })
+        break
       default:
         return state
     }

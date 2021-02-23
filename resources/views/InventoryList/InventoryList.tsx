@@ -21,11 +21,14 @@ const InventoryList = ({
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
+    const onSubmit = () => dispatch({type: 'ADD_INVENTORY'})
+
     const addInventoryModal = (
       <Modal
         visible={isCreateModalVisible}
         title='Add inventory'
         onOk={() => {
+            onSubmit()
             setIsCreateModalVisible(false)
             resetState()
         }}
