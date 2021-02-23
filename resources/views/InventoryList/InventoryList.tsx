@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-import {getInventory} from 'services/inventory'
+import {getInventory, filterInventory} from 'services/inventory'
 import {InventoryItemStateType} from 'models/inventory'
 
 const StyledRow = styled(Row)`
@@ -123,7 +123,18 @@ const InventoryList = ({
             <StyledRow>
               <Button type='primary' onClick={() => setIsCreateModalVisible(true)} shape='round'>Add Inventory Item</Button>
             </StyledRow>
-            <StyledRow><Input placeholder='Search Inventory Item' /></StyledRow>
+            <StyledRow>
+              <Input
+                onPressEnter={(e: any) => {
+                filterInventory(e.target.value).then((response: any) => {
+                  const {data} = response
+                  if (data.success) {
+                    dispatch({type: 'SET_INVENTORY_ITEMS', payload: data.data})
+                  }
+                })
+            }}
+                placeholder='Search Inventory Item' />
+            </StyledRow>
           </Col>
         </Row>
         <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
