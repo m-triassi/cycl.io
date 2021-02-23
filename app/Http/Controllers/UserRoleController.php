@@ -21,7 +21,10 @@ class UserRoleController extends Controller
         $user->roles()->attach($roles);
         $user->save();
 
-        return $user->refresh()->roles;
+        return response([
+            'success' => true,
+            'data' => $user->refresh()->roles
+        ]);
     }
 
 
@@ -50,7 +53,10 @@ class UserRoleController extends Controller
         $user->roles()->detach($roles);
         $user->save();
 
-        return $user->refresh()->roles;
+        return response([
+            'success' => true,
+            'data' => $user->refresh()->roles
+        ]);
     }
 
     /**

@@ -18,12 +18,18 @@ class MaterialController extends Controller
     public function index(Request $request)
     {
         $isAssembly = $request->is_assembly;
-        
+
         if($isAssembly){
-            return InventoryItem::has("materials")->get();
+            return response([
+                'success' => true,
+                'data' => InventoryItem::has("materials")->get()
+            ]);
         }
 
-        return InventoryItem::has("assemblies")->get();
+        return response([
+            'success' => true,
+            'data' => InventoryItem::has("assemblies")->get()
+        ]);
     }
 
     /**
@@ -61,7 +67,10 @@ class MaterialController extends Controller
         }
 
         BillOfMaterial::insert($pairs->toArray());
-        return InventoryItem::find($assemblyId)->materials;
+        return response([
+            'success' => true,
+            'data' => InventoryItem::find($assemblyId)->materials
+        ]);
     }
 
     /**
@@ -73,7 +82,10 @@ class MaterialController extends Controller
     public function show($id)
     {
         $inventoryItem = InventoryItem::findOrFail($id);
-        return $inventoryItem->materials()->get();
+        return response([
+            'success' => true,
+            'data' => $inventoryItem->materials()->get()
+        ]);
     }
 
     /**
@@ -131,7 +143,10 @@ class MaterialController extends Controller
         }
 
         BillOfMaterial::insert($pairs->toArray());
-        return InventoryItem::find($assemblyId)->materials;
+        return response([
+            'success' => true,
+            'data' => InventoryItem::find($assemblyId)->materials
+        ]);
     }
 
     /**
