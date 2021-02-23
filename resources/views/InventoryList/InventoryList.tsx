@@ -126,7 +126,7 @@ const InventoryList = ({
             <StyledRow><Input placeholder='search inventory item' /></StyledRow>
           </Col>
         </Row>
-        <Table bordered columns={columns} dataSource={table} scroll={{x: 'max-content'}} />
+        <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
       </>
     )
 }
