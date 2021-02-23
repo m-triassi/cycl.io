@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BillOfMaterial;
-use App\Models\InventoryItem;
+use App\Models\Role;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
-class MaterialController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $isAssembly = $request->is_assembly;
-        
-        if($isAssembly){
-            return InventoryItem::has("materials")->get();
-        }
-
-        return InventoryItem::has("assemblies")->get();
+        //
     }
 
     /**
@@ -43,24 +36,30 @@ class MaterialController extends Controller
      */
     public function store(Request $request)
     {
-        $assemblyId = $request->assembly_id;
-        $materialIds = $request->material_ids;
-        $pairs = collect();
-
-        if(is_string($materialIds)) {
-            $materialIds = trim($materialIds," ,");
-            $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
-        }
-
-        foreach($materialIds as $id) {
-            $pairs->push([
-                'assembly_id' => $assemblyId,
-                'material_id' => trim($id),
+        try {
+            $request->validate([
+                'type' => 'required|string',
+                'title' => 'required|string',
+                'description' => "required|string"
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
             ]);
         }
 
-        BillOfMaterial::insert($pairs->toArray());
-        return InventoryItem::find($assemblyId)->materials;
+        $params = $request->only([
+            'type',
+            'title',
+            'description'
+        ]);
+
+        $role = Role::create($params);
+        $role->save();
+
+        return $role->refresh();
+
     }
 
     /**
@@ -71,8 +70,7 @@ class MaterialController extends Controller
      */
     public function show($id)
     {
-        $inventoryItem = InventoryItem::findOrFail($id);
-        return $inventoryItem->materials()->get();
+        //
     }
 
     /**
