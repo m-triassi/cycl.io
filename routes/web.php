@@ -27,6 +27,7 @@ Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"])->m
 Route::get('/materials', [MaterialController::class, "index"])->middleware(['auth']);
 Route::post('/materials', [MaterialController::class, "store"])->middleware(['auth']);
 Route::get('/materials/{id}', [MaterialController::class, "show"])->middleware(['auth']);
+Route::put('/materials/{id}', [MaterialController::class, "update"])->middleware(['auth']);
 
 Route::post('/user/roles', [UserRoleController::class, 'store'])->middleware(['auth']);
 Route::delete('/user/roles', [UserRoleController::class, 'destroy'])->middleware(['auth']);
