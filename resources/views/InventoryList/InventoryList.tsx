@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {InventoryItemStateType} from 'models/inventory'
 import {filterInventory, getInventory} from 'services/inventory'
-import DeleteButton from '../../components/DeleteButton/DeleteButton'
+import {DeleteButton} from '@components'
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
