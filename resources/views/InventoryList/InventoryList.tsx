@@ -129,7 +129,6 @@ const InventoryList = ({
         {
             title: 'Action',
             key: 'action',
-            dataIndex: 'action',
             render: (text: any, record: any) => {
               const onDelete = ()=>{
                 dispatch({type: 'DELETE_INVENTORY', payload: record.id})

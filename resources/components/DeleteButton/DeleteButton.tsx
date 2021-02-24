@@ -3,7 +3,7 @@ import React from 'react'
 import {DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons'
 
 type DeleteButtonPropType = {
-  onDelete: any,
+  onDelete: () => void,
   type: string
 }
 
@@ -25,9 +25,7 @@ const DeleteButton = ({
             <Row><Typography.Text strong>Are you sure you want to delete this item?</Typography.Text></Row>
           </Typography.Text>
         ),
-        onOk() {
-          onDelete()
-        }
+        onOk: () => onDelete()
       })
       }
 
@@ -39,4 +37,5 @@ const DeleteButton = ({
     )
 }
 
+DeleteButton.displayName = 'DeleteButton'
 export default DeleteButton
