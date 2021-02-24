@@ -26,6 +26,23 @@ mix.ts('resources/app.tsx', 'public/js')
         '@public': 'public',
     })
     .webpackConfig({
+        module: {
+            rules: [
+                {
+                    test: /\.less$/i,
+                    loader: 'less-loader',
+                    options: {
+                        lessOptions: {
+                            modifyVars: {
+                                'primary-color': '#619B8A',
+                                'link-color': '#619B8A',
+                            },
+                            javascriptEnabled: true,
+                        },
+                    },
+                },
+            ],
+        },
         resolve: {
             plugins: [new TsconfigPathsPlugin({})],
         },

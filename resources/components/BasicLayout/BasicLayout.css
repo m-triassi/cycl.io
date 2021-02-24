@@ -1,5 +1,6 @@
 .Content {
-    margin: 16px;
+    overflow: scroll;
+    max-height: calc(100vh - 16px);
 }
 
 .Sider {
@@ -12,5 +13,5 @@
 }
 
 .ContentCard {
-    min-height: 100%;
+    margin: 16px;
 }
