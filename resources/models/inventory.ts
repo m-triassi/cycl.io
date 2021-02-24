@@ -1,6 +1,6 @@
 import produce from 'immer'
 import {message} from 'antd'
-import {addInventory, getInventory, filterInventory} from '../services/inventory'
+import {addInventory, deleteInventory} from '../services/inventory'
 
 export type InventoryItemFormDataType = {
     title: string,
@@ -20,7 +20,7 @@ export type InventoryItemFormDataType = {
 
 export type InventoryItemStateType = {
   form: InventoryItemFormDataType,
-  table: any
+  table: any,
 }
 
 const initialState: InventoryItemStateType = {
@@ -39,7 +39,7 @@ const initialState: InventoryItemStateType = {
         lead_time: undefined,
         labour_cost: undefined,
     },
-    table: []
+    table: [],
 }
 
 const InventoryItem = produce(
@@ -55,8 +55,19 @@ const InventoryItem = produce(
       case 'RESET_INVENTORY_FORM_STATE':
         state.form = initialState.form
         break
+      case 'DELETE_INVENTORY':
+        deleteInventory(payload).then((response)=>{
+          const {data} = response
+          if (data.success) {
+            message.success('Inventory deleted')
+          } else {
+            message.error('Inventory failed to be deleyed')
+          }
+        })
+        break
       case 'ADD_INVENTORY':
-        addInventory(state.form).then((response) => {
+        addInventory(state.form)
+        .then((response) => {
           const {data} = response
           if (data.success) {
             message.success('Inventory added')

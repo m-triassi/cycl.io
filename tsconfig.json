@@ -20,7 +20,7 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": false,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "baseUrl": "resources",
     "paths": {
       "@components": ["components"],
