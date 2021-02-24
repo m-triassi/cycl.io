@@ -117,7 +117,7 @@ class InventoryItemController extends Controller
             $request->validate([
                 'title' => "required|string",
                 'description' => "required|string",
-                'cost' => "required|string",
+                'cost' => "required|numeric",
                 'sale_price' => "required|numeric",
 
             ]);
