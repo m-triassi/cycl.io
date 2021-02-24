@@ -1,3 +1,4 @@
+
 import {Button, Col, Form, Input, InputNumber, Modal, Row, Table, Typography} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
@@ -5,6 +6,7 @@ import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {InventoryItemStateType} from 'models/inventory'
 import {filterInventory, getInventory} from 'services/inventory'
+import {DeleteButton} from '@components'
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -41,9 +43,10 @@ const InventoryList = ({
       })
     }
     const onSubmit = () => {
-        dispatch({type: 'ADD_INVENTORY'})
-        fetchInventoryList()
-    }
+      dispatch({type: 'ADD_INVENTORY'})
+      fetchInventoryList()
+  }
+
     useEffect(() => {
       fetchInventoryList()
     }, [])
@@ -123,6 +126,18 @@ const InventoryList = ({
             key: 'stock',
             dataIndex: 'stock',
         },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (text: any, record: any) => {
+              const onDelete = ()=>{
+                dispatch({type: 'DELETE_INVENTORY', payload: record.id})
+                fetchInventoryList()
+              }
+              return (
+                <DeleteButton type='Inventory' onDelete={onDelete} />
+            )},
+        },
     ]
     return (
       <>
@@ -140,6 +155,7 @@ const InventoryList = ({
             </StyledRow>
           </Col>
         </Row>
+
         <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
       </>
     )
