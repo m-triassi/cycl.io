@@ -76,7 +76,7 @@ const BasicLayout = ({
           </Menu>
         </Sider>
         <Content className='Content'>
-          <Card className='ContentCard'>
+          <Card className='ContentCard' bodyStyle={{height: '100%'}}>
             <AppContent router={router} routeToPage={routeToPage} />
           </Card>
         </Content>

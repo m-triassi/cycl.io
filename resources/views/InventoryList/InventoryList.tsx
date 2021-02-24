@@ -1,10 +1,12 @@
+
 import {Button, Col, Form, Input, InputNumber, Modal, Row, Table, Typography, Space} from 'antd'
-import React, {useState} from 'react'
 import {DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons'
+import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-import {getInventory} from '../../services/inventory'
+import {InventoryItemStateType} from 'models/inventory'
+import {filterInventory, getInventory} from 'services/inventory'
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -12,23 +14,51 @@ const StyledRow = styled(Row)`
 
 type InventoryListPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
-    inventoryMaterial: any
+    InventoryItem: InventoryItemStateType
 }
 
 const InventoryList = ({
     dispatch,
-    inventoryMaterial,
+    InventoryItem,
 }: InventoryListPropType) => {
     const [modal,contextHolder] = Modal.useModal()
     const {Item} = Form
+    const {form, table} = InventoryItem
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
-    const onSubmit = () => dispatch({type: 'ADD_INVENTORY'})
+
+    const onFilterInventory = (value: string) => {
+      filterInventory(value).then((response: any) => {
+        const {data} = response
+        if (data.success) {
+          dispatch({type: 'SET_INVENTORY_ITEMS', payload: data.data})
+        }
+      })
+    }
+    const fetchInventoryList = () => {
+      getInventory().then((response: any) => {
+        const {data} = response
+        if (data.success) {
+          dispatch({type: 'SET_INVENTORY_ITEMS', payload: data.data})
+        }
+      })
+    }
+    const onSubmit = () => {
+      dispatch({type: 'ADD_INVENTORY'})
+      fetchInventoryList()
+  }
+    const onDelete = (key: string, value: any) => {
+      dispatch({type: 'DELETE_INVENTORY', payload: {key, value}})
+      fetchInventoryList()
+  }
+    useEffect(() => {
+      fetchInventoryList()
+    }, [])
     const addInventoryModal = (
       <Modal
         visible={isCreateModalVisible}
-        title='Add inventory'
+        title='Add inventory item'
         onOk={() => {
             onSubmit()
             setIsCreateModalVisible(false)
@@ -38,38 +68,73 @@ const InventoryList = ({
             setIsCreateModalVisible(false)
             resetState()
         }}>
-        <Item required label='Title'><Input onChange={(e) => changeFormData('title', e.target.value)} /></Item>
-        <Item required label='Part ID'><Input /></Item>
-        <Item required label='Cost'><InputNumber precision={2} /></Item>
-        <Item required label='Stock'><InputNumber precision={0} /></Item>
-        <Item label='Category'><Input /></Item>
-        <Item label='Size'><Input /></Item>
-        <Item label='Color'><Input /></Item>
-        <Item label='Finish'><Input /></Item>
-        <Item label='Material'><Input /></Item>
-        <Item label='Lead Time'><InputNumber precision={2} /></Item>
-        <Item label='Labor Cost'><InputNumber precision={2} /></Item>
-        <Item label='Sale Price'><InputNumber precision={2} /></Item>
-        <Item label='Description'><Input.TextArea /></Item>
+        <Item required label='Title'><Input value={form.title} onChange={(e) => changeFormData('title', e.target.value)} /></Item>
+        <Row>
+          <Col span={12}>
+            <Item required label='Cost'><InputNumber onChange={(value) => changeFormData('cost', value)} value={form.cost} precision={2} /></Item>
+          </Col>
+          <Col span={12}>
+            <Item required label='Sale Price'><InputNumber onChange={(value) => changeFormData('sale_price', value)} value={form.sale_price} precision={2} /></Item>
+          </Col>
+        </Row>
+        <Item required label='Description'><Input.TextArea onChange={(e) => changeFormData('description', e.target.value)} value={form.description} /></Item>
+        <Item label='Category'><Input value={form.category} onChange={(e) => changeFormData('category', e.target.value)} /></Item>
+        <Item label='Size'><Input value={form.size} onChange={(e) => changeFormData('size', e.target.value)} /></Item>
+        <Item label='Part Number'><Input value={form.part_number} onChange={(e) => changeFormData('part_number', e.target.value)} /></Item>
+        <Item label='Stock'><InputNumber value={form.stock} onChange={(value) => changeFormData('stock', value)} precision={0} /></Item>
+        <Item label='Color'><Input value={form.color} onChange={(e) => changeFormData('color', e.target.value)} /></Item>
+        <Item label='Finish'><Input value={form.finish} onChange={(e) => changeFormData('finish', e.target.value)} /></Item>
+        <Item label='Material'><Input value={form.material} onChange={(e) => changeFormData('material', e.target.value)} /></Item>
+        <Row>
+          <Col span={12}>
+            <Item label='Lead Time'><InputNumber onChange={(value) => changeFormData('lead_time', value)} precision={2} value={form.lead_time} /></Item>
+          </Col>
+          <Col span={12}>
+            <Item label='Labour Cost'><InputNumber onChange={(value) => changeFormData('labour_cost', value)} precision={2} value={form.labour_cost} /></Item>
+          </Col>
+        </Row>
       </Modal>
     )
-    const config = {
+    const deleteItemModal = (selectedItem: any) => {
+        modal.confirm({
         title: 'Delete Inventory Item',
         icon: <ExclamationCircleOutlined />,
         okText: 'Delete',
         cancelText: 'Cancel',
         content: (
           <>
-            <p>This item will be permanantly deleted.</p>
-            <p>Are you sure you want to delete this item?</p>
+            <div>
+              This item will be permanantly deleted.
+              <br />
+              Are you sure you want to delete this item?
+            </div>
           </>
-        )
+        ),
+        onOk() {
+          onDelete('id',selectedItem.id)
+        }
+      })
       }
     const columns = [
         {
-            title: 'Component',
-            key: 'component',
-            dataIndex: 'component'
+            title: 'Title',
+            key: 'title',
+            dataIndex: 'title',
+            render: (text: string) => (
+              <Typography.Text strong>{text}</Typography.Text>
+            )
+        },
+        {
+            title: 'Cost',
+            key: 'cost',
+            dataIndex: 'cost',
+            render: (text: any) => `$${text}`
+        },
+        {
+            title: 'Sale price',
+            key: 'sale_price',
+            dataIndex: 'sale_price',
+            render: (text: any) => `$${text}`
         },
         {
             title: 'Category',
@@ -82,47 +147,17 @@ const InventoryList = ({
             dataIndex: 'size'
         },
         {
-            title: 'Color',
-            key: 'color',
-            dataIndex: 'color'
-        },
-        {
-            title: 'Finish',
-            key: 'finish',
-            dataIndex: 'finish'
-        },
-        {
-            title: 'Material',
-            key: 'material',
-            dataIndex: 'material'
-        },
-        {
-            title: 'Purchase Date',
-            key: 'purchaseDate',
-            dataIndex: 'purchaseDate'
-        },
-        {
-            title: 'Provider',
-            key: 'provider',
-            dataIndex: 'provider'
-        },
-        {
-            title: 'Cost',
-            key: 'cost',
-            dataIndex: 'cost'
-        },
-        {
-            title: 'Quantity',
-            key: 'quantity',
-            dataIndex: 'quantity'
+            title: 'Stock',
+            key: 'stock',
+            dataIndex: 'stock',
         },
         {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            render: () => (
+            render: (text: any, record: any) => (
               <Space size='middle'>
-                <Button danger type='text' icon={<DeleteOutlined />} size='large' onClick={() => {modal.confirm(config)}} />
+                <Button danger type='text' icon={<DeleteOutlined />} size='large' onClick={() => {deleteItemModal(record)}} />
               </Space>
               ),
         },
@@ -134,19 +169,24 @@ const InventoryList = ({
         <Row>
           <Col span={8}>
             <StyledRow>
-              <Button onClick={() => setIsCreateModalVisible(true)} shape='round'>Create Inventory Item</Button>
+              <Button type='primary' onClick={() => setIsCreateModalVisible(true)} shape='round'>Add Inventory Item</Button>
             </StyledRow>
-            <StyledRow><Input placeholder='search inventory item' /></StyledRow>
+            <StyledRow>
+              <Input
+                onPressEnter={(e: any) => onFilterInventory(e.target.value)}
+                placeholder='Search Inventory Item' />
+            </StyledRow>
           </Col>
         </Row>
-        <Table bordered columns={columns} dataSource={inventoryMaterial} />
+
+        <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
         {contextHolder}
       </>
     )
 }
 
 const mapStateToProps = (state: StoreType) => ({
-    inventoryMaterial: state.inventoryMaterial,
+    InventoryItem: state.InventoryItem,
 })
 
 InventoryList.displayName = 'InventoryList'
