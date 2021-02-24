@@ -1,41 +1,19 @@
-import {Row, Typography, Modal, message} from 'antd'
+import {Row, Typography, Modal} from 'antd'
 import React from 'react'
 import {DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons'
-import {StoreType, DispatchArgumentType} from '@types'
-import {connect} from 'react-redux'
 
 type DeleteButtonPropType = {
-  dispatch: (arg: DispatchArgumentType) => void,
-  record: any,
-  refreshItems: Function,
+  onDelete: any,
   type: string
 }
 
-type ModuleDataType = {
-  name: string,
-  subModules?: ModuleDataType[],
-  url: string
-}
-
 const DeleteButton = ({
-  dispatch,
-  record,
-  refreshItems: fetchInventoryList,
+  onDelete,
   type
 }: DeleteButtonPropType) => {
     const [modal,contextHolder] = Modal.useModal()
-    const onDelete = (value: any) => {
-        switch (type) {
-            case 'Inventory':{
-              dispatch({type: 'DELETE_INVENTORY', payload: value})
-              fetchInventoryList()
-              break
-            }
-            default:
-                message.error('Failed to delete')
-          }
-    }
-    const deleteItemModal = (selectedItem: any) => {
+
+    const deleteItemModal = () => {
         modal.confirm({
         title: `Delete ${type} Item`,
         icon: <ExclamationCircleOutlined />,
@@ -48,7 +26,7 @@ const DeleteButton = ({
           </Typography.Text>
         ),
         onOk() {
-          onDelete(selectedItem.id)
+          onDelete()
         }
       })
       }
@@ -56,14 +34,9 @@ const DeleteButton = ({
     return (
       <>
         {contextHolder}
-        <DeleteOutlined style={{color: '#fe7f2d', fontSize: 22}} onClick={() => {deleteItemModal(record)}} />
+        <DeleteOutlined style={{color: '#fe7f2d', fontSize: 22}} onClick={() => {deleteItemModal()}} />
       </>
     )
 }
 
-const mapStateToProps = (state: StoreType) => ({
-  router: state.router,
-})
-
-DeleteButton.displayName = 'DeleteButton'
-export default connect(mapStateToProps)(DeleteButton)
+export default DeleteButton

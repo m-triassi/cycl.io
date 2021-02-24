@@ -130,9 +130,14 @@ const InventoryList = ({
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            render: (text: any, record: any) => (
-              <DeleteButton type='Inventory' record={record} refreshItems={fetchInventoryList} />
-              ),
+            render: (text: any, record: any) => {
+              const onDelete = ()=>{
+                dispatch({type: 'DELETE_INVENTORY', payload: record.id})
+                fetchInventoryList()
+              }
+              return (
+                <DeleteButton type='Inventory' onDelete={onDelete} />
+            )},
         },
     ]
     return (
