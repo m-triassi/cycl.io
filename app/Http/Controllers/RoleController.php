@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
-use Dotenv\Exception\ValidationException;
+
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class RoleController extends Controller
 {
