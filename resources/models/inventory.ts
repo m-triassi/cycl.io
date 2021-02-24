@@ -55,7 +55,7 @@ const InventoryItem = produce(
       case 'RESET_INVENTORY_FORM_STATE':
         state.form = initialState.form
         break
-      case 'DELETE_INVENTORY':{
+      case 'DELETE_INVENTORY':
         deleteInventory(payload.value).then((response)=>{
           const {data} = response
           if (data.success) {
@@ -65,8 +65,7 @@ const InventoryItem = produce(
           }
         })
         break
-      }
-      case 'ADD_INVENTORY': {
+      case 'ADD_INVENTORY':
         addInventory(state.form)
         .then((response) => {
           const {data} = response
@@ -77,7 +76,6 @@ const InventoryItem = produce(
           }
         })
         break
-      }
       default:
         return state
     }
