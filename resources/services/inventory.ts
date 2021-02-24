@@ -9,13 +9,15 @@ export const addInventory = (payload: InventoryItemFormDataType) => axios({
 })
 
 export const getInventory = () => axios.get(inventoryRoute)
+
 export const filterInventory = (payload: string) => axios({
-        method: 'GET',
-        url: inventoryRoute,
-        params: {
-            q: payload
-        }
-    })
+    method: 'GET',
+    url: inventoryRoute,
+    params: {
+        q: payload
+    }
+})
+
 export const editInventory = (payload: any) => axios({
     method: 'PUT',
     url: inventoryRoute.concat(`/${payload.id}`),

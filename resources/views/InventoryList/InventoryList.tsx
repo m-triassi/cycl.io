@@ -60,16 +60,16 @@ const InventoryList = ({
             setIsCreateModalVisible(false)
             resetState()
         }}>
-        <Item required label='Title'><Input value={form.title} onChange={(e) => changeFormData('title', e.target.value)} /></Item>
+        <Item required label='Title'><Input data-cy='inventory-form-title' value={form.title} onChange={(e) => changeFormData('title', e.target.value)} /></Item>
         <Row>
           <Col span={12}>
-            <Item required label='Cost'><InputNumber onChange={(value) => changeFormData('cost', value)} value={form.cost} precision={2} /></Item>
+            <Item required label='Cost'><InputNumber data-cy='inventory-form-cost' onChange={(value) => changeFormData('cost', value)} value={form.cost} precision={2} /></Item>
           </Col>
           <Col span={12}>
-            <Item required label='Sale Price'><InputNumber onChange={(value) => changeFormData('sale_price', value)} value={form.sale_price} precision={2} /></Item>
+            <Item required label='Sale Price'><InputNumber data-cy='inventory-form-sale-price' onChange={(value) => changeFormData('sale_price', value)} value={form.sale_price} precision={2} /></Item>
           </Col>
         </Row>
-        <Item required label='Description'><Input.TextArea onChange={(e) => changeFormData('description', e.target.value)} value={form.description} /></Item>
+        <Item required label='Description'><Input.TextArea data-cy='inventory-form-description' onChange={(e) => changeFormData('description', e.target.value)} value={form.description} /></Item>
         <Item label='Category'><Input value={form.category} onChange={(e) => changeFormData('category', e.target.value)} /></Item>
         <Item label='Size'><Input value={form.size} onChange={(e) => changeFormData('size', e.target.value)} /></Item>
         <Item label='Part Number'><Input value={form.part_number} onChange={(e) => changeFormData('part_number', e.target.value)} /></Item>
