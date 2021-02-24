@@ -56,7 +56,7 @@ const InventoryItem = produce(
         state.form = initialState.form
         break
       case 'DELETE_INVENTORY':
-        deleteInventory(payload.value).then((response)=>{
+        deleteInventory(payload).then((response)=>{
           const {data} = response
           if (data.success) {
             message.success('Inventory deleted')

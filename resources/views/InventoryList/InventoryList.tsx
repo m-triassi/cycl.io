@@ -1,12 +1,12 @@
 
-import {Button, Col, Form, Input, InputNumber, Modal, Row, Table, Typography, Space} from 'antd'
-import {DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons'
+import {Button, Col, Form, Input, InputNumber, Modal, Row, Table, Typography} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {InventoryItemStateType} from 'models/inventory'
 import {filterInventory, getInventory} from 'services/inventory'
+import DeleteButton from '../../components/DeleteButton/DeleteButton'
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -21,7 +21,6 @@ const InventoryList = ({
     dispatch,
     InventoryItem,
 }: InventoryListPropType) => {
-    const [modal,contextHolder] = Modal.useModal()
     const {Item} = Form
     const {form, table} = InventoryItem
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
@@ -45,10 +44,6 @@ const InventoryList = ({
     }
     const onSubmit = () => {
       dispatch({type: 'ADD_INVENTORY'})
-      fetchInventoryList()
-  }
-    const onDelete = (key: string, value: any) => {
-      dispatch({type: 'DELETE_INVENTORY', payload: {key, value}})
       fetchInventoryList()
   }
 
@@ -95,26 +90,6 @@ const InventoryList = ({
         </Row>
       </Modal>
     )
-    const deleteItemModal = (selectedItem: any) => {
-        modal.confirm({
-        title: 'Delete Inventory Item',
-        icon: <ExclamationCircleOutlined />,
-        okText: 'Delete',
-        cancelText: 'Cancel',
-        content: (
-          <>
-            <div>
-              This item will be permanantly deleted.
-              <br />
-              Are you sure you want to delete this item?
-            </div>
-          </>
-        ),
-        onOk() {
-          onDelete('id',selectedItem.id)
-        }
-      })
-      }
     const columns = [
         {
             title: 'Title',
@@ -156,9 +131,7 @@ const InventoryList = ({
             key: 'action',
             dataIndex: 'action',
             render: (text: any, record: any) => (
-              <Space size='middle'>
-                <Button danger type='text' icon={<DeleteOutlined />} size='large' onClick={() => {deleteItemModal(record)}} />
-              </Space>
+              <DeleteButton type='Inventory' record={record} refreshItems={fetchInventoryList} />
               ),
         },
     ]
@@ -180,7 +153,6 @@ const InventoryList = ({
         </Row>
 
         <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
-        {contextHolder}
       </>
     )
 }
