@@ -27,7 +27,6 @@ const InventoryList = ({
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
-
     const onFilterInventory = (value: string) => {
       filterInventory(value).then((response: any) => {
         const {data} = response
@@ -52,6 +51,7 @@ const InventoryList = ({
       dispatch({type: 'DELETE_INVENTORY', payload: {key, value}})
       fetchInventoryList()
   }
+
     useEffect(() => {
       fetchInventoryList()
     }, [])
