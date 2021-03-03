@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Supplier extends Model
 {
     use HasFactory;
 
-    public function inventory_items()
+    public function inventory_items() : HasMany
     {
         return $this->hasMany(InventoryItem::class);
     }
