@@ -20,4 +20,9 @@ class InventoryItem extends Model
     {
         return $this->belongsToMany(InventoryItem::class, 'bill_of_materials', 'material_id', 'assembly_id');
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
 }
