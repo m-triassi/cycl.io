@@ -110,7 +110,7 @@ const InventoryList = ({
           resetState={resetState}
           changeFormData={changeFormData}
           form={form} />
-        <InventoryDetailDrawer visible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} />
+        <InventoryDetailDrawer isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} />
         <Row><Typography.Title>Inventory</Typography.Title></Row>
         <Row>
           <Col span={8}>

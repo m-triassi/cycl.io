@@ -28,5 +28,3 @@ export const deleteInventory = (payload: number) => axios({
     method: 'DELETE',
     url: inventoryRoute.concat(`/${payload}`),
 })
-
-// export const getInventoryItemDetail = (payload: any) => axios.get(`/material/${payload}`)

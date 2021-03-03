@@ -19,7 +19,11 @@ const AppContent = ({
 }: AppContentPropType) => {
     const {route} = router
     let component
+
     switch (route) {
+      case (route.match(/\/Production\/Inventory\/\d+/) || {}).input:
+        component = (<h1>Hi Inventory Item Detail</h1>)
+        break
       case '/Production/Inventory':
         component = (<InventoryList />)
         break
