@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class OrderItem extends Model
 {
     use HasFactory;
 
-    public function purchase_orders()
+    protected $table = 'orderables';
+
+    public function purchase_orders() : MorphToMany
     {
         return $this->morphedByMany(PurchaseOrder::class, 'orderable');
     }
