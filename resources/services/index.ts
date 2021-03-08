@@ -1,2 +1,2 @@
 export const inventoryRoute = '/inventory'
-export const vendorRoute = '/supplier'
+export const vendorRoute = '/suppliers'
