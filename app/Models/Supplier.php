@@ -27,6 +27,10 @@ class Supplier extends Model
         return $now->isBefore($this->partnership_end_date) && $now->isAfter($this->partnership_start_date);
     }
 
+    /**
+     * scope query that allows for pulling all valid partnerships
+     * @return mixed
+     */
     public function scopeHasValidPartnership()
     {
         $now = now()->format('Y-m-d');

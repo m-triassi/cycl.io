@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\InventoryItem;
+use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -27,5 +28,7 @@ class DatabaseSeeder extends Seeder
          User::factory(10)->create();
         Supplier::factory(5)->create();
         InventoryItem::factory(25)->create();
+        PurchaseOrder::factory(5)->create();
+        $this->call(OrderableSeeder::class);
     }
 }
