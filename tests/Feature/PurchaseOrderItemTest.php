@@ -33,9 +33,9 @@ class PurchaseOrderItemTest extends TestCase
 
         $pivotData = $attachedData['data'];
 
-        $this->assertCount(2, $pivotData);
+        $this->assertCount(2, $pivotData->order_items);
 
-        $actualItems = InventoryItem::findMany([$pivotData[0]->id, $pivotData[1]->id]);
+        $actualItems = InventoryItem::findMany($pivotData->order_items->pluck('id'));
 
         $attached->assertStatus(200);
         $this->assertTrue($attachedData['success']);
@@ -56,13 +56,11 @@ class PurchaseOrderItemTest extends TestCase
 
         $expectedItems = InventoryItem::findMany([17, 18]);
 
-        $attachedData = $attached->getOriginalContent();
-
+        $attachedData = $attached->getOriginalContent();;
         $pivotData = $attachedData['data'];
+        $this->assertCount(2, $pivotData->order_items);
 
-        $this->assertCount(2, $pivotData);
-
-        $actualItems = InventoryItem::findMany([$pivotData[0]->id, $pivotData[1]->id]);
+        $actualItems = InventoryItem::findMany($pivotData->order_items->pluck('id'));
 
         $attached->assertStatus(200);
         $this->assertTrue($attachedData['success']);
