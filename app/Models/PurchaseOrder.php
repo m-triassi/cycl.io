@@ -14,6 +14,6 @@ class PurchaseOrder extends Model
 
     public function order_items() : MorphToMany
     {
-        return $this->morphToMany(InventoryItem::class, 'orderable');
+        return $this->morphToMany(InventoryItem::class, 'orderable')->withPivot('quantity');
     }
 }
