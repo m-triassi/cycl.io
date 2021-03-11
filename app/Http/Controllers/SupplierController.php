@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Supplier;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class SupplierController extends Controller
                 'errors' => $e->errors()
             ]);
         }
-        
+
         $supplierName = $request->supplier_name;
         return response([
             'success' => true,
