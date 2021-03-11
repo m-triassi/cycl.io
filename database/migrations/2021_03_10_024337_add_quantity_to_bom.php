@@ -14,7 +14,7 @@ class AddQuantityToBom extends Migration
     public function up()
     {
         Schema::table('bill_of_materials', function (Blueprint $table) {
-            $table->integer('quantity');
+            $table->integer('quantity')->default(1);
         });
     }
 
