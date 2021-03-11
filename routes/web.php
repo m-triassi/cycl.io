@@ -5,6 +5,7 @@ use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierItemController;
 
 /*
@@ -19,6 +20,9 @@ use App\Http\Controllers\SupplierItemController;
 */
 
 require __DIR__.'/auth.php';
+
+Route::get('/supplier', [SupplierController::class, "index"])->middleware(['auth']);
+Route::get('/supplier/{id}', [SupplierController::class, "show"])->middleware(['auth']);
 
 Route::post('/supplier/items', [SupplierItemController::class, "store"])->middleware(['auth']);
 
