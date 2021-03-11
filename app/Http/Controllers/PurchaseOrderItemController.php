@@ -89,7 +89,7 @@ class PurchaseOrderItemController extends Controller
             $itemIds = trim($itemIds, " ,");
             $itemIds = Str::contains($itemIds, ",") ? explode(",", $itemIds) : [$itemIds];
         }
-        
+
         $purchaseOrder = PurchaseOrder::findOrFail($id);
 
         $purchaseOrder->order_items()->sync($itemIds);
@@ -97,7 +97,7 @@ class PurchaseOrderItemController extends Controller
 
         return response([
             'success' => true,
-            'data' => $purchaseOrder->with('order_items')->get()
+            'data' => $purchaseOrder->with('order_items')->findOrFail($id)
         ]);
     }
 

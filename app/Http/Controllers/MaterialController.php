@@ -62,7 +62,7 @@ class MaterialController extends Controller
         foreach($materialIds as $id) {
             $pairs->push([
                 'assembly_id' => $assemblyId,
-                'material_ids' => trim($id),
+                'material_id' => trim($id),
             ]);
         }
 
