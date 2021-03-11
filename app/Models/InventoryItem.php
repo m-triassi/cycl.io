@@ -52,7 +52,7 @@ class InventoryItem extends Model
      *
      * @return bool
      */
-    public function getIsBelowMinimumAttribute() : Boolean
+    public function getIsBelowMinimumAttribute() : bool
     {
         return $this->stock <= $this->minimum_stock;
     }
