@@ -31,7 +31,7 @@ class PurchaseOrderObserver
         if ($purchaseOrder->status == PurchaseOrder::RECEIVED)
         {
             //Get the order items corresponding to the PurchaseOrder
-            $orderItems = OrderItem::where("orderable_id", $purchaseOrder->id);
+            $orderItems = OrderItem::where("orderable_id", $purchaseOrder->id)->get();
 
             //Modify the inventory item for each order item
             foreach ($orderItems as $orderItem) {
