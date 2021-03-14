@@ -1,4 +1,3 @@
-
 import {Button, Col, Input, Row, Table, Typography} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
@@ -14,11 +13,13 @@ const StyledRow = styled(Row)`
 `
 
 type InventoryListPropType = {
+    routeToPage: (url: string) => void,
     dispatch: (arg: DispatchArgumentType) => void,
     InventoryItem: InventoryItemStateType
 }
 
 const InventoryList = ({
+    routeToPage,
     dispatch,
     InventoryItem,
 }: InventoryListPropType) => {
@@ -62,6 +63,31 @@ const InventoryList = ({
             )
         },
         {
+          title: 'Category',
+          key: 'category',
+          dataIndex: 'category'
+        },
+        {
+          title: 'Size',
+          key: 'size',
+          dataIndex: 'size'
+        },
+        {
+          title: 'Color',
+          key: 'color',
+          dataIndex: 'color'
+        },
+        {
+          title: 'Finish',
+          key: 'finish',
+          dataIndex: 'finish'
+        },
+        {
+          title: 'Material',
+          key: 'material',
+          dataIndex: 'material'
+        },
+        {
             title: 'Cost',
             key: 'cost',
             dataIndex: 'cost',
@@ -72,16 +98,6 @@ const InventoryList = ({
             key: 'sale_price',
             dataIndex: 'sale_price',
             render: (text: any) => `$ ${text}`
-        },
-        {
-            title: 'Category',
-            key: 'category',
-            dataIndex: 'category'
-        },
-        {
-            title: 'Size',
-            key: 'size',
-            dataIndex: 'size'
         },
         {
             title: 'Stock',
@@ -110,7 +126,7 @@ const InventoryList = ({
           resetState={resetState}
           changeFormData={changeFormData}
           form={form} />
-        <InventoryDetailDrawer isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} />
+        <InventoryDetailDrawer routeToPage={routeToPage} isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} />
         <Row><Typography.Title>Inventory</Typography.Title></Row>
         <Row>
           <Col span={8}>
@@ -131,6 +147,7 @@ const InventoryList = ({
           pagination={{position: ['bottomCenter']}}
           onRow={(record) => ({onClick: () => {
             dispatch({type: 'CHANGE_DETAIL_ID', payload: record.id})
+            dispatch({type: 'SET_INVENTORY_DETAIL_DATA', payload: record})
             setIsDetailDrawerVisible(true)
           }})}
           scroll={{x: 'max-content'}} />

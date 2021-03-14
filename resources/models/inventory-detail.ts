@@ -7,6 +7,7 @@ export type InventoryDetailStateType = {
 
 const initialState: InventoryDetailStateType = {
     id: 0,
+    data: undefined
 }
 
 const InventoryDetail = produce(
