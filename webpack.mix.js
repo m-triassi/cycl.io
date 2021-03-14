@@ -26,6 +26,11 @@ mix.ts('resources/app.tsx', 'public/js')
         '@public': 'public',
     })
     .webpackConfig({
+        watchOptions: {
+            aggregateTimeout: 2000,
+            poll: 2000,
+            ignored: /node_modules/,
+        },
         module: {
             rules: [
                 {

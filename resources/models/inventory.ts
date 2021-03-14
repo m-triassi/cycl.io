@@ -61,7 +61,7 @@ const InventoryItem = produce(
           if (data.success) {
             message.success('Inventory deleted')
           } else {
-            message.error('Inventory failed to be deleyed')
+            message.error('Inventory failed to be deleted')
           }
         })
         break

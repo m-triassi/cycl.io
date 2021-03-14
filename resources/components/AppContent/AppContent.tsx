@@ -1,8 +1,7 @@
 import React from 'react'
-import {InventoryList, WelcomePage} from 'views'
+import {VendorList, InventoryList, WelcomePage} from 'views'
 import {RouterStateType} from 'models/router'
 
-// import VendorList from '../index'
 // import SalesList from '../index'
 // import AccountingList from '../index'
 
@@ -24,7 +23,7 @@ const AppContent = ({
         component = (<InventoryList />)
         break
       case '/Vendor':
-        component = (<h1>Hi Vendor</h1>)
+        component = (<VendorList />)
         break
       case '/Sales':
         component = (<h1>Hi Sales</h1>)
