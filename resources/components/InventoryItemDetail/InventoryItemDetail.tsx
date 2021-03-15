@@ -1,8 +1,10 @@
 import {connect} from 'react-redux'
-import React, {useEffect, useState} from 'react'
-import {getInventoryDetail} from 'services/inventory'
+import React, {useEffect, useState, ReactNodeArray} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {pathToRegexp} from 'path-to-regexp'
+import {Button, Col, message, Row, Typography} from 'antd'
+import {InventoryItemModal} from '@components'
+import {editInventory, getInventoryDetail} from 'services/inventory'
 
 type InventoryItemDetailPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
@@ -15,8 +17,9 @@ const InventoryItemDetail = ({
     InventoryDetail,
     isDrawer,
 }: InventoryItemDetailPropType) => {
-    const {id, data} = InventoryDetail
-    // const [isEditState, setIsEditState] = useState<boolean>(false)
+    const {Text} = Typography
+    const {id, data, form} = InventoryDetail
+    const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false)
     const fetchInventoryDetail = () => {
         getInventoryDetail(id).then((response: any) => {
             if (response.data.success) {
@@ -35,9 +38,54 @@ const InventoryItemDetail = ({
             fetchInventoryDetail()
         }
     }, [id])
+    const ignoredKeys = ['id', 'created_at' , 'updated_at']
+    const toTitleText = (text: string) => {
+        if (text.includes('_')) {
+            const upperCaseText = text.charAt(0).toUpperCase() + text.slice(1)
+            return upperCaseText.replace('_', ' ')
+        }
+        return text.charAt(0).toUpperCase() + text.slice(1)
+    }
+    const dataRow: ReactNodeArray = []
+    if (data) {
+        Object.entries(data).forEach(([key, value]: any) => {
+            if (ignoredKeys.includes(key) || !value) return null
+            dataRow.push(
+              <Row>
+                <Col span={12}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
+                <Col span={12}><Text>{value.toString()}</Text></Col>
+              </Row>
+            )
+        })
+    }
+    const onSubmit = () => {
+        editInventory({id, data: form}).then((response) => {
+            if (response.data.success) {
+                message.success('Item edit successful')
+            }
+        })
+    }
+    const resetState = () => {
+        dispatch({type: 'RESET_INVENTORY_ITEM_EDIT_FORM_STATE'})
+        fetchInventoryDetail()
+    }
+    const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_EDIT_CHANGE_FORM_DATA', payload: {key, value}})
 
     return (
-      <h1>hi inventory detail</h1>
+      <>
+        <InventoryItemModal
+          onSubmit={onSubmit}
+          isVisible={isEditModalVisible}
+          setIsVisible={setIsEditModalVisible}
+          resetState={resetState}
+          changeFormData={changeFormData}
+          form={data}
+          isCreate={false} />
+        {dataRow}
+        <Row style={{marginTop: 6}}>
+          <Button block onClick={() => setIsEditModalVisible(true)} shape='round' type='ghost'>Edit</Button>
+        </Row>
+      </>
     )
 }
 
