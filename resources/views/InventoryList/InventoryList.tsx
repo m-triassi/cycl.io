@@ -5,8 +5,8 @@ import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {InventoryItemStateType} from 'models/inventory'
 import {filterInventory, getInventory} from 'services/inventory'
-import {DeleteButton} from '@components'
-import {AddInventoryItemModal, InventoryDetailDrawer} from './components'
+import {DeleteButton, InventoryItemModal} from '@components'
+import {InventoryDetailDrawer} from './components'
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -103,7 +103,8 @@ const InventoryList = ({
     ]
     return (
       <>
-        <AddInventoryItemModal
+        <InventoryItemModal
+          isCreate
           onSubmit={onSubmit}
           isVisible={isCreateModalVisible}
           setIsVisible={setIsCreateModalVisible}
