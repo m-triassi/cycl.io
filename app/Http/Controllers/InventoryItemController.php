@@ -35,7 +35,8 @@ class InventoryItemController extends Controller
             "sale_price",
             "material",
             "finish",
-            "labour_cost"
+            "labour_cost",
+            "minimum_stock"
         ]);
 
         if ($filters) {
@@ -74,7 +75,8 @@ class InventoryItemController extends Controller
                 "material" => "nullable|string|max:255",
                 "part_number" => "nullable|string|max:255",
                 "lead_time" => "nullable|numeric|min:0",
-                "labour_cost" => "nullable|numeric|min:0"
+                "labour_cost" => "nullable|numeric|min:0",
+                "minimum_stock" => "nullable|integer|min:0"
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -99,7 +101,8 @@ class InventoryItemController extends Controller
             "material",
             "part_number",
             "lead_time",
-            "labour_cost"
+            "labour_cost",
+            "minimum_stock"
         ]);
 
         //updating the belongsTo relationship of the supplier
@@ -154,7 +157,8 @@ class InventoryItemController extends Controller
             "material",
             "part_number",
             "lead_time",
-            "labour_cost"
+            "labour_cost",
+            "minimum_stock"
         ]);
 
         $item = InventoryItem::create($params);
