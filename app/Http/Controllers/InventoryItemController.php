@@ -13,6 +13,14 @@ use Illuminate\Validation\ValidationException;
 class InventoryItemController extends Controller
 {
 
+    public function show($id)
+    {
+        return response([
+            'success' => true,
+           'data' => InventoryItem::findOrFail($id)
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
