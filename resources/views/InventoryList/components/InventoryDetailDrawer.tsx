@@ -1,26 +1,33 @@
 import React from 'react'
-import {Drawer} from 'antd'
+import {Button, Drawer} from 'antd'
 import {InventoryItemDetail} from '@components'
 
 type InventoryDetailDrawerPropType = {
     isVisible: boolean,
+    id: number,
     setIsVisible: (payload: boolean) => void,
 }
 
 const InventoryDetailDrawer = ({
     isVisible,
     setIsVisible,
+    id,
 }: InventoryDetailDrawerPropType) => {
-    console.log('hi')
-    return (
-      <Drawer
-        closable={false}
-        title='Inventory Item Detail'
-        onClose={() => setIsVisible(false)}
-        visible={isVisible}
-        width='40%'>
-        <InventoryItemDetail isDrawer />
-      </Drawer>
+  if (id === 0 ) return null
+  const drawerTitle = (
+    <Button type='link' onClick={() => window.open(`/Production/Inventory/${id}`, '_blank')}>
+      Inventory Item Detail
+    </Button>
+  )
+  return (
+    <Drawer
+      closable={false}
+      title={drawerTitle}
+      onClose={() => setIsVisible(false)}
+      visible={isVisible}
+      width='40%'>
+      <InventoryItemDetail isDrawer />
+    </Drawer>
     )
 }
 

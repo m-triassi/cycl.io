@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {getInventoryDetail} from 'services/inventory'
 import {StoreType, DispatchArgumentType} from '@types'
 import {pathToRegexp} from 'path-to-regexp'
@@ -16,6 +16,7 @@ const InventoryItemDetail = ({
     isDrawer,
 }: InventoryItemDetailPropType) => {
     const {id, data} = InventoryDetail
+    // const [isEditState, setIsEditState] = useState<boolean>(false)
     const fetchInventoryDetail = () => {
         getInventoryDetail(id).then((response: any) => {
             if (response.data.success) {
