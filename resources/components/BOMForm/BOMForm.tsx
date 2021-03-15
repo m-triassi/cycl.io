@@ -36,14 +36,13 @@ const BOMForm = (
     const [isEdit, setEdit] = useState<boolean>(false)
     const changeFormData = (key: string, value: any) => dispatch({type: 'BOM_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_BOM_FORM_STATE'})
+
     const onConfirm = () => {
-      console.log(InventoryItem)
       dispatch({type: 'ADD_BOM'})
       // resetState()
     }
     function onChange(value: any) {
-      console.log(InventoryItem)
-      changeFormData('material_id',[value])
+      changeFormData('material_ids',[value])
       changeFormData('assembly_id',inventoryId)
     }
 
@@ -55,23 +54,6 @@ const BOMForm = (
         {isEdit && <Button type='primary' onClick={() => {onConfirm()}}>Confirm</Button>}
       </Col>
     </Row>)
-
-    // const actionSearch = (
-    //     (isEdit && <Select
-    //       showSearch
-    //       style={{width: 200, marginBottom: 20}}
-    //       placeholder='Select Item'
-    //       optionFilterProp='children'
-    //       onChange={onChange}
-    //       filterOption={(input, option) =>
-    //         option?option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0: false}>
-    //       {
-    //         InventoryItem.table.map((item: { id:number, title: string })=>
-    //           <Option value={item.id}>{item.title}</Option>
-    //         )
-    //       }
-    //     </Select>)
-    // )
 
    const BOM = [
         {quantity: 1, title: 'idk', cost: 'idk', supplier: 'yes'},

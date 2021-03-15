@@ -4,7 +4,7 @@ import {addBomMaterial} from '../services/bom-material'
 
 export type BomMaterialFormDataType = {
     assembly_id: number,
-    material_id: Array<number>,
+    material_ids: Array<number>,
 }
 
 export type BomMaterialStateType = {
@@ -15,7 +15,7 @@ export type BomMaterialStateType = {
 const initialState: BomMaterialStateType = {
     form: {
         assembly_id: 0,
-        material_id: [],
+        material_ids: [],
     },
     table: [],
 }
@@ -28,15 +28,12 @@ const BomMaterial = produce(
         state.table = payload
         break
       case 'BOM_MATERIAL_CHANGE_FORM_DATA':
-        console.log(payload)
         state.form[payload.key] = payload.value
         break
       case 'RESET_BOM_FORM_STATE':
-        console.log(initialState.form)
         state.form = initialState.form
         break
       case 'ADD_BOM':
-        console.log(state.form)
         addBomMaterial(state.form)
         .then((response) => {
           const {data} = response
