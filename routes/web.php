@@ -5,6 +5,9 @@ use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SupplierItemController;
+use App\Http\Controllers\PurchaseOrderItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +22,14 @@ use App\Http\Controllers\RoleController;
 
 require __DIR__.'/auth.php';
 
+Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"])->middleware(['auth']);
+
+Route::get('/supplier', [SupplierController::class, "index"])->middleware(['auth']);
+Route::get('/supplier/{id}', [SupplierController::class, "show"])->middleware(['auth']);
+
+Route::post('/supplier/items', [SupplierItemController::class, "store"])->middleware(['auth']);
+
+Route::get('/inventory/{id}', [InventoryItemController::class, 'show'])->middleware(['auth']);
 Route::get('/inventory', [InventoryItemController::class, "index"])->middleware(['auth']);
 Route::post('/inventory', [InventoryItemController::class, "store"])->middleware(['auth']);
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"])->middleware(['auth']);

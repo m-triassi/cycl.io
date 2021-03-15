@@ -13,6 +13,14 @@ use Illuminate\Validation\ValidationException;
 class InventoryItemController extends Controller
 {
 
+    public function show($id)
+    {
+        return response([
+            'success' => true,
+           'data' => InventoryItem::findOrFail($id)
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +43,8 @@ class InventoryItemController extends Controller
             "sale_price",
             "material",
             "finish",
-            "labour_cost"
+            "labour_cost",
+            "supplier_id"
         ]);
 
         if ($filters) {
@@ -59,24 +68,29 @@ class InventoryItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //validate function seems to be breaking on invalid, possibly due to the wildcard route.
-        //TODO: Look into validating with wildcard route
-        /*$request->validate([
-            "supplier_id" => "nullable|integer|min:1",
-            "title" => "nullable|string|max:255",
-            "description" => "nullable|string|max:255",
-            "cost" => "nullable|numeric|min:0",
-            "sale_price" => "nullable|numeric|min:0",
-            "stock" => "nullable|integer|min:0",
-            "category" => "nullable|string|max:255",
-            "size" => "nullable|string|max:255",
-            "color" => "nullable|string|max:255",
-            "finish" => "nullable|string|max:255",
-            "material" => "nullable|string|max:255",
-            "part_number" => "nullable|string|max:255",
-            "lead_time" => "nullable|numeric|min:0",
-            "labour_cost" => "nullable|numeric|min:0"
-        ]);*/
+        try {
+            $request->validate([
+                "supplier_id" => "nullable|integer|min:1",
+                "title" => "nullable|string|max:255",
+                "description" => "nullable|string|max:255",
+                "cost" => "nullable|numeric|min:0",
+                "sale_price" => "nullable|numeric|min:0",
+                "stock" => "nullable|integer|min:0",
+                "category" => "nullable|string|max:255",
+                "size" => "nullable|string|max:255",
+                "color" => "nullable|string|max:255",
+                "finish" => "nullable|string|max:255",
+                "material" => "nullable|string|max:255",
+                "part_number" => "nullable|string|max:255",
+                "lead_time" => "nullable|numeric|min:0",
+                "labour_cost" => "nullable|numeric|min:0"
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
 
         $inventoryItem = InventoryItem::findOrFail($id);
 
@@ -96,6 +110,13 @@ class InventoryItemController extends Controller
             "lead_time",
             "labour_cost"
         ]);
+
+        //updating the belongsTo relationship of the supplier
+        $supplier_id = $request->supplier_id;
+        if (!is_null($supplier_id)) {
+            $inventoryItem->supplier()->associate($supplier_id);
+            $inventoryItem->save();
+        }
 
         $inventoryItem->update($params);
 
@@ -117,8 +138,8 @@ class InventoryItemController extends Controller
             $request->validate([
                 'title' => "required|string",
                 'description' => "required|string",
-                'cost' => "required|numeric",
-                'sale_price' => "required|numeric",
+                'cost' => "required|numeric|min:0",
+                'sale_price' => "required|numeric|min:0",
 
             ]);
         } catch (ValidationException $e) {

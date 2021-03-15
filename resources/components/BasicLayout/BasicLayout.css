@@ -1,6 +1,6 @@
 .Content {
     overflow: scroll;
-    max-height: calc(100vh - 16px);
+    min-height: calc(100vh - 16px);
 }
 
 .Sider {

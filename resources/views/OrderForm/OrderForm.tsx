@@ -18,21 +18,21 @@ const OrderForm = ({
     const {data} = InventoryDetail
     const {Item} = Form
     const [quantity, setQuantity] = useState<number>(1)
-    const [total, setTotal] = useState<number>(data.cost)
+    const [total, setTotal] = useState<number>(data.sale_price)
     const onQuantityChange = (value: any) => {
         setQuantity(value)
-        setTotal(value*data.cost)
+        setTotal(value*data.sale_price)
       }
     return (
       <>
-        <Row><Typography.Title>New Order</Typography.Title></Row>
+        <Row><Typography.Title>{`New Order - ${data.title}`}</Typography.Title></Row>
         <Row>
           <Col span={8} />
         </Row>
         <Row>
           <Col span={8} />
         </Row>
-        <InventoryItemDetail data={data} />
+        <InventoryItemDetail isDrawer />
         <Item required label='Quantity'><InputNumber data-cy='inventory-form-cost' min={1} onChange={(value) => onQuantityChange(value)} value={quantity} /></Item>
         <Row gutter={[0, 48]}>
           <Col span={8}>
@@ -40,10 +40,10 @@ const OrderForm = ({
           </Col>
         </Row>
         <Row>
-          <Col span={2}>
-            <Button type='primary' onClick={() => routeToPage('/Production/Inventory')}>Cancel</Button>
+          <Col span={3}>
+            <Button onClick={() => routeToPage('/Production/Inventory')}>Cancel</Button>
           </Col>
-          <Col span={2}>
+          <Col span={3}>
             <Button type='primary'>Confirm</Button>
           </Col>
         </Row>

@@ -1,10 +1,13 @@
 import {RouterStateType} from '../models/router'
 import {InventoryItemStateType} from '../models/inventory'
 import {InventoryDetailStateType} from '../models/inventory-detail'
+import {VendorItemStateType} from '../models/vendor'
 
 export type StoreType = {
     router: RouterStateType,
-    InventoryItem: InventoryItemStateType
+    InventoryItem: InventoryItemStateType,
+    InventoryDetail: any,
+    VendorItem: VendorItemStateType,
 }
 
 export type StoreType2 = {
