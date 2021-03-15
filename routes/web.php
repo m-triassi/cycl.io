@@ -29,6 +29,7 @@ Route::get('/supplier/{id}', [SupplierController::class, "show"])->middleware(['
 
 Route::post('/supplier/items', [SupplierItemController::class, "store"])->middleware(['auth']);
 
+Route::get('/inventory/{id}', [InventoryItemController::class, 'show'])->middleware(['auth']);
 Route::get('/inventory', [InventoryItemController::class, "index"])->middleware(['auth']);
 Route::post('/inventory', [InventoryItemController::class, "store"])->middleware(['auth']);
 Route::put('/inventory/{id}', [InventoryItemController::class, "update"])->middleware(['auth']);
