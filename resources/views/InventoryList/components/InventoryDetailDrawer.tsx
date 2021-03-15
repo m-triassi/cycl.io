@@ -2,7 +2,7 @@ import React from 'react'
 import {Drawer, Typography, Button, Col, Row} from 'antd'
 import '../styleSheet.css'
 import {BOMForm, DescriptionItem} from '@components'
-import {StoreType2} from '@types'
+import {StoreType} from '@types'
 import {connect} from 'react-redux'
 import {InventoryDetailStateType} from 'models/inventory-detail'
 
@@ -66,19 +66,12 @@ const InventoryDetailDrawer = ({
               content='' />
           </Col>
         </Row>
-        <Row>
-          <Col span={16}>
-            <Button type='primary'>Add Material</Button>
-          </Col>
-        </Row>
-        <Row>
-          <BOMForm />
-        </Row>
+        <BOMForm inventoryId={data?data.id:0} />
       </Drawer>
     )
 }
 
-const mapStateToProps = (state: StoreType2) => ({
+const mapStateToProps = (state: StoreType) => ({
   InventoryDetail: state.InventoryDetail,
 })
 

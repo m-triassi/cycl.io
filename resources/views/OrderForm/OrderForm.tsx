@@ -2,7 +2,7 @@
 import {Col, Row, Typography, Button, Form, InputNumber} from 'antd'
 import React, {useState}  from 'react'
 import {InventoryItemDetail, DescriptionItem} from '@components'
-import {StoreType2} from '@types'
+import {StoreType} from '@types'
 import {connect} from 'react-redux'
 import {InventoryDetailStateType} from 'models/inventory-detail'
 
@@ -50,7 +50,7 @@ const OrderForm = ({
       </>
     )
 }
-const mapStateToProps = (state: StoreType2) => ({
+const mapStateToProps = (state: StoreType) => ({
     InventoryDetail: state.InventoryDetail,
   })
 

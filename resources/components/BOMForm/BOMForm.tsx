@@ -1,9 +1,11 @@
 import React,{useState} from 'react'
-import {Card, Button, Empty, Table, Row, Col, Select} from 'antd'
+import {InputNumber, Button, Empty, Table, Row, Col, Select, Typography} from 'antd'
 import {InventoryItemStateType} from 'models/inventory'
-import {StoreType} from '@types'
+import {BomMaterialStateType} from 'models/bom-material'
+import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
-import Item from 'antd/lib/list/Item'
+import {DeleteButton} from '@components'
+import {DeleteOutlined} from '@ant-design/icons'
 
 
 type BOMFormPropType = {
@@ -11,9 +13,11 @@ type BOMFormPropType = {
     // onEdit: (payload: any) => void,
     // onAdd: (payload: any) => void,
     // onSearch: (payload: any) => void,
-    InventoryItem: InventoryItemStateType
+    dispatch: (arg: DispatchArgumentType) => void,
+    InventoryItem: InventoryItemStateType,
+    BomMaterial: BomMaterialStateType,
+    inventoryId: number,
 }
-
 
 const BOMForm = (
      {
@@ -21,23 +25,53 @@ const BOMForm = (
      // onEdit,
      // onAdd,
      // onSearch,
-     InventoryItem
+     dispatch,
+     InventoryItem,
+     BomMaterial,
+     inventoryId
  }:BOMFormPropType
 )  => {
+    const {form, table} = BomMaterial
+    const {Title} = Typography
     const [isEdit, setEdit] = useState<boolean>(false)
+    const changeFormData = (key: string, value: any) => dispatch({type: 'BOM_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
+    const resetState = () => dispatch({type: 'RESET_BOM_FORM_STATE'})
+    const onConfirm = () => {
+      console.log(InventoryItem)
+      dispatch({type: 'ADD_BOM'})
+      // resetState()
+    }
+    function onChange(value: any) {
+      console.log(InventoryItem)
+      changeFormData('material_id',[value])
+      changeFormData('assembly_id',inventoryId)
+    }
 
-    const actionRow = (<Row gutter={{xs: 8, sm: 16, md: 24, lg: 32}}>
+    const actionRow = (<Row gutter={{xs: 4, sm: 8, md: 16, lg: 24}}>
       <Col span={6}>
-        {isEdit && <Button block shape='round' onClick={() => {setEdit(false)}}>Confirm</Button>}
+        {isEdit && <Button onClick={() => {setEdit(false)}}>Cancel</Button>}
       </Col>
       <Col span={6}>
-        {isEdit && <Button block shape='round' onClick={() => {setEdit(false)}}>Cancel</Button>}
+        {isEdit && <Button type='primary' onClick={() => {onConfirm()}}>Confirm</Button>}
       </Col>
     </Row>)
 
-    const actionSearch = (
-        (isEdit )
-    )
+    // const actionSearch = (
+    //     (isEdit && <Select
+    //       showSearch
+    //       style={{width: 200, marginBottom: 20}}
+    //       placeholder='Select Item'
+    //       optionFilterProp='children'
+    //       onChange={onChange}
+    //       filterOption={(input, option) =>
+    //         option?option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0: false}>
+    //       {
+    //         InventoryItem.table.map((item: { id:number, title: string })=>
+    //           <Option value={item.id}>{item.title}</Option>
+    //         )
+    //       }
+    //     </Select>)
+    // )
 
    const BOM = [
         {quantity: 1, title: 'idk', cost: 'idk', supplier: 'yes'},
@@ -49,7 +83,8 @@ const BOMForm = (
         {
             title: 'Quantity',
             dataIndex: 'quantity',
-            width: 20
+            width: 20,
+            render: (num: number) => isEdit?<InputNumber min={1} max={999} defaultValue={num} onChange={onChange} />: `${num}`
         },
         {
             title: 'Title',
@@ -62,41 +97,64 @@ const BOMForm = (
         {
             title: 'Supplier',
             dataIndex: 'supplier',
-        }
+        },
+        {
+          title: 'Action',
+          key: 'action',
+          render: (text: any, record: any) => {
+            const onDelete = ()=>{
+            }
+            return (
+              isEdit? <DeleteButton type='BOM' onDelete={onDelete} />: <DeleteOutlined style={{color: 'grey', fontSize: 22}} />
+          )},
+      },
     ]
-    function onChange(value: any) {
-      console.log(InventoryItem)
-    }
-
-    function onSearch(val: any) {
-      console.log(InventoryItem)
-    }
-
     return (
-      <Card title='Bill Of Material' actions={[actionRow]} extra={!isEdit && <Button block shape='round' onClick={() => {setEdit(true)}}>Edit</Button>} style={{padding: 30}}>
-        {actionSearch}
-        <Select
-          showSearch
-          style={{width: 200}}
-          placeholder='Select Item'
-          optionFilterProp='children'
-          onChange={onChange}
-          onSearch={onSearch}
-          filterOption={(input, option) =>
-            option?option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0: false}>
-          {
-            InventoryItem.table.map((item: { id:number, title: string })=>
-              <Option value={item.id}>{item.title}</Option>
-            )
-          }
-        </Select>
-        {BOM.length > 0 ? <Table columns={columns} dataSource={BOM} pagination={false} size='small' />  : <Empty />}
-      </Card>
+      <>
+        <Row gutter={[0,8]}>
+          <Col span={8}>
+            <Title level={5}>Bill Of Material</Title>
+          </Col>
+          <Col span={8}>
+            {!isEdit && <Button shape='round' type='primary' onClick={() => {setEdit(true)}}>Edit</Button>}
+          </Col>
+        </Row>
+        <Row gutter={[0,8]}>
+          <Col span={8}>
+            { isEdit? <Select
+              showSearch
+              style={{width: 200, marginBottom: 20}}
+              placeholder='Select Item'
+              optionFilterProp='children'
+              onChange={onChange}
+              filterOption={(input, option) =>
+                option?option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0: false}>
+              {
+                InventoryItem.table.map((item: { id:number, title: string })=>
+                  <Option value={item.id}>{item.title}</Option>
+                )
+              }
+            </Select>:null}
+          </Col>
+        </Row>
+        <Row gutter={[0,24]}>
+          <Col span={24}>
+            {BOM.length > 0 ? <Table columns={columns} dataSource={BOM} pagination={false} size='small' />  : <Empty />}
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            {actionRow}
+          </Col>
+        </Row>
+      </>
     )
 }
 
 const mapStateToProps = (state: StoreType) => ({
   InventoryItem: state.InventoryItem,
+  BomMaterial: state.BomMaterial,
+
 })
 
 BOMForm.displayName = 'BOMForm'
