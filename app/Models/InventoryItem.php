@@ -24,7 +24,8 @@ class InventoryItem extends Model
      */
     public function materials() : BelongsToMany
     {
-        return $this->belongsToMany(InventoryItem::class, 'bill_of_materials', 'assembly_id', 'material_id');
+        return $this->belongsToMany(InventoryItem::class, 'bill_of_materials', 'assembly_id', 'material_id')
+            ->withPivot('quantity');
     }
 
     /**
@@ -34,7 +35,8 @@ class InventoryItem extends Model
      */
     public function assemblies() : BelongsToMany
     {
-        return $this->belongsToMany(InventoryItem::class, 'bill_of_materials', 'material_id', 'assembly_id');
+        return $this->belongsToMany(InventoryItem::class, 'bill_of_materials', 'material_id', 'assembly_id')
+            ->withPivot('quantity');
     }
 
     /**
