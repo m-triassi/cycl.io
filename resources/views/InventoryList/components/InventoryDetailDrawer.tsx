@@ -1,5 +1,6 @@
 import React from 'react'
-import {Drawer, Typography} from 'antd'
+import {Drawer} from 'antd'
+import {InventoryItemDetail} from '@components'
 
 type InventoryDetailDrawerPropType = {
     isVisible: boolean,
@@ -10,10 +11,15 @@ const InventoryDetailDrawer = ({
     isVisible,
     setIsVisible,
 }: InventoryDetailDrawerPropType) => {
-    const {Text} = Typography
+    console.log('hi')
     return (
-      <Drawer onClose={() => setIsVisible(false)} visible={isVisible}>
-        <Text>Hi Inventory Item Detail</Text>
+      <Drawer
+        closable={false}
+        title='Inventory Item Detail'
+        onClose={() => setIsVisible(false)}
+        visible={isVisible}
+        width='40%'>
+        <InventoryItemDetail isDrawer />
       </Drawer>
     )
 }

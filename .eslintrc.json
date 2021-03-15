@@ -85,6 +85,7 @@
           "ts": "never",
           "tsx": "never"
         }
-     ]
+     ],
+     "radix":"off"
     }
   }
