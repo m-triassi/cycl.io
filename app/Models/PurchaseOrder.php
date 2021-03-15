@@ -10,6 +10,9 @@ class PurchaseOrder extends Model
 {
     use HasFactory;
 
+    public const PENDING = 'pending';
+    public const RECEIVED = 'received';
+
     protected $guarded = ['id'];
 
     public function order_items() : MorphToMany
