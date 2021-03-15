@@ -5,6 +5,7 @@ import {addBomMaterial} from '../services/bom-material'
 export type BomMaterialFormDataType = {
     assembly_id: number,
     material_ids: Array<number>,
+    quantities: Array<number>,
 }
 
 export type BomMaterialStateType = {
@@ -16,6 +17,7 @@ const initialState: BomMaterialStateType = {
     form: {
         assembly_id: 0,
         material_ids: [],
+        quantities: [],
     },
     table: [],
 }
