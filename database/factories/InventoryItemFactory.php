@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\InventoryItem;
+use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InventoryItemFactory extends Factory
@@ -22,6 +23,7 @@ class InventoryItemFactory extends Factory
     public function definition()
     {
         return [
+            'supplier_id' => Supplier::inRandomOrder()->first(),
             'title' => $this->faker->word,
             'description' => $this->faker->text,
             'cost' => $this->faker->randomFloat(2, 0, 10000),
