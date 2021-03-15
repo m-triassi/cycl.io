@@ -15,7 +15,6 @@ class CreatePurchaseOrdersTable extends Migration
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
-//            $table->foreign('inventory_item_id')->references('id')->on('inventory_items');
             $table->foreignId('supplier_id')->references('id')->on('suppliers');
             $table->string('status');
             $table->timestamp('delivery_date');
