@@ -37,7 +37,7 @@ const VendorList = ({
       getVendor().then((response: any) => {
         const {data} = response
         if (data.success) {
-          dispatch({type: 'SET_VENDOR_ITEM', payload: data.data})
+          dispatch({type: 'SET_VENDOR_ITEMS', payload: data.data})
         }
       })
     }
@@ -76,8 +76,8 @@ const VendorList = ({
     const columns = [
         {
             title: 'Name',
-            key: 'nane',
-            dataIndex: 'nane',
+            key: 'name',
+            dataIndex: 'name',
             render: (text: string) => (
               <Typography.Text strong>{text}</Typography.Text>
             )
@@ -86,13 +86,13 @@ const VendorList = ({
             title: 'Partnership Start Date',
             key: 'partnership_start_date',
             dataIndex: 'partnership_start_date',
-            render: (text: any) => `$${text}`
+            render: (text: any) => `${text}`
         },
         {
           title: 'Partnership End Date',
           key: 'partnership_end_date',
           dataIndex: 'partnership_end_date',
-          render: (text: any) => `$${text}`
+          render: (text: any) => `${text}`
       },
       {
           title: 'Action',

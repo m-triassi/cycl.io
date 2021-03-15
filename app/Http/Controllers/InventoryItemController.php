@@ -13,6 +13,14 @@ use Illuminate\Validation\ValidationException;
 class InventoryItemController extends Controller
 {
 
+    public function show($id)
+    {
+        return response([
+            'success' => true,
+           'data' => InventoryItem::findOrFail($id)
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +43,8 @@ class InventoryItemController extends Controller
             "sale_price",
             "material",
             "finish",
-            "labour_cost"
+            "labour_cost",
+            "supplier_id"
         ]);
 
         if ($filters) {
