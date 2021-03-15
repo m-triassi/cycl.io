@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {InventoryItemStateType} from 'models/inventory'
 import {filterInventory, getInventory} from 'services/inventory'
+import {getBomMaterial} from 'services/bom-material'
 import {DeleteButton} from '@components'
 import {AddInventoryItemModal, InventoryDetailDrawer} from './components'
 
@@ -47,6 +48,15 @@ const InventoryList = ({
     const onSubmit = () => {
       dispatch({type: 'ADD_INVENTORY'})
       fetchInventoryList()
+    }
+
+    const fetchBomList = (inventoryId: number) => {
+      getBomMaterial(inventoryId).then((response: any) => {
+        const {data} = response
+        if (data.success) {
+          dispatch({type: 'SET_BOM_ITEMS', payload: data.data})
+        }
+      })
     }
 
     useEffect(() => {
@@ -149,6 +159,7 @@ const InventoryList = ({
             dispatch({type: 'CHANGE_DETAIL_ID', payload: record.id})
             dispatch({type: 'SET_INVENTORY_DETAIL_DATA', payload: record})
             setIsDetailDrawerVisible(true)
+            fetchBomList(record.id)
           }})}
           scroll={{x: 'max-content'}} />
       </>

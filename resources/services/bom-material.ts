@@ -8,14 +8,10 @@ export const addBomMaterial = (payload: BomMaterialFormDataType) => axios({
     data: payload,
 })
 
-export const getBomMaterial = () => axios.get(materialsRoute)
-
-export const filterBomMaterial = (payload: string) => axios({
+export const getBomMaterial = (payload: number) => axios(
+    {
     method: 'GET',
-    url: materialsRoute,
-    params: {
-        q: payload
-    }
+    url: materialsRoute.concat(`/${payload}`)
 })
 
 export const editBomMaterial = (payload: any) => axios({

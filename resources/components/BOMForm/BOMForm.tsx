@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import {InputNumber, Button, Empty, Table, Row, Col, Select, Typography} from 'antd'
 import {InventoryItemStateType} from 'models/inventory'
 import {BomMaterialStateType} from 'models/bom-material'
@@ -6,6 +6,7 @@ import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import {DeleteButton} from '@components'
 import {DeleteOutlined} from '@ant-design/icons'
+import {getBomMaterial} from 'services/bom-material'
 
 
 type BOMFormPropType = {
@@ -31,11 +32,11 @@ const BOMForm = (
      inventoryId
  }:BOMFormPropType
 )  => {
-    const {form, table} = BomMaterial
+    const {table} = BomMaterial
     const {Title} = Typography
     const [isEdit, setEdit] = useState<boolean>(false)
     const changeFormData = (key: string, value: any) => dispatch({type: 'BOM_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
-    const resetState = () => dispatch({type: 'RESET_BOM_FORM_STATE'})
+    // const resetState = () => dispatch({type: 'RESET_BOM_FORM_STATE'})
 
     const onConfirm = () => {
       dispatch({type: 'ADD_BOM'})
@@ -55,10 +56,6 @@ const BOMForm = (
       </Col>
     </Row>)
 
-   const BOM = [
-        {quantity: 1, title: 'idk', cost: 'idk', supplier: 'yes'},
-        {quantity: 2, title: 'idk1', cost: 'idk1', supplier: 'yes1'},
-    ]
     const {Option} = Select
 
     const columns = [
@@ -121,7 +118,7 @@ const BOMForm = (
         </Row>
         <Row gutter={[0,24]}>
           <Col span={24}>
-            {BOM.length > 0 ? <Table columns={columns} dataSource={BOM} pagination={false} size='small' />  : <Empty />}
+            {table.length > 0 ? <Table columns={columns} dataSource={table} pagination={false} size='small' />  : <Empty />}
           </Col>
         </Row>
         <Row>
