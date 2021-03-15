@@ -43,7 +43,8 @@ class InventoryItemController extends Controller
             "sale_price",
             "material",
             "finish",
-            "labour_cost"
+            "labour_cost",
+            "supplier_id"
         ]);
 
         if ($filters) {

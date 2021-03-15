@@ -80,7 +80,8 @@ class InventoryTest extends TestCase
             'description' => "This items will be a test item",
             'cost' => 9.99,
             'sale_price' => 19.99,
-            'size' => "testSize"
+            'size' => "testSize",
+            'supplier_id' => 1
         ]);
 
         // make sure we're redirected if un-authenticated
