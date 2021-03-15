@@ -5,6 +5,8 @@ use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SupplierItemController;
+use App\Http\Controllers\PurchaseOrderItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,10 @@ use App\Http\Controllers\RoleController;
 */
 
 require __DIR__.'/auth.php';
+
+Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"])->middleware(['auth']);
+
+Route::post('/supplier/items', [SupplierItemController::class, "store"])->middleware(['auth']);
 
 Route::get('/inventory', [InventoryItemController::class, "index"])->middleware(['auth']);
 Route::post('/inventory', [InventoryItemController::class, "store"])->middleware(['auth']);
