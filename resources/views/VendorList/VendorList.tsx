@@ -23,6 +23,7 @@ const VendorList = ({
     const {Item} = Form
     const {form, table} = VendorItem
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
+    const { Text, Link } = Typography
     const changeFormData = (key: string, value: any) => dispatch({type: 'VENDOR_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_VENDOR_FORM_STATE'})
     const onFilterVendor = (value: string) => {
@@ -78,9 +79,9 @@ const VendorList = ({
             title: 'Name',
             key: 'name',
             dataIndex: 'name',
-            render: (text: string) => (
-              <Typography.Text strong>{text}</Typography.Text>
-            )
+            render: (text: string, record: any) => (
+              <Link href={`/Vendor/Suppliers/${record.id}`}>{text}</Link>
+              )
         },
         {
             title: 'Partnership Start Date',

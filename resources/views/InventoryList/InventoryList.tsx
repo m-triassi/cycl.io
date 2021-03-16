@@ -1,4 +1,3 @@
-
 import {Button, Col, Form, Input, InputNumber, Modal, Row, Table, Typography} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'

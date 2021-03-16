@@ -1,5 +1,5 @@
 import React from 'react'
-import {VendorList, InventoryList, WelcomePage} from 'views'
+import {VendorList, InventoryList, WelcomePage, SupplierDetails} from 'views'
 import {RouterStateType} from 'models/router'
 
 // import SalesList from '../index'
@@ -22,12 +22,15 @@ const AppContent = ({
       case '/Production/Inventory':
         component = (<InventoryList />)
         break
-      case '/Vendor':
+      case (route.match(/\/Vendor\/Suppliers\/\d+/) || {}).input:
+        component = (<SupplierDetails />)
+        break
+      case '/Vendor/Suppliers':
         component = (<VendorList />)
         break
       case '/Sales':
         component = (<h1>Hi Sales</h1>)
-        break
+      break
       case '/Accounting':
         component = (<h1>Hi Accounting</h1>)
         break

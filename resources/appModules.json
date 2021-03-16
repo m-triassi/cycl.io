@@ -12,7 +12,17 @@
         },
         {
             "name": "Vendor",
-            "url": "/Vendor"
+            "url": "/Vendor",
+            "subModules": [
+                {
+                    "name": "Suppliers",
+                    "url": "/Vendor/Suppliers"
+                },
+                {
+                    "name": "Orders",
+                    "url": "/Vendor/Orders"
+                }
+            ]
         },
         {
             "name": "Sales",
