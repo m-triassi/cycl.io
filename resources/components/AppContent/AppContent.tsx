@@ -1,6 +1,7 @@
 import React from 'react'
 import {VendorList, InventoryList, WelcomePage} from 'views'
 import {RouterStateType} from 'models/router'
+import {InventoryItemDetail} from '@components'
 
 // import SalesList from '../index'
 // import AccountingList from '../index'
@@ -18,7 +19,11 @@ const AppContent = ({
 }: AppContentPropType) => {
     const {route} = router
     let component
+
     switch (route) {
+      case (route.match(/\/Production\/Inventory\/\d+/) || {}).input:
+        component = (<InventoryItemDetail isDrawer={false} />)
+        break
       case '/Production/Inventory':
         component = (<InventoryList />)
         break
