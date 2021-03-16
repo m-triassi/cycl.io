@@ -12,6 +12,10 @@ class OrderItem extends Model
 
     protected $table = 'orderables';
 
+    protected $guarded = ['id'];
+
+    protected $appends = ['quantity'];
+
     public function purchase_orders() : MorphToMany
     {
         return $this->morphedByMany(PurchaseOrder::class, 'orderable');
