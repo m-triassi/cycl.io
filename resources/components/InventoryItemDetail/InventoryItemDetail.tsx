@@ -10,12 +10,14 @@ type InventoryItemDetailPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
     InventoryDetail: any,
     isDrawer: boolean,
+    isOrderForm: boolean,
 }
 
 const InventoryItemDetail = ({
     dispatch,
     InventoryDetail,
     isDrawer,
+    isOrderForm,
 }: InventoryItemDetailPropType) => {
     const {Text} = Typography
     const {id, data, form} = InventoryDetail
@@ -52,8 +54,8 @@ const InventoryItemDetail = ({
             if (ignoredKeys.includes(key) || !value) return null
             dataRow.push(
               <Row>
-                <Col span={12}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
-                <Col span={12}><Text>{value.toString()}</Text></Col>
+                <Col span={isDrawer ? 12 : 6}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
+                <Col span={isDrawer ? 12 : 6}><Text>{value.toString()}</Text></Col>
               </Row>
             )
         })
@@ -81,10 +83,12 @@ const InventoryItemDetail = ({
           changeFormData={changeFormData}
           form={data}
           isCreate={false} />
+        {!isOrderForm && <Row style={{margin: 6}}>
+          <Col span={6}>
+            <Button block onClick={() => setIsEditModalVisible(true)} shape='round' type='ghost'>Edit</Button>
+          </Col>
+        </Row>}
         {dataRow}
-        <Row style={{marginTop: 6}}>
-          <Button block onClick={() => setIsEditModalVisible(true)} shape='round' type='ghost'>Edit</Button>
-        </Row>
       </>
     )
 }
