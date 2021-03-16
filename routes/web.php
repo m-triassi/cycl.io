@@ -23,7 +23,7 @@ use App\Http\Controllers\PurchaseOrderItemController;
 require __DIR__.'/auth.php';
 
 Route::post('/purchase-order', [\App\Http\Controllers\PurchaseOrderController::class, "store"])->middleware(['auth']);
-Route::put('//purchase-order/{id}', [\App\Http\Controllers\PurchaseOrderController::class, "update"])->middleware(['auth']);
+Route::put('/purchase-order/{id}', [\App\Http\Controllers\PurchaseOrderController::class, "update"])->middleware(['auth']);
 
 Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"])->middleware(['auth']);
 
