@@ -118,7 +118,7 @@ class SupplierController extends Controller
             $startDate = $request->partnership_start_date ?? $supplier->partnership_start_date;
             $request->validate([
                 "name" => "nullable|string|max:255",
-                "partnership_start_date" => "nullable|date",
+                "partnership_start_date" => "date",
                 "partnership_end_date" => "nullable|date|after:{$startDate}",
             ]);
         } catch (ValidationException $e) {
@@ -127,8 +127,6 @@ class SupplierController extends Controller
                 'errors' => $e->errors()
             ]);
         }
-
-        $supplier = Supplier::findOrFail($id);
 
         $params = $request->only([
             "name",
