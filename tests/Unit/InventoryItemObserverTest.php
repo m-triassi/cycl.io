@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Models\OrderItem;
 use App\Models\PurchaseOrder;
-use App\Models\User;
 use App\Models\InventoryItem;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
