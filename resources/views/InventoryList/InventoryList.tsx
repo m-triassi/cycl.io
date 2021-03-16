@@ -13,13 +13,11 @@ const StyledRow = styled(Row)`
 `
 
 type InventoryListPropType = {
-    routeToPage: (url: string) => void,
     dispatch: (arg: DispatchArgumentType) => void,
     InventoryItem: InventoryItemStateType,
 }
 
 const InventoryList = ({
-    routeToPage,
     dispatch,
     InventoryItem,
 }: InventoryListPropType) => {
@@ -128,7 +126,7 @@ const InventoryList = ({
           resetState={resetState}
           changeFormData={changeFormData}
           form={form} />
-        <InventoryDetailDrawer routeToPage={routeToPage} isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} id={selectedRowId} />
+        <InventoryDetailDrawer isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} id={selectedRowId} />
         <Row><Typography.Title>Inventory</Typography.Title></Row>
         <Row>
           <Col span={8}>

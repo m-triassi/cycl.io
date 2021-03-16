@@ -1,43 +1,26 @@
 import produce from 'immer'
 
-export type OrderItemFormDataType = {
-    type: string,
-    orderId: number,
-    inventoryId: number,
-    quantity: number,
-}
-
 export type OrderItemStateType = {
-  form: OrderItemFormDataType,
-  table: any,
+    id: number,
+    data?: any,
+    form: any,
 }
 
 const initialState: OrderItemStateType = {
-    form: {
-        type: '',
-        orderId: 0,
-        inventoryId: 0,
-        quantity: 0,
-    },
-    table: [],
+    id: 0,
+    data: {},
+    form: {}
 }
 
 const OrderItem = produce(
   (state, action) => {
     const {type, payload} = action
     switch (type) {
-      case 'SET_ORDER':
-        state.table = payload
+      case 'SET_ITEM_DETAIL_ID':
+        state.id = payload
         break
-      case 'INVENTORY_MATERIAL_CHANGE_FORM_DATA':
-        state.form[payload.key] = payload.value
-        break
-      case 'RESET_INVENTORY_FORM_STATE':
-        state.form = initialState.form
-        break
-      case 'DELETE_ORDER':
-        break
-      case 'ADD_ORDER':
+      case 'SET_ORDER_DETAIL_DATA':
+        state.data = payload
         break
       default:
         return state

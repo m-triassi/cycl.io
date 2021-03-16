@@ -3,14 +3,12 @@ import {Button, Drawer, Typography} from 'antd'
 import {InventoryItemDetail} from '@components'
 
 type InventoryDetailDrawerPropType = {
-    routeToPage: (url: string) => void,
     isVisible: boolean,
     id: number,
     setIsVisible: (payload: boolean) => void
 }
 
 const InventoryDetailDrawer = ({
-    routeToPage,
     isVisible,
     setIsVisible,
     id,
@@ -33,7 +31,7 @@ const InventoryDetailDrawer = ({
           style={{
             textAlign: 'left',
           }}>
-          <Button type='primary' onClick={() => routeToPage('/OrderForm')}>
+          <Button type='primary' onClick={() => window.open(`/OrderForm/${id}`, '_blank')}>
             Order
           </Button>
         </Typography>

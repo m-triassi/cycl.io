@@ -25,7 +25,7 @@ const AppContent = ({
         component = (<InventoryItemDetail isDrawer={false} />)
         break
       case '/Production/Inventory':
-        component = (<InventoryList routeToPage={routeToPage} />)
+        component = (<InventoryList />)
         break
       case '/Vendor':
         component = (<VendorList />)
@@ -39,8 +39,8 @@ const AppContent = ({
       case '/Settings':
         component = (<h1>Hi Settings</h1>)
         break
-      case '/OrderForm':
-        component = (<OrderForm routeToPage={routeToPage} />)
+      case (route.match(/\/OrderForm\/\d+/) || {}).input:
+        component = (<OrderForm />)
         break
       case '/':
       default:
