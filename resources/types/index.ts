@@ -5,6 +5,7 @@ import {VendorItemStateType} from '../models/vendor'
 export type StoreType = {
     router: RouterStateType,
     InventoryItem: InventoryItemStateType,
+    InventoryDetail: any,
     VendorItem: VendorItemStateType,
 }
 
