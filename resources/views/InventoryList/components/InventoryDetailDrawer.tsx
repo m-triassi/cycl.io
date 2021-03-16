@@ -27,7 +27,7 @@ const InventoryDetailDrawer = ({
       visible={isVisible}
       bodyStyle={{padding: '6px 24px 6px 24px'}}
       width='40%'>
-      <InventoryItemDetail isDrawer isOrderForm={false} />
+      <InventoryItemDetail isDrawer />
     </Drawer>
     )
 }

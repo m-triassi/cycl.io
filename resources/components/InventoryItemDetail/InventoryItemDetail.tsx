@@ -10,14 +10,12 @@ type InventoryItemDetailPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
     InventoryDetail: any,
     isDrawer: boolean,
-    isOrderForm: boolean,
 }
 
 const InventoryItemDetail = ({
     dispatch,
     InventoryDetail,
     isDrawer,
-    isOrderForm,
 }: InventoryItemDetailPropType) => {
     const {Text} = Typography
     const {id, data, form} = InventoryDetail
@@ -84,11 +82,11 @@ const InventoryItemDetail = ({
           changeFormData={changeFormData}
           form={data}
           isCreate={false} />
-        {!isOrderForm && <Row style={{margin: 6}}>
+        <Row style={{margin: 6}}>
           <Col span={6}>
             <Button block onClick={() => setIsEditModalVisible(true)} shape='round' type='ghost'>Edit</Button>
           </Col>
-        </Row>}
+        </Row>
         {dataRow}
       </>
     )

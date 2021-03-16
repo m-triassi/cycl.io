@@ -22,7 +22,7 @@ const AppContent = ({
 
     switch (route) {
       case (route.match(/\/Production\/Inventory\/\d+/) || {}).input:
-        component = (<InventoryItemDetail isDrawer={false} isOrderForm={false} />)
+        component = (<InventoryItemDetail isDrawer={false} />)
         break
       case '/Production/Inventory':
         component = (<InventoryList />)
