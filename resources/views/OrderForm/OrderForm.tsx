@@ -32,7 +32,7 @@ const OrderForm = ({
         <Row>
           <Col span={8} />
         </Row>
-        <InventoryItemDetail data={data} />
+        <InventoryItemDetail isDrawer />
         <Item required label='Quantity'><InputNumber data-cy='inventory-form-cost' min={1} onChange={(value) => onQuantityChange(value)} value={quantity} /></Item>
         <Row gutter={[0, 48]}>
           <Col span={8}>

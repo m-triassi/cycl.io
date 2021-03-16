@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Drawer, Typography} from 'antd'
+import {Button, Drawer, Typography, Divider} from 'antd'
 import {BOMForm, InventoryItemDetail} from '@components'
 
 type InventoryDetailDrawerPropType = {
@@ -28,7 +28,7 @@ const InventoryDetailDrawer = ({
       onClose={() => setIsVisible(false)}
       visible={isVisible}
       bodyStyle={{padding: '6px 24px 6px 24px'}}
-      width='40%'
+      width='50%'
       footer={
         <Typography.Text
           style={{
@@ -40,6 +40,7 @@ const InventoryDetailDrawer = ({
         </Typography.Text>
       }>
       <InventoryItemDetail isDrawer />
+      <Divider />
       <BOMForm inventoryId={id} />
     </Drawer>
     )
