@@ -51,7 +51,32 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $request->validate([
+                'name' => "required|string",
+                'partnership_start_date' => "required|date",
+                'partnership_end_date' => 'nullable|date|after:partnership_start_date',
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        $params = $request->only([
+            "name",
+            "partnership_start_date",
+            "partnership_end_date",
+        ]);
+
+        $supplier = Supplier::create($params);
+        $supplier->save();
+
+        return response([
+            'success' => true,
+            'data' => $supplier->refresh()
+        ]);
     }
 
     /**
@@ -88,7 +113,32 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $supplier = Supplier::findOrFail($id);
+        try {
+            $startDate = $request->partnership_start_date ?? $supplier->partnership_start_date;
+            $request->validate([
+                "name" => "nullable|string|max:255",
+                "partnership_start_date" => "date",
+                "partnership_end_date" => "nullable|date|after:{$startDate}",
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        $params = $request->only([
+            "name",
+            "partnership_start_date",
+            "partnership_end_date",
+        ]);
+
+        $supplier->update($params);
+        return response([
+            'success' => true,
+            'data' => $supplier->refresh()
+        ]);
     }
 
     /**
