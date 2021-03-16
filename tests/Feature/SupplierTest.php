@@ -95,8 +95,7 @@ class SupplierTest extends TestCase
         $properData = $proper->getOriginalContent();
         $this->assertTrue($properData['success']);
         $this->assertEquals($suppliersBefore + 1, Supplier::count());
-
-
+        
 
         $suppliersBefore = Supplier::count();
         // Try proper inputs; name, partnership start date and end date
