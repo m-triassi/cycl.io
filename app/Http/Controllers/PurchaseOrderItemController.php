@@ -90,16 +90,14 @@ class PurchaseOrderItemController extends Controller
             $itemIds = Str::contains($itemIds, ",") ? explode(",", $itemIds) : [$itemIds];
         }
 
-        $items = InventoryItem::findMany($itemIds);
-
         $purchaseOrder = PurchaseOrder::findOrFail($id);
 
-        $purchaseOrder->order_items()->sync($items);
+        $purchaseOrder->order_items()->sync($itemIds);
         $purchaseOrder->save();
 
         return response([
             'success' => true,
-            'data' => $purchaseOrder->refresh()->order_items
+            'data' => $purchaseOrder->with('order_items')->findOrFail($id)
         ]);
     }
 

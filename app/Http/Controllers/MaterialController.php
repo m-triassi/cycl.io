@@ -52,6 +52,7 @@ class MaterialController extends Controller
     {
         $assemblyId = $request->assembly_id;
         $materialIds = $request->material_ids;
+        $quantities = $request->quantities;
         $pairs = collect();
 
         if(is_string($materialIds)) {
@@ -59,10 +60,11 @@ class MaterialController extends Controller
             $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
         }
 
-        foreach($materialIds as $id) {
+        foreach($materialIds as $index => $id) {
             $pairs->push([
                 'assembly_id' => $assemblyId,
                 'material_id' => trim($id),
+                'quantity' => $quantities[$index] ?? 1
             ]);
         }
 
@@ -124,6 +126,7 @@ class MaterialController extends Controller
 
         $assemblyId = $id;
         $materialIds = $request->material_ids;
+        $quantities = $request->quantities;
 
         $deletedRows = BillOfMaterial::where('assembly_id', $assemblyId)->delete();
         //$billsOfMaterials = BillOfMaterial::whereIn('assembly_id', $assemblyId)->get();
@@ -135,10 +138,11 @@ class MaterialController extends Controller
             $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
         }
 
-        foreach($materialIds as $materialId) {
+        foreach($materialIds as $index => $materialId) {
             $pairs->push([
                 'assembly_id' => $assemblyId,
                 'material_id' => trim($materialId),
+                'quantity' => $quantities[$index] ?? 1
             ]);
         }
 
