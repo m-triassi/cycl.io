@@ -70,12 +70,12 @@ class SupplierController extends Controller
             "partnership_end_date",
         ]);
 
-        $item = Supplier::create($params);
-        $item->save();
+        $supplier = Supplier::create($params);
+        $supplier->save();
 
         return response([
             'success' => true,
-            'data' => $item->refresh()
+            'data' => $supplier->refresh()
         ]);
     }
 
