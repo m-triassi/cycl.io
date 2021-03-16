@@ -1,8 +1,8 @@
 import axios from 'axios'
-import {OrderItemFormDataType} from '../models/order'
+import {OrderItemStateType} from '../models/order'
 import {orderRoute} from '.'
 
-export const addOrder = (payload: OrderItemFormDataType) => axios({
+export const addOrder = (payload: OrderItemStateType) => axios({
     url: orderRoute,
     method: 'POST',
     data: payload,

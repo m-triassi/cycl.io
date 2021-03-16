@@ -3,14 +3,12 @@ import {Button, Drawer, Typography, Divider} from 'antd'
 import {BOMForm, InventoryItemDetail} from '@components'
 
 type InventoryDetailDrawerPropType = {
-    routeToPage: (url: string) => void,
     isVisible: boolean,
     id: number,
     setIsVisible: (payload: boolean) => void
 }
 
 const InventoryDetailDrawer = ({
-    routeToPage,
     isVisible,
     setIsVisible,
     id,
@@ -27,17 +25,16 @@ const InventoryDetailDrawer = ({
       title={drawerTitle}
       onClose={() => setIsVisible(false)}
       visible={isVisible}
-      bodyStyle={{padding: '6px 24px 6px 24px'}}
-      width='50%'
+      width='40%'
       footer={
-        <Typography.Text
+        <Typography
           style={{
             textAlign: 'left',
           }}>
-          <Button type='primary' onClick={() => routeToPage('/OrderForm')}>
+          <Button type='primary' onClick={() => window.open(`/OrderForm/${id}`, '_blank')}>
             Order
           </Button>
-        </Typography.Text>
+        </Typography>
       }>
       <InventoryItemDetail isDrawer />
       <Divider />
