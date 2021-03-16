@@ -11,6 +11,7 @@ export type BomMaterialFormDataType = {
 export type BomMaterialStateType = {
   form: BomMaterialFormDataType,
   table: any,
+  initialTable: any
 }
 
 const initialState: BomMaterialStateType = {
@@ -20,6 +21,7 @@ const initialState: BomMaterialStateType = {
         quantities: [],
     },
     table: [],
+    initialTable: [],
 }
 
 const BomMaterial = produce(
@@ -29,11 +31,25 @@ const BomMaterial = produce(
       case 'SET_BOM_ITEMS':
         state.table = payload
         break
-      case 'BOM_MATERIAL_CHANGE_FORM_DATA':
-        state.form[payload.key] = payload.value
+      case 'SET_INITIAL_BOM_ITEMS':
+        state.table = payload
         break
-      case 'RESET_BOM_FORM_STATE':
+      case 'BOM_MATERIAL_PUSH_FORM_DATA':
+        state.form[payload.key].push(payload.value)
+        break
+      case 'SET_BOM_ASSEMBLY_ID':
+        state.form.assembly_id=payload.value
+        break
+      case 'BOM_MATERIAL_CHANGE_FORM_QUANTITY':
+        state.form.quantities[payload.key]=payload.value
+        break
+      case 'DELETE_BOM':
+        state.form.material_ids.splice(payload.key,1)
+        state.form.quantities.splice(payload.key,1)
+        break
+      case 'RESET_BOM_STATE':
         state.form = initialState.form
+        state.table = state.initialTable
         break
       case 'ADD_BOM':
         addBomMaterial(state.form)

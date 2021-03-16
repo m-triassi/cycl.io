@@ -1,28 +1,30 @@
 import React from 'react'
 import {Modal, Form, Row, Col, InputNumber, Input} from 'antd'
 
-type AddInventoryModalPropType = {
+type InventoryItemModalPropType = {
     onSubmit: () => void,
     isVisible: boolean,
     setIsVisible: (payload: boolean) => void,
     resetState: () => void,
     changeFormData: (field: string, value: any) => void,
     form: any,
+    isCreate: boolean,
 }
 
-const AddInventoryModal = ({
+const InventoryItemModal = ({
     onSubmit,
     isVisible,
     setIsVisible,
     resetState,
     changeFormData,
     form,
-}: AddInventoryModalPropType) => {
+    isCreate,
+}: InventoryItemModalPropType) => {
     const {Item} = Form
     return (
       <Modal
         visible={isVisible}
-        title='Add inventory item'
+        title={isCreate ? 'Add inventory item' : 'Edit inventory item'}
         onOk={() => {
             onSubmit()
             setIsVisible(false)
@@ -61,5 +63,5 @@ const AddInventoryModal = ({
     )
 }
 
-AddInventoryModal.displayName = 'AddInventoryModal'
-export default AddInventoryModal
+InventoryItemModal.displayName = 'InventoryItemModal'
+export default InventoryItemModal

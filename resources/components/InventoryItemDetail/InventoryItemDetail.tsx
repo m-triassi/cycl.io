@@ -1,58 +1,100 @@
-import {Row, Col} from 'antd'
-import React from 'react'
-import './styleSheet.css'
-import {DescriptionItem} from '@components'
+import {connect} from 'react-redux'
+import React, {useEffect, useState, ReactNodeArray} from 'react'
+import {StoreType, DispatchArgumentType} from '@types'
+import {pathToRegexp} from 'path-to-regexp'
+import {Button, Col, message, Row, Typography} from 'antd'
+import {InventoryItemModal} from '@components'
+import {editInventory, getInventoryDetail} from 'services/inventory'
 
 type InventoryItemDetailPropType = {
-  data: any
+    dispatch: (arg: DispatchArgumentType) => void,
+    InventoryDetail: any,
+    isDrawer: boolean,
 }
 
 const InventoryItemDetail = ({
-  data
-}: InventoryItemDetailPropType ) => (
-  <>
-    <Row>
-      <Col span={16}>
-        <DescriptionItem title='Description' content={data?data.description:''} />
-      </Col>
-    </Row>
-    <Row>
-      <Col span={16}>
-        <DescriptionItem title='Categoty' content={data?data.category:''}  />
-      </Col>
-    </Row>
-    <Row>
-      <Col span={16}>
-        <DescriptionItem title='Size' content={data?data.size:''}  />
-      </Col>
-    </Row>
-    <Row>
-      <Col span={16}>
-        <DescriptionItem title='Color' content={data?data.color:''}  />
-      </Col>
-    </Row>
-    <Row>
-      <Col span={16}>
-        <DescriptionItem title='Finish' content={data?data.finish:''}  />
-      </Col>
-    </Row>
-    <Row>
-      <Col span={16}>
-        <DescriptionItem title='Material' content={data?data.material:''}  />
-      </Col>
-    </Row>
-    <Row>
-      <Col span={16}>
-        <DescriptionItem title='Provider' content={data?data.Provider:''} />
-      </Col>
-    </Row>
-    <Row>
-      <Col span={16}>
-        <DescriptionItem title='Cost' content={`$ ${data.cost}`} />
-      </Col>
-    </Row>
-  </>
+    dispatch,
+    InventoryDetail,
+    isDrawer,
+}: InventoryItemDetailPropType) => {
+    const {Text} = Typography
+    const {id, data, form} = InventoryDetail
+    const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false)
+    const fetchInventoryDetail = () => {
+        getInventoryDetail(id).then((response: any) => {
+            if (response.data.success) {
+                dispatch({type: 'SET_INVENTORY_DETAIL_DATA', payload: response.data.data})
+            }
+        })
+    }
+    useEffect(() => {
+        if (!isDrawer) {
+            const regexp = pathToRegexp('/Production/Inventory/(\\d+)')
+            const IdString = regexp.exec(window.location.pathname)
+            const pathId = IdString && parseInt(IdString[1])
+            dispatch({type: 'CHANGE_DETAIL_ID', payload: pathId})
+        }
+        if (id !== 0 ) {
+            fetchInventoryDetail()
+        }
+    }, [id])
+    const ignoredKeys = ['id', 'created_at' , 'updated_at']
+    const toTitleText = (text: string) => {
+        if (text.includes('_')) {
+            const upperCaseText = text.charAt(0).toUpperCase() + text.slice(1)
+            return upperCaseText.replace('_', ' ')
+        }
+        return text.charAt(0).toUpperCase() + text.slice(1)
+    }
+    const dataRow: ReactNodeArray = []
+    if (data) {
+        Object.entries(data).forEach(([key, value]: any) => {
+            if (ignoredKeys.includes(key) || !value) return null
+            dataRow.push(
+              <Row>
+                <Col span={isDrawer ? 12 : 6}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
+                <Col span={isDrawer ? 12 : 6}><Text>{value.toString()}</Text></Col>
+              </Row>
+            )
+        })
+    }
+    const onSubmit = () => {
+        editInventory({id, data: form}).then((response) => {
+            if (response.data.success) {
+                message.success('Item edit successful')
+                fetchInventoryDetail()
+            }
+        })
+    }
+    const resetState = () => {
+        dispatch({type: 'RESET_INVENTORY_ITEM_EDIT_FORM_STATE'})
+        fetchInventoryDetail()
+    }
+    const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_EDIT_CHANGE_FORM_DATA', payload: {key, value}})
+
+    return (
+      <>
+        <InventoryItemModal
+          onSubmit={onSubmit}
+          isVisible={isEditModalVisible}
+          setIsVisible={setIsEditModalVisible}
+          resetState={resetState}
+          changeFormData={changeFormData}
+          form={data}
+          isCreate={false} />
+        <Row style={{margin: 6}}>
+          <Col span={6}>
+            <Button block onClick={() => setIsEditModalVisible(true)} shape='round' type='ghost'>Edit</Button>
+          </Col>
+        </Row>
+        {dataRow}
+      </>
     )
+}
+
+const mapStateToProps = (state: StoreType) => ({
+    InventoryDetail: state.InventoryDetail,
+})
 
 InventoryItemDetail.displayName = 'InventoryItemDetail'
-export default InventoryItemDetail
+export default connect(mapStateToProps)(InventoryItemDetail)
