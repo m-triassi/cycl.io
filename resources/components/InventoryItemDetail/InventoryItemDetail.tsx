@@ -64,6 +64,7 @@ const InventoryItemDetail = ({
         editInventory({id, data: form}).then((response) => {
             if (response.data.success) {
                 message.success('Item edit successful')
+                fetchInventoryDetail()
             }
         })
     }
