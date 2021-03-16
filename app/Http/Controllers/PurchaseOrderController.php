@@ -36,10 +36,11 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED;
         try {
             $request->validate([
                 'supplier_id' => "required|integer|min:0",
-                'status' => "required|string|in:pending,received",
+                "status" => "string|in:{$statuses}",
                 'delivery_date' => 'required|date|after:yesterday',
             ]);
         } catch (ValidationException $e) {
