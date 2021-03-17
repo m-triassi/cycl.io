@@ -17,7 +17,21 @@ class InventoryItemController extends Controller
     {
         return response([
             'success' => true,
-           'data' => InventoryItem::findOrFail($id)
+            'data' => InventoryItem::select([
+                'title',
+                'description',
+                'category',
+                'size',
+                'color',
+                'finish',
+                'material',
+                'part_number',
+                'stock',
+                'cost',
+                'sale_price',
+                'supplier_id',
+                'id',
+            ])->findOrFail($id)
         ]);
     }
 
