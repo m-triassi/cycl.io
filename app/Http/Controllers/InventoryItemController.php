@@ -28,7 +28,9 @@ class InventoryItemController extends Controller
                 'part_number',
                 'stock',
                 'cost',
-                'sale_price'
+                'sale_price',
+                'supplier_id',
+                'id',
             ])->findOrFail($id)
         ]);
     }
