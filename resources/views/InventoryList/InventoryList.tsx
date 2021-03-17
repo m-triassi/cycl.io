@@ -8,6 +8,7 @@ import {filterInventory, getInventory} from 'services/inventory'
 import {DeleteButton, InventoryItemModal} from '@components'
 import {InventoryDetailDrawer} from './components'
 
+
 const StyledRow = styled(Row)`
     padding: 10px 0px;
 `
@@ -62,6 +63,31 @@ const InventoryList = ({
             )
         },
         {
+          title: 'Category',
+          key: 'category',
+          dataIndex: 'category'
+        },
+        {
+          title: 'Size',
+          key: 'size',
+          dataIndex: 'size'
+        },
+        {
+          title: 'Color',
+          key: 'color',
+          dataIndex: 'color'
+        },
+        {
+          title: 'Finish',
+          key: 'finish',
+          dataIndex: 'finish'
+        },
+        {
+          title: 'Material',
+          key: 'material',
+          dataIndex: 'material'
+        },
+        {
             title: 'Cost',
             key: 'cost',
             dataIndex: 'cost',
@@ -72,16 +98,6 @@ const InventoryList = ({
             key: 'sale_price',
             dataIndex: 'sale_price',
             render: (text: any) => `$ ${text}`
-        },
-        {
-            title: 'Category',
-            key: 'category',
-            dataIndex: 'category'
-        },
-        {
-            title: 'Size',
-            key: 'size',
-            dataIndex: 'size'
         },
         {
             title: 'Stock',
@@ -133,6 +149,7 @@ const InventoryList = ({
           onRow={(record) => ({onClick: () => {
             setSelectedRowId(record.id)
             dispatch({type: 'CHANGE_DETAIL_ID', payload: record.id})
+            dispatch({type: 'SET_INVENTORY_DETAIL_DATA', payload: record})
             setIsDetailDrawerVisible(true)
           }})}
           scroll={{x: 'max-content'}} />
