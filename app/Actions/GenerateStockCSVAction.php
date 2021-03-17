@@ -8,7 +8,7 @@ use App\Models\InventoryItem;
 
 class GenerateStockCSVAction
 {
-    public function __invoke() : string
+    public function execute() : string
     {
         $lowStock = InventoryItem::with('supplier')->belowMinimum()->get();
         $rows = $lowStock->map(function ($item) {
