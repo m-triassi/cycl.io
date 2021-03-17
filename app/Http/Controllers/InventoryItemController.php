@@ -17,7 +17,21 @@ class InventoryItemController extends Controller
     {
         return response([
             'success' => true,
-           'data' => InventoryItem::findOrFail($id)
+            'data' => InventoryItem::select([
+                'title',
+                'description',
+                'category',
+                'size',
+                'color',
+                'finish',
+                'material',
+                'part_number',
+                'stock',
+                'cost',
+                'sale_price',
+                'supplier_id',
+                'id',
+            ])->findOrFail($id)
         ]);
     }
 
@@ -44,6 +58,7 @@ class InventoryItemController extends Controller
             "material",
             "finish",
             "labour_cost",
+            "minimum_stock",
             "supplier_id"
         ]);
 
@@ -83,7 +98,8 @@ class InventoryItemController extends Controller
                 "material" => "nullable|string|max:255",
                 "part_number" => "nullable|string|max:255",
                 "lead_time" => "nullable|numeric|min:0",
-                "labour_cost" => "nullable|numeric|min:0"
+                "labour_cost" => "nullable|numeric|min:0",
+                "minimum_stock" => "nullable|integer|min:0"
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -108,16 +124,12 @@ class InventoryItemController extends Controller
             "material",
             "part_number",
             "lead_time",
-            "labour_cost"
+            "labour_cost",
+            "minimum_stock"
         ]);
 
         //updating the belongsTo relationship of the supplier
-        $supplier_id = $request->supplier_id;
-        if (!is_null($supplier_id)) {
-            $inventoryItem->supplier()->associate($supplier_id);
-            $inventoryItem->save();
-        }
-
+        $params['supplier_id'] = $request->supplier_id ?? $inventoryItem->supplier_id;
         $inventoryItem->update($params);
 
         return response([
@@ -163,7 +175,8 @@ class InventoryItemController extends Controller
             "material",
             "part_number",
             "lead_time",
-            "labour_cost"
+            "labour_cost",
+            "minimum_stock"
         ]);
 
         $item = InventoryItem::create($params);

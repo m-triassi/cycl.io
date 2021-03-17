@@ -25,6 +25,7 @@ const InventoryDetailDrawer = ({
       title={drawerTitle}
       onClose={() => setIsVisible(false)}
       visible={isVisible}
+      bodyStyle={{padding: '6px 24px 6px 24px'}}
       width='40%'
       footer={
         <Typography

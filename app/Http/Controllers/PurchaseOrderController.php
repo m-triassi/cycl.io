@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InventoryItem;
 use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Str;
 
-class PurchaseOrderItemController extends Controller
+class PurchaseOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,7 +36,33 @@ class PurchaseOrderItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED;
+        try {
+            $request->validate([
+                'supplier_id' => "required|integer|min:0",
+                "status" => "string|in:{$statuses}",
+                'delivery_date' => 'required|date|after:yesterday',
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        $params = $request->only([
+            "supplier_id",
+            "status",
+            "delivery_date",
+        ]);
+
+        $purchaseOrder = PurchaseOrder::create($params);
+        $purchaseOrder->save();
+
+        return response([
+            'success' => true,
+            'data' => $purchaseOrder->refresh()
+        ]);
     }
 
     /**
@@ -72,9 +96,12 @@ class PurchaseOrderItemController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED;
         try {
             $request->validate([
-                'item_ids' => "required"
+                "supplier_id" => "integer|min:0|exists:suppliers,id",
+                "status" => "string|in:{$statuses}",
+                "delivery_date" => "date|after:yesterday",
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -82,22 +109,18 @@ class PurchaseOrderItemController extends Controller
                 'errors' => $e->errors()
             ]);
         }
-
-        $itemIds = $request->item_ids;
-
-        if (is_string($itemIds)) {
-            $itemIds = trim($itemIds, " ,");
-            $itemIds = Str::contains($itemIds, ",") ? explode(",", $itemIds) : [$itemIds];
-        }
-
         $purchaseOrder = PurchaseOrder::findOrFail($id);
 
-        $purchaseOrder->order_items()->sync($itemIds);
-        $purchaseOrder->save();
+        $params = $request->only([
+            "supplier_id",
+            "status",
+            "delivery_date",
+        ]);
 
+        $purchaseOrder->update($params);
         return response([
             'success' => true,
-            'data' => $purchaseOrder->with('order_items')->findOrFail($id)
+            'data' => $purchaseOrder->refresh()
         ]);
     }
 

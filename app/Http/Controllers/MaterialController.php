@@ -51,25 +51,21 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $assemblyId = $request->assembly_id;
-        $materialIds = $request->material_ids;
         $pairs = collect();
+        $assembly = InventoryItem::findOrFail($assemblyId);
+        $quantities = $this->stringToArray($request->quantities);
+        $materialIds = $this->stringToArray($request->material_ids);
 
-        if(is_string($materialIds)) {
-            $materialIds = trim($materialIds," ,");
-            $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
+        foreach($materialIds as $index => $id) {
+            $pairs[$id] = [
+                'quantity' => $quantities[$index] ?? 1
+            ];
         }
 
-        foreach($materialIds as $id) {
-            $pairs->push([
-                'assembly_id' => $assemblyId,
-                'material_id' => trim($id),
-            ]);
-        }
-
-        BillOfMaterial::insert($pairs->toArray());
+        $assembly->materials()->sync($pairs->toArray());
         return response([
             'success' => true,
-            'data' => InventoryItem::find($assemblyId)->materials
+            'data' => $assembly->refresh()->materials
         ]);
     }
 
@@ -109,8 +105,6 @@ class MaterialController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //TODO: Refactor: Look into using sync to avoid deleting entries every time we update.
-
         try {
             $request->validate([
                 'material_ids' => 'required'
@@ -122,30 +116,21 @@ class MaterialController extends Controller
             ]);
         }
 
-        $assemblyId = $id;
-        $materialIds = $request->material_ids;
-
-        $deletedRows = BillOfMaterial::where('assembly_id', $assemblyId)->delete();
-        //$billsOfMaterials = BillOfMaterial::whereIn('assembly_id', $assemblyId)->get();
-
         $pairs = collect();
+        $assembly = InventoryItem::findOrFail($id);
+        $quantities = $this->stringToArray($request->quantities);
+        $materialIds = $this->stringToArray($request->material_ids);
 
-        if(is_string($materialIds)) {
-            $materialIds = trim($materialIds," ,");
-            $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
+        foreach($materialIds as $index => $materialId) {
+            $pairs[$materialId] = [
+                'quantity' => $quantities[$index] ?? 1
+            ];
         }
 
-        foreach($materialIds as $materialId) {
-            $pairs->push([
-                'assembly_id' => $assemblyId,
-                'material_id' => trim($materialId),
-            ]);
-        }
-
-        BillOfMaterial::insert($pairs->toArray());
+        $assembly->materials()->sync($pairs->toArray());
         return response([
             'success' => true,
-            'data' => InventoryItem::find($assemblyId)->materials
+            'data' => $assembly->refresh()->materials
         ]);
     }
 
@@ -158,5 +143,18 @@ class MaterialController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    /**
+     * Transforms a comma seperated list of IDs into an array cleanly
+     *
+     * @param $input
+     * @return array
+     */
+    private function stringToArray($input) : array
+    {
+        return is_string($input) ? explode(',', str_replace(" ", "", $input))
+            : (array) $input;
     }
 }

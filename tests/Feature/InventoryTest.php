@@ -128,7 +128,8 @@ class InventoryTest extends TestCase
             'description' => "This items will be a test item",
             'cost' => 9.99,
             'sale_price' => 19.99,
-            'size' => "testSize"
+            'size' => "testSize",
+            'supplier_id'=>2,
         ]);
 
         // make sure we're redirected
@@ -138,14 +139,13 @@ class InventoryTest extends TestCase
 
         $redirected->assertStatus(302);
 
-
         // check that items get updated properly
         $user = User::first();
         $updated = $this->actingAs($user)->put("/inventory/$itemA->id", [
-            'title' => "this is a new title"
+            'title' => "this is a new title",
         ]);
-        $updatedData = $updated->getOriginalContent();
 
+        $updatedData = $updated->getOriginalContent();
         $updated->assertStatus(200);
         $this->assertNotEquals($itemA, $updatedData['data']);
         $this->assertEquals("this is a new title", $updatedData['data']->title);
