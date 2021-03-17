@@ -28,7 +28,7 @@ class InventoryItemFactory extends Factory
             'description' => $this->faker->text,
             'cost' => $this->faker->randomFloat(2, 0, 10000),
             'sale_price' => $this->faker->randomFloat(2, 0, 10000),
-            'stock' => $this->faker->randomDigit,
+            'stock' => $this->faker->numberBetween(1,9),
             'category' => $this->faker->word,
             'size' => $this->faker->word,
             'color' => $this->faker->colorName,

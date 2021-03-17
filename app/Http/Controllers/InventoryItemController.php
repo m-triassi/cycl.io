@@ -129,12 +129,7 @@ class InventoryItemController extends Controller
         ]);
 
         //updating the belongsTo relationship of the supplier
-        $supplier_id = $request->supplier_id;
-        if (!is_null($supplier_id)) {
-            $inventoryItem->supplier()->associate($supplier_id);
-            $inventoryItem->save();
-        }
-
+        $params['supplier_id'] = $request->supplier_id ?? $inventoryItem->supplier_id;
         $inventoryItem->update($params);
 
         return response([
