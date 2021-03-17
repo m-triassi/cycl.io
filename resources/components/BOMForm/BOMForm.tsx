@@ -6,8 +6,6 @@ import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import {DeleteButton} from '@components'
 import {DeleteOutlined} from '@ant-design/icons'
-import {getBomMaterial} from 'services/bom-material'
-
 
 type BOMFormPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
