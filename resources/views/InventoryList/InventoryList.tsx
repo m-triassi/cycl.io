@@ -23,7 +23,7 @@ const InventoryList = ({
     InventoryItem,
 }: InventoryListPropType) => {
     const {form, table} = InventoryItem
-    const {Text, Link} = Typography
+    const {Link} = Typography
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const [isDetailDrawerVisible, setIsDetailDrawerVisible] = useState<boolean>(false)
     const [selectedRowId, setSelectedRowId] = useState<number>(0)
