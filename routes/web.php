@@ -26,6 +26,9 @@ Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::clas
 
 Route::get('/supplier', [SupplierController::class, "index"])->middleware(['auth']);
 Route::get('/supplier/{id}', [SupplierController::class, "show"])->middleware(['auth']);
+Route::post('/supplier', [SupplierController::class, "store"])->middleware(['auth']);
+Route::put('/supplier/{id}', [SupplierController::class, "update"])->middleware(['auth']);
+
 
 Route::post('/supplier/items', [SupplierItemController::class, "store"])->middleware(['auth']);
 
