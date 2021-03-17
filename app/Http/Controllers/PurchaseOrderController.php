@@ -2,35 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Supplier;
-use Illuminate\Validation\ValidationException;
+use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
-class SupplierController extends Controller
+class PurchaseOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        try {
-            $request->validate([
-                'supplier_name' => "nullable|string|max:255"
-            ]);
-        } catch (ValidationException $e) {
-            return response([
-                'success' => false,
-                'errors' => $e->errors()
-            ]);
-        }
-
-        $supplierName = $request->supplier_name;
-        return response([
-            'success' => true,
-            'data' => Supplier::where('name', 'like', "%{$supplierName}%")->get()
-        ]);
+        //
     }
 
     /**
@@ -51,11 +36,12 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED;
         try {
             $request->validate([
-                'name' => "required|string",
-                'partnership_start_date' => "required|date",
-                'partnership_end_date' => 'nullable|date|after:partnership_start_date',
+                'supplier_id' => "required|integer|min:0",
+                "status" => "string|in:{$statuses}",
+                'delivery_date' => 'required|date|after:yesterday',
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -65,17 +51,17 @@ class SupplierController extends Controller
         }
 
         $params = $request->only([
-            "name",
-            "partnership_start_date",
-            "partnership_end_date",
+            "supplier_id",
+            "status",
+            "delivery_date",
         ]);
 
-        $supplier = Supplier::create($params);
-        $supplier->save();
+        $purchaseOrder = PurchaseOrder::create($params);
+        $purchaseOrder->save();
 
         return response([
             'success' => true,
-            'data' => $supplier->refresh()
+            'data' => $purchaseOrder->refresh()
         ]);
     }
 
@@ -87,10 +73,7 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        return response([
-            'success' => true,
-            'data' => Supplier::with('inventory_items')->findOrFail($id)
-        ]);
+        //
     }
 
     /**
@@ -113,13 +96,12 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $supplier = Supplier::findOrFail($id);
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED;
         try {
-            $startDate = $request->partnership_start_date ?? $supplier->partnership_start_date;
             $request->validate([
-                "name" => "nullable|string|max:255",
-                "partnership_start_date" => "date",
-                "partnership_end_date" => "nullable|date|after:{$startDate}",
+                "supplier_id" => "integer|min:0|exists:suppliers,id",
+                "status" => "string|in:{$statuses}",
+                "delivery_date" => "date|after:yesterday",
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -127,17 +109,18 @@ class SupplierController extends Controller
                 'errors' => $e->errors()
             ]);
         }
+        $purchaseOrder = PurchaseOrder::findOrFail($id);
 
         $params = $request->only([
-            "name",
-            "partnership_start_date",
-            "partnership_end_date",
+            "supplier_id",
+            "status",
+            "delivery_date",
         ]);
 
-        $supplier->update($params);
+        $purchaseOrder->update($params);
         return response([
             'success' => true,
-            'data' => $supplier->refresh()
+            'data' => $purchaseOrder->refresh()
         ]);
     }
 

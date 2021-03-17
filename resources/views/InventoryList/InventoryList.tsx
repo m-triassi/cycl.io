@@ -23,6 +23,7 @@ const InventoryList = ({
     InventoryItem,
 }: InventoryListPropType) => {
     const {form, table} = InventoryItem
+    const {Link} = Typography
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const [isDetailDrawerVisible, setIsDetailDrawerVisible] = useState<boolean>(false)
     const [selectedRowId, setSelectedRowId] = useState<number>(0)
@@ -55,12 +56,12 @@ const InventoryList = ({
 
     const columns = [
         {
-            title: 'Title',
-            key: 'title',
-            dataIndex: 'title',
-            render: (text: string) => (
-              <Typography.Text strong>{text}</Typography.Text>
-            )
+          title: 'Title',
+          key: 'title',
+          dataIndex: 'title',
+          render: (text: string) => (
+            <Typography.Text strong>{text}</Typography.Text>
+          )
         },
         {
           title: 'Category',
@@ -73,36 +74,29 @@ const InventoryList = ({
           dataIndex: 'size'
         },
         {
-          title: 'Color',
-          key: 'color',
-          dataIndex: 'color'
+          title: 'Supplier',
+          key: 'supplier_name',
+          dataIndex: ['supplier', 'name'],
+          render: (text: string, record: any) => (
+            <Link href={`/Vendor/Suppliers/${record.supplier_id}`}>{record.supplier.name}</Link>
+            )
         },
         {
-          title: 'Finish',
-          key: 'finish',
-          dataIndex: 'finish'
+          title: 'Stock',
+          key: 'stock',
+          dataIndex: 'stock',
         },
         {
-          title: 'Material',
-          key: 'material',
-          dataIndex: 'material'
+          title: 'Cost',
+          key: 'cost',
+          dataIndex: 'cost',
+          render: (text: any) => `$ ${text}`
         },
         {
-            title: 'Cost',
-            key: 'cost',
-            dataIndex: 'cost',
-            render: (text: any) => `$ ${text}`
-        },
-        {
-            title: 'Sale price',
-            key: 'sale_price',
-            dataIndex: 'sale_price',
-            render: (text: any) => `$ ${text}`
-        },
-        {
-            title: 'Stock',
-            key: 'stock',
-            dataIndex: 'stock',
+          title: 'Sale price',
+          key: 'sale_price',
+          dataIndex: 'sale_price',
+          render: (text: any) => `$ ${text}`
         },
         {
             title: 'Action',

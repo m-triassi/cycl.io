@@ -17,7 +17,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->id();
             $table->foreignId('supplier_id')->references('id')->on('suppliers');
             $table->string('status');
-            $table->timestamp('delivery_date');
+            $table->timestamp('delivery_date')->nullable();
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierItemController;
 use App\Http\Controllers\PurchaseOrderItemController;
-
+use App\Http\Controllers\PurchaseOrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,10 +22,16 @@ use App\Http\Controllers\PurchaseOrderItemController;
 
 require __DIR__.'/auth.php';
 
+Route::post('/purchase-order', [PurchaseOrderController::class, "store"])->middleware(['auth']);
+Route::put('/purchase-order/{id}', [PurchaseOrderController::class, "update"])->middleware(['auth']);
+
 Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"])->middleware(['auth']);
 
 Route::get('/supplier', [SupplierController::class, "index"])->middleware(['auth']);
 Route::get('/supplier/{id}', [SupplierController::class, "show"])->middleware(['auth']);
+Route::post('/supplier', [SupplierController::class, "store"])->middleware(['auth']);
+Route::put('/supplier/{id}', [SupplierController::class, "update"])->middleware(['auth']);
+
 
 Route::post('/supplier/items', [SupplierItemController::class, "store"])->middleware(['auth']);
 
