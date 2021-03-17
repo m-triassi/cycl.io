@@ -83,21 +83,35 @@ class PurchaseOrderItemController extends Controller
             ]);
         }
 
+        // If we didn't get a valid purchase order id, create one.
+        if ($id == 0) {
+            $purchaseOrder = PurchaseOrder::create($request->only([
+                'supplier_id',
+                'delivery_date',
+                'status'
+            ]));
+            // make sure we have the latest values from the database
+            $purchaseOrder = $purchaseOrder->refresh();
+        } else {
+            // otherwise find the purchase order we're looking for and 404 if it doesn't exist
+            $purchaseOrder = PurchaseOrder::findOrFail($id);
+        }
+
         $itemIds = $request->item_ids;
 
+        // transform the
         if (is_string($itemIds)) {
             $itemIds = trim($itemIds, " ,");
             $itemIds = Str::contains($itemIds, ",") ? explode(",", $itemIds) : [$itemIds];
         }
 
-        $purchaseOrder = PurchaseOrder::findOrFail($id);
 
         $purchaseOrder->order_items()->sync($itemIds);
         $purchaseOrder->save();
 
         return response([
             'success' => true,
-            'data' => $purchaseOrder->with('order_items')->findOrFail($id)
+            'data' => $purchaseOrder->refresh()->order_items
         ]);
     }
 
