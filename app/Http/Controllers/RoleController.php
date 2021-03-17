@@ -10,27 +10,7 @@ use Illuminate\Validation\ValidationException;
 class RoleController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created role in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -38,6 +18,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         try {
+            // validate that the incoming data is correct and present when needed
             $request->validate([
                 'type' => 'required|string',
                 'title' => 'required|string',
@@ -50,12 +31,14 @@ class RoleController extends Controller
             ]);
         }
 
+        // grab the data to be stored
         $params = $request->only([
             'type',
             'title',
             'description'
         ]);
 
+        // create the role
         $role = Role::create($params);
         $role->save();
 
@@ -64,50 +47,5 @@ class RoleController extends Controller
             'data' => $role->refresh()
         ]);
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
