@@ -9,6 +9,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierItemController;
 use App\Http\Controllers\PurchaseOrderItemController;
 use App\Http\Controllers\StockReportController;
+use App\Http\Controllers\PurchaseOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,9 @@ use App\Http\Controllers\StockReportController;
 */
 
 require __DIR__.'/auth.php';
+
+Route::post('/purchase-order', [PurchaseOrderController::class, "store"])->middleware(['auth']);
+Route::put('/purchase-order/{id}', [PurchaseOrderController::class, "update"])->middleware(['auth']);
 
 Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"])->middleware(['auth']);
 
