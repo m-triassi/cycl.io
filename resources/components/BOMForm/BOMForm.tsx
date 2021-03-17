@@ -32,22 +32,9 @@ const BOMForm = (
     const deleteBom = (key: number) => dispatch({type: 'DELETE_BOM', payload: key})
     const resetState = () => dispatch({type: 'RESET_BOM_STATE'})
 
-    const fetchBomList = (id: number) => {
-      getBomMaterial(id).then((response: any) => {
-        const {data} = response
-        if (data.success) {
-          dispatch({type: 'RESET_BOM_STATE'})
-          dispatch({type: 'SET_INITIAL_BOM_ITEMS', payload: data.data})
-          dispatch({type: 'SET_BOM_ASSEMBLY_ID', payload: inventoryId})
-        }
-      })
-    }
-
-
     const onConfirm = () => {
       dispatch({type: 'ADD_BOM'})
       resetState()
-      fetchBomList(inventoryId)
       setEdit(false)
     }
 
