@@ -62,7 +62,7 @@ const BOMForm = (
            return {
              'id': item.id,
              'cost': item.cost,
-             'supplier_id': item.supplier_id,
+             'supplier': {'name': item.supplier.name},
              'title': item.title,
              'pivot': {'assembly_id': inventoryId,'material_id': item.id, 'quantity': quantity}} } return item})
          dispatch({type: 'SET_BOM_ITEMS', payload: newTable})
@@ -82,21 +82,25 @@ const BOMForm = (
     const columns = [
         {
             title: 'Quantity',
+            key: 'quantity',
             dataIndex: ['pivot','quantity'],
             width: 20,
             render: (num: number, record: any) => isEdit?<InputNumber min={1} max={999} value={record.pivot.quantity} onChange={(e)=>{onChangeQuantity(e, record.id)}} />: `${num}`
         },
         {
             title: 'Title',
+            key: 'title',
             dataIndex: 'title',
         },
         {
             title: 'Cost',
+            key: 'cost',
             dataIndex: 'cost',
         },
         {
             title: 'Supplier',
-            dataIndex: 'supplier',
+            key: 'supplier_name',
+            dataIndex: ['supplier', 'name']
         },
         {
           title: 'Action',

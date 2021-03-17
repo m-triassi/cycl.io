@@ -39,7 +39,7 @@ const OrderForm = ({
         fetchOrderDetail()
     }
     }, [id])
-    const ignoredKeys = ['id', 'created_at' , 'updated_at', 'cost', 'stock']
+    const ignoredKeys = ['id', 'created_at' , 'updated_at', 'cost', 'stock', 'supplier_id']
     const toTitleText = (text: string) => {
       if (text.includes('_')) {
           const upperCaseText = text.charAt(0).toUpperCase() + text.slice(1)
@@ -52,6 +52,13 @@ const OrderForm = ({
         setQuantity(value)
         setTotal(value*data.sale_price)
       }
+
+    const serializeInventoryItem = (value: any) => {
+      if (typeof value === 'object'){
+        return value.name
+      }
+        return value
+    }
     const dataRow: ReactNodeArray = []
       if (data) {
           Object.entries(data).forEach(([key, value]: any) => {
@@ -59,7 +66,7 @@ const OrderForm = ({
               dataRow.push(
                 <Row gutter={[0, 8]}>
                   <Col span={6}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
-                  <Col span={8}><Text>{value.toString()}</Text></Col>
+                  <Col span={8}><Text>{serializeInventoryItem(value)}</Text></Col>
                 </Row>
               )
           })
