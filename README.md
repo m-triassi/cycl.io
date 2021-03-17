@@ -91,10 +91,20 @@ nvm alias default 14
 #### Yarn 
 You'll also likely need Yarn, it's generally consided a superior package bundler than NPM.
 
+Yarn is a Javascript package manager for your code. It allows you to use and share code with other developers from around the world. Yarn does this quickly, securely, and reliably so you don’t ever have to worry.
+
+Yarn allows you to use other developers’ solutions to different problems, making it easier for you to develop your software. If you have problems, you can report issues or contribute back, and when the problem is fixed, you can use Yarn to keep it all up to date.
+
+Code is shared through something called a package (sometimes referred to as a module). A package contains all the code being shared as well as a package.json file which describes the package.
+
 Simply run: 
 ```shell
 npm i -g yarn
 ```
+After installing yarn, simply clone the repository and type `yarn install` at the project directory terminal and let it run
+When dependency installation is completed, `yarn dev` will build the app in `public/js/app.js`
+
+Congratulation, you have completed front-end installation.
 
 ### Docker
 This project runs on a set of docker containers orchestrated by [Laravel Sail](https://laravel.com/docs/8.x/sail).
@@ -143,6 +153,48 @@ Once complete, the site should be available at http://localhost!
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+
+## GitFlow
+
+[General GitHub Workflow](https://guides.github.com/introduction/flow/)
+
+### [CommitLint](https://github.com/conventional-changelog/commitlint)
+
+In order to keep commit messages clean and meaningful, we use commitlint to set up restriction for commit messages
+
+In general the pattern mostly looks like this:
+
+`type(scope?): subject  #scope is optional`
+
+Real world examples can look like this:
+
+- `chore: run tests on travis ci`
+
+- `fix(server): send cors headers`
+
+- `feat(blog): add comment section`
+
+Common types according to commitlint-config-conventional (based on the the Angular convention) can be:
+
+```
+build
+ci
+chore
+docs
+feat
+fix
+perf
+refactor
+revert
+style
+test
+```
+
+## Git Branch Naming Convention
+
+Branch name should be in kebab case. branches should always start with the issue number they are related to, followed by a succinct description of the issue being solved. For example if an issue with ID 10 is open that has the title "Unable to upload multiple images", then the branch name might be: 
+`10-image-upload` or `10-multi-image-bug` 
+
 
 ## Credit
 
