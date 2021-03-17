@@ -14,7 +14,7 @@ class StockReportController extends Controller
         $storage = Storage::disk('public');
         $filename = now()->format('Y-m-d-His')."_stock_report.csv";
         $storage->put($filename, (new GenerateStockCSVAction())->execute());
-        
+
         return response()->download($storage->path($filename));
     }
 }
