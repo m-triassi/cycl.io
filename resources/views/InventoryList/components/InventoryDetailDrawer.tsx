@@ -1,5 +1,6 @@
 import React from 'react'
-import {Button, Drawer, Typography, Divider} from 'antd'
+import {Button, Drawer, Typography, Divider, Space} from 'antd'
+import {DownloadOutlined} from '@ant-design/icons'
 import {BOMForm, InventoryItemDetail} from '@components'
 
 type InventoryDetailDrawerPropType = {
@@ -31,9 +32,15 @@ const InventoryDetailDrawer = ({
           style={{
             textAlign: 'left',
           }}>
-          <Button type='primary' onClick={() => window.open(`/OrderForm/${id}`, '_blank')}>
-            Order
-          </Button>
+          <Space>
+            <Button type='primary' icon={<DownloadOutlined />} style={{background: '#233D4D'}}>
+              Open
+            </Button>
+            <Button type='primary' onClick={() => window.open(`/OrderForm/${id}`, '_blank')}>
+              Order
+            </Button>
+          </Space>
+
         </Typography>
       }>
       <InventoryItemDetail isDrawer />
