@@ -22,6 +22,7 @@ const InventoryList = ({
     InventoryItem,
 }: InventoryListPropType) => {
     const {form, table} = InventoryItem
+    const {Text, Link} = Typography
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const [isDetailDrawerVisible, setIsDetailDrawerVisible] = useState<boolean>(false)
     const [selectedRowId, setSelectedRowId] = useState<number>(0)
@@ -88,6 +89,14 @@ const InventoryList = ({
             key: 'stock',
             dataIndex: 'stock',
         },
+        {
+          title: 'Supplier',
+          key: 'supplier_name',
+          dataIndex: ['supplier', 'name'],
+          render: (text: string, record: any) => (
+            <Link href={`/Vendor/Suppliers/${record.supplier_id}`}>{record.supplier.name}</Link>
+            )
+         },
         {
             title: 'Action',
             key: 'action',
