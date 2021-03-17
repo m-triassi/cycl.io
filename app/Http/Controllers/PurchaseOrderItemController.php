@@ -111,7 +111,7 @@ class PurchaseOrderItemController extends Controller
 
         return response([
             'success' => true,
-            'data' => $purchaseOrder->refresh()->order_items
+            'data' => $purchaseOrder->load('order_items')->refresh()
         ]);
     }
 
