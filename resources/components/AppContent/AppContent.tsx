@@ -1,5 +1,5 @@
 import React from 'react'
-import {VendorList, InventoryList, WelcomePage} from 'views'
+import {InventoryList, WelcomePage, OrderForm, VendorList} from 'views'
 import {RouterStateType} from 'models/router'
 import {InventoryItemDetail} from '@components'
 
@@ -38,6 +38,9 @@ const AppContent = ({
         break
       case '/Settings':
         component = (<h1>Hi Settings</h1>)
+        break
+      case (route.match(/\/OrderForm\/\d+/) || {}).input:
+        component = (<OrderForm />)
         break
       case '/':
       default:

@@ -1,11 +1,12 @@
 import React from 'react'
-import {Button, Drawer} from 'antd'
-import {InventoryItemDetail} from '@components'
+import {Button, Drawer, Typography, Divider, Space} from 'antd'
+import {DownloadOutlined} from '@ant-design/icons'
+import {BOMForm, InventoryItemDetail} from '@components'
 
 type InventoryDetailDrawerPropType = {
     isVisible: boolean,
     id: number,
-    setIsVisible: (payload: boolean) => void,
+    setIsVisible: (payload: boolean) => void
 }
 
 const InventoryDetailDrawer = ({
@@ -25,9 +26,26 @@ const InventoryDetailDrawer = ({
       title={drawerTitle}
       onClose={() => setIsVisible(false)}
       visible={isVisible}
-      bodyStyle={{padding: '6px 24px 6px 24px'}}
-      width='40%'>
+      width='40%'
+      footer={
+        <Typography
+          style={{
+            textAlign: 'left',
+          }}>
+          <Space>
+            <Button type='primary' icon={<DownloadOutlined />} style={{background: '#233D4D'}}>
+              Open
+            </Button>
+            <Button type='primary' onClick={() => window.open(`/OrderForm/${id}`, '_blank')}>
+              Order
+            </Button>
+          </Space>
+
+        </Typography>
+      }>
       <InventoryItemDetail isDrawer />
+      <Divider />
+      <BOMForm inventoryId={id} />
     </Drawer>
     )
 }
