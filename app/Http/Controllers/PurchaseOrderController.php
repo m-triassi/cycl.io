@@ -15,7 +15,10 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        //
+        return response([
+            'success' => true,
+            'data' => PurchaseOrder::get()
+        ]);
     }
 
     /**
@@ -73,7 +76,10 @@ class PurchaseOrderController extends Controller
      */
     public function show($id)
     {
-        //
+        return response([
+            'success' => true,
+            'data' => PurchaseOrder::findOrFail($id)
+        ]);
     }
 
     /**
