@@ -18,6 +18,12 @@ export const filterVendor = (payload: string) => axios({
     }
 })
 
+export const filterVendorWithParams = (payload: {}) => axios({
+    method: 'GET',
+    url: vendorRoute,
+    params: payload
+})
+
 export const editVendor = (payload: any) => axios({
     method: 'PUT',
     url: vendorRoute.concat(`/${payload.id}`),

@@ -1,10 +1,10 @@
 import {Row, Table, Typography} from 'antd'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import {InventoryItemStateType} from 'models/inventory'
-import {getInventory} from 'services/inventory'
-import {getVendor} from 'services/vendor'
+import {filterInventoryWithParams} from 'services/inventory'
+import {filterVendorWithParams} from 'services/vendor'
 import pathToRegexp from 'path-to-regexp'
 
 
@@ -18,36 +18,39 @@ const SupplierDetails = ({
   InventoryItem,
 }: SupplierDetailsPropType) => {
     const {table} = InventoryItem
+    const [currentSupplierName, setCurrentSupplierName] = useState('')
+    let currentSupplierID = ''
     const regexp = pathToRegexp('/Vendor/Suppliers/(\\d+)')
     const stringID = regexp.exec(window.location.pathname)
-    const currentSupplierID = parseInt(stringID[1], 10)
-    let currentSupplierName = 'Unknown'
-    const filterInventoryBySupplierID = (item: any) => item.supplier_id === currentSupplierID
-    const filterVendorBySupplierID = (item: any) => item.id === currentSupplierID
-    const fetchSupplierName = () => {
-      getVendor().then((response: any) => {
+    if (stringID !== null){
+      currentSupplierID = stringID[1]
+    }
+
+    const fetchSupplierFilteredInventoryList = () => {
+      filterInventoryWithParams({'supplier_id': currentSupplierID}).then((response: any) => {
         const {data} = response
         if (data.success) {
-          currentSupplierName = data.data.filter(filterVendorBySupplierID)[0].name
+          dispatch({type: 'SET_INVENTORY_ITEMS', payload: data.data})
         }
       })
     }
 
-    const fetchInventoryList = () => {
-      getInventory().then((response: any) => {
+    const fetchSupplierName = () => {
+      filterVendorWithParams({'id': currentSupplierID}).then((response: any) => {
         const {data} = response
         if (data.success) {
-          dispatch({type: 'SET_INVENTORY_ITEMS', payload: data.data.filter(filterInventoryBySupplierID)})
+          console.log(data.data[0])
+          setCurrentSupplierName(data.data[0].name)
         }
       })
     }
 
     useEffect(() => {
       fetchSupplierName()
-      fetchInventoryList()
+      fetchSupplierFilteredInventoryList()
     }, [])
 
-    const columns = [
+    const inventoryColumns = [
       {
           title: 'Title',
           key: 'title',
@@ -94,7 +97,12 @@ const SupplierDetails = ({
             {currentSupplierName}
           </Typography.Title>
         </Row>
-        <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
+        <Row>
+          <Typography.Title level={2}>
+            Inventory Items
+          </Typography.Title>
+        </Row>
+        <Table bordered columns={inventoryColumns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
       </>
     )
 }
