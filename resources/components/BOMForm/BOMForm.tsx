@@ -110,8 +110,8 @@ const BOMForm = (
             dataIndex: 'cost',
         },
         {
-            title: 'Supplier',
-            dataIndex: 'supplier',
+          title: 'Supplier',
+          dataIndex: ['supplier', 'name'],
         },
         {
           title: 'Action',

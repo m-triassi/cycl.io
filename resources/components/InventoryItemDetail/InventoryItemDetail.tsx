@@ -57,18 +57,32 @@ const InventoryItemDetail = ({
         }
         return text.charAt(0).toUpperCase() + text.slice(1)
     }
+
+    const serializeInventoryItem = (value: any) => {
+      if (typeof value === 'object'){
+        return value.name
+      }
+        return value
+    }
+
     const dataRow: ReactNodeArray = []
     if (data) {
         Object.entries(data).forEach(([key, value]: any) => {
             if (ignoredKeys.includes(key) || !value) return null
+
             dataRow.push(
               <Row>
                 <Col span={isDrawer ? 12 : 6}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
-                <Col span={isDrawer ? 12 : 6}><Text>{value.toString()}</Text></Col>
+                <Col span={isDrawer ? 12 : 6}>
+                  <Text>
+                    {serializeInventoryItem(value)}
+                  </Text>
+                </Col>
               </Row>
             )
         })
     }
+
     const onSubmit = () => {
         editInventory({id, data: form}).then((response) => {
             if (response.data.success) {
