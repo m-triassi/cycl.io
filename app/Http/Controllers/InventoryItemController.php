@@ -27,6 +27,7 @@ class InventoryItemController extends Controller
                 'material',
                 'part_number',
                 'stock',
+                'minimum_stock',
                 'cost',
                 'sale_price',
                 'supplier_id',
