@@ -24,6 +24,8 @@ use App\Http\Controllers\PurchaseOrderController;
 
 require __DIR__.'/auth.php';
 
+Route::get('/purchase-order', [PurchaseOrderController::class, "index"])->middleware(['auth']);
+Route::get('/purchase-order/{id}', [PurchaseOrderController::class, "show"])->middleware(['auth']);
 Route::post('/purchase-order', [PurchaseOrderController::class, "store"])->middleware(['auth']);
 Route::put('/purchase-order/{id}', [PurchaseOrderController::class, "update"])->middleware(['auth']);
 
