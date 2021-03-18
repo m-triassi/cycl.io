@@ -13,11 +13,17 @@ class PurchaseOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->only(['supplier_id', 'status']);
+        $orders = PurchaseOrder::query();
+        
+        foreach ($filters as $filter => $value) {
+            $orders = $orders->where($filter, $value);
+        }
         return response([
             'success' => true,
-            'data' => PurchaseOrder::get()
+            'data' => $orders->get()
         ]);
     }
 
