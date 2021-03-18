@@ -9,6 +9,7 @@ import {filterInventory, getInventory} from 'services/inventory'
 import {DeleteButton, InventoryItemModal} from '@components'
 import {InventoryDetailDrawer} from './components'
 
+
 const StyledRow = styled(Row)`
     padding: 10px 0px;
 `
@@ -69,17 +70,17 @@ const InventoryList = ({
           dataIndex: 'category'
         },
         {
-          title: 'Size',
-          key: 'size',
-          dataIndex: 'size'
-        },
-        {
           title: 'Supplier',
           key: 'supplier_name',
           dataIndex: ['supplier', 'name'],
           render: (text: string, record: any) => (
             <Link href={`/Vendor/Suppliers/${record.supplier_id}`}>{record.supplier.name}</Link>
             )
+        },
+        {
+          title: 'Size',
+          key: 'size',
+          dataIndex: 'size'
         },
         {
           title: 'Stock',
@@ -143,6 +144,7 @@ const InventoryList = ({
           onRow={(record) => ({onClick: () => {
             setSelectedRowId(record.id)
             dispatch({type: 'CHANGE_DETAIL_ID', payload: record.id})
+            dispatch({type: 'SET_INVENTORY_DETAIL_DATA', payload: record})
             setIsDetailDrawerVisible(true)
           }})}
           scroll={{x: 'max-content'}} />

@@ -5,6 +5,7 @@ import {pathToRegexp} from 'path-to-regexp'
 import {Button, Col, message, Row, Typography} from 'antd'
 import {InventoryItemModal} from '@components'
 import {editInventory, getInventoryDetail} from 'services/inventory'
+import {getBomMaterial} from 'services/bom-material'
 
 type InventoryItemDetailPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
@@ -27,6 +28,15 @@ const InventoryItemDetail = ({
             }
         })
     }
+    const fetchBomList = (inventoryId: number) => {
+      getBomMaterial(inventoryId).then((response: any) => {
+        if (response.data.success) {
+          dispatch({type: 'RESET_BOM_STATE'})
+          dispatch({type: 'SET_INITIAL_BOM_ITEMS', payload: response.data.data})
+          dispatch({type: 'SET_BOM_ASSEMBLY_ID', payload: inventoryId})
+        }
+      })
+    }
     useEffect(() => {
         if (!isDrawer) {
             const regexp = pathToRegexp('/Production/Inventory/(\\d+)')
@@ -36,6 +46,7 @@ const InventoryItemDetail = ({
         }
         if (id !== 0 ) {
             fetchInventoryDetail()
+            fetchBomList(id)
         }
     }, [id])
     const ignoredKeys = ['id', 'created_at' , 'updated_at', 'is_below_minimum']
