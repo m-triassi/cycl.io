@@ -9,7 +9,7 @@ export type OrderItemStateType = {
 const initialState: OrderItemStateType = {
     id: 0,
     data: {},
-    form: {}
+    form: {},
 }
 
 const OrderItem = produce(

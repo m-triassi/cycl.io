@@ -5,6 +5,7 @@ import InventoryDetail from './inventory-detail'
 import BomMaterial from './bom-material'
 import VendorItem from './vendor'
 import OrderItem from './order'
+import OrderList from './order-list'
 
 const rootReducer = combineReducers({
     router,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     InventoryDetail,
     BomMaterial,
     VendorItem,
-    OrderItem
+    OrderItem,
+    OrderList
 })
 
 export default rootReducer

@@ -10,12 +10,10 @@ export const addOrder = (payload: OrderItemStateType) => axios({
 
 export const getOrder = () => axios.get(orderRoute)
 
-export const filterInventory = (payload: string) => axios({
+export const filterPurchaseOrder = (payload: {}) => axios({
     method: 'GET',
     url: orderRoute,
-    params: {
-        q: payload
-    }
+    params: payload
 })
 
 export const editOrder = (payload: any) => axios({
