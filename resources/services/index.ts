@@ -1,3 +1,3 @@
 export const inventoryRoute = '/inventory'
-export const orderRoute = '/order'
+export const orderRoute = '/purchase-order/orderables'
 export const vendorRoute = '/supplier'

@@ -17,9 +17,10 @@ const OrderForm = ({
     OrderItem
   }: OrderFormPropType) => {
     const {Text} = Typography
-    const {id, data} = OrderItem
+    const {id, data, form} = OrderItem
     const [quantity, setQuantity] = useState<number>(1)
     const [total, setTotal] = useState<number>(0)
+    const setOrderForm = (key: number, value: {'quantity': number, 'supplier_id': number}) => dispatch({type: 'SET_ORDER_DETAIL_FORM', payload: {key, value}})
 
     const fetchOrderDetail = () => {
       getInventoryDetail(id).then((response: any) => {
@@ -39,19 +40,34 @@ const OrderForm = ({
         fetchOrderDetail()
     }
     }, [id])
-    const ignoredKeys = ['id', 'created_at' , 'updated_at', 'cost', 'stock']
+    const ignoredKeys = ['id', 'created_at' , 'updated_at', 'cost', 'stock', 'supplier_id']
     const toTitleText = (text: string) => {
       if (text.includes('_')) {
           const upperCaseText = text.charAt(0).toUpperCase() + text.slice(1)
           return upperCaseText.replace('_', ' ')
       }
       return text.charAt(0).toUpperCase() + text.slice(1)
-  }
+    }
 
     const onQuantityChange = (value: any) => {
         setQuantity(value)
+        const itemIndex=form.item_ids.findIndex((item: { inventory_item_id: number }) => item.inventory_item_id===id)
+        setOrderForm(itemIndex,{'quantity': value, 'supplier_id': data.supplier_id})
         setTotal(value*data.sale_price)
       }
+
+    const serializeInventoryItem = (value: any) => {
+      if (typeof value === 'object'){
+        return value.name
+      }
+        return value
+    }
+    const onConfirm =()=>{
+      console.log(form)
+      dispatch({type: 'ADD_ORDER'})
+      // window.close
+    }
+
     const dataRow: ReactNodeArray = []
       if (data) {
           Object.entries(data).forEach(([key, value]: any) => {
@@ -59,7 +75,7 @@ const OrderForm = ({
               dataRow.push(
                 <Row gutter={[0, 8]}>
                   <Col span={6}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
-                  <Col span={8}><Text>{value.toString()}</Text></Col>
+                  <Col span={8}><Text>{serializeInventoryItem(value)}</Text></Col>
                 </Row>
               )
           })
@@ -92,7 +108,7 @@ const OrderForm = ({
             <Button onClick={()=>window.close()}>Cancel</Button>
           </Col>
           <Col span={3}>
-            <Button type='primary'>Confirm</Button>
+            <Button type='primary' onClick={onConfirm}>Confirm</Button>
           </Col>
         </Row>
       </>

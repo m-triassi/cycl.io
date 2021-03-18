@@ -66,6 +66,7 @@ const InventoryItem = produce(
         })
         break
       case 'ADD_INVENTORY':
+        console.log(state.form)
         addInventory(state.form)
         .then((response) => {
           const {data} = response

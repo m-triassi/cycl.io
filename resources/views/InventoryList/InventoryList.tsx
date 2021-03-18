@@ -68,17 +68,17 @@ const InventoryList = ({
           dataIndex: 'category'
         },
         {
-          title: 'Size',
-          key: 'size',
-          dataIndex: 'size'
-        },
-        {
           title: 'Supplier',
           key: 'supplier_name',
           dataIndex: ['supplier', 'name'],
           render: (text: string, record: any) => (
             <Link href={`/Vendor/Suppliers/${record.supplier_id}`}>{record.supplier.name}</Link>
             )
+        },
+        {
+          title: 'Size',
+          key: 'size',
+          dataIndex: 'size'
         },
         {
           title: 'Stock',
