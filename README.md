@@ -245,6 +245,8 @@ Before submitting a pull request:
 
 - **[PSR-12 Coding Standard](https://www.php-fig.org/psr/psr-12/)** - The easiest way to apply the conventions is to install [PHP Code Sniffer](https://pear.php.net/package/PHP_CodeSniffer).
 
+- **[ESLint Coding Standards](https://eslint.org/docs/developer-guide/code-conventions)** - The easiest way to apply the conventions is to install [ESLint](https://eslint.org/docs/user-guide/getting-started).
+
 - **Add tests!** - Your patch won't be accepted if it doesn't have tests.
 
 - **Document any change in behaviour** - Make sure the `README.md` and any other relevant documentation are kept up-to-date.
