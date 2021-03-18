@@ -11,21 +11,24 @@ use Illuminate\Support\Str;
 class MaterialController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the material.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
+        // set a flag that will decide if we show items that are materials or items that are assembliies
         $isAssembly = $request->is_assembly;
 
         if($isAssembly){
+            // show assemblies
             return response([
                 'success' => true,
                 'data' => InventoryItem::has("materials")->get()
             ]);
         }
 
+        // show materials
         return response([
             'success' => true,
             'data' => InventoryItem::has("assemblies")->get()
@@ -33,56 +36,44 @@ class MaterialController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created material in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        // collect the information to be attached
         $assemblyId = $request->assembly_id;
-        $materialIds = $request->material_ids;
-        $quantities = $request->quantities;
         $pairs = collect();
+        $assembly = InventoryItem::findOrFail($assemblyId);
+        $quantities = $this->stringToArray($request->quantities);
+        $materialIds = $this->stringToArray($request->material_ids);
 
-        if(is_string($materialIds)) {
-            $materialIds = trim($materialIds," ,");
-            $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
-        }
-
+        // build a array in which we list each item to be attached and the quantity of each
         foreach($materialIds as $index => $id) {
-            $pairs->push([
-                'assembly_id' => $assemblyId,
-                'material_id' => trim($id),
+            $pairs[$id] = [
                 'quantity' => $quantities[$index] ?? 1
-            ]);
+            ];
         }
 
-        BillOfMaterial::insert($pairs->toArray());
+        // attach all materials to the assembly
+        $assembly->materials()->sync($pairs->toArray());
         return response([
             'success' => true,
-            'data' => InventoryItem::find($assemblyId)->materials
+            'data' => $assembly->refresh()->materials
         ]);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified material.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
+        // find the assembly to show the materials of or 404 if it doesn't exist
         $inventoryItem = InventoryItem::findOrFail($id);
         return response([
             'success' => true,
@@ -91,19 +82,7 @@ class MaterialController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the specified material in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -111,56 +90,51 @@ class MaterialController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //TODO: Refactor: Look into using sync to avoid deleting entries every time we update.
-
         try {
+            // check the required values are passed in
             $request->validate([
                 'material_ids' => 'required'
             ]);
         } catch (ValidationException $e) {
+            // report they are missing if they are
             return response([
                 'success' => false,
                 'errors' => $e->errors()
             ]);
         }
 
-        $assemblyId = $id;
-        $materialIds = $request->material_ids;
-        $quantities = $request->quantities;
-
-        $deletedRows = BillOfMaterial::where('assembly_id', $assemblyId)->delete();
-        //$billsOfMaterials = BillOfMaterial::whereIn('assembly_id', $assemblyId)->get();
-
+        // collect all the information to be changed
         $pairs = collect();
+        $assembly = InventoryItem::findOrFail($id);
+        $quantities = $this->stringToArray($request->quantities);
+        $materialIds = $this->stringToArray($request->material_ids);
 
-        if(is_string($materialIds)) {
-            $materialIds = trim($materialIds," ,");
-            $materialIds = Str::contains($materialIds, ",") ? explode(",", $materialIds) : [$materialIds];
-        }
-
+        // build an associative array that updates the materials on the assembly and their quantities
         foreach($materialIds as $index => $materialId) {
-            $pairs->push([
-                'assembly_id' => $assemblyId,
-                'material_id' => trim($materialId),
+            $pairs[$materialId] = [
                 'quantity' => $quantities[$index] ?? 1
-            ]);
+            ];
         }
 
-        BillOfMaterial::insert($pairs->toArray());
+        // save the material on the assembly
+        $assembly->materials()->sync($pairs->toArray());
         return response([
             'success' => true,
-            'data' => InventoryItem::find($assemblyId)->materials
+            'data' => $assembly->refresh()->materials
         ]);
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Transforms a comma seperated list of IDs into an array cleanly
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $input
+     * @return array
      */
-    public function destroy($id)
+    private function stringToArray($input) : array
     {
-        //
+        // detect if the input is a string, if it is split it into an array on "," otherwise cast it to an array
+        return is_string($input) ? explode(',', str_replace(" ", "", $input))
+            : (array) $input;
     }
 }

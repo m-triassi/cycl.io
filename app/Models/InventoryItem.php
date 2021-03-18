@@ -17,6 +17,8 @@ class InventoryItem extends Model
 
     protected $appends = ['is_below_minimum'];
 
+    protected $with = ['supplier'];
+
     /**
      * Relation function that lists materials comprising of $this assembly
      *

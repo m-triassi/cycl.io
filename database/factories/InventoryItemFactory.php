@@ -28,13 +28,14 @@ class InventoryItemFactory extends Factory
             'description' => $this->faker->text,
             'cost' => $this->faker->randomFloat(2, 0, 10000),
             'sale_price' => $this->faker->randomFloat(2, 0, 10000),
-            'stock' => $this->faker->randomDigit,
+            'stock' => $this->faker->numberBetween(1,9),
             'category' => $this->faker->word,
             'size' => $this->faker->word,
             'color' => $this->faker->colorName,
             'finish' => $this->faker->word,
             'material' => $this->faker->word,
-            'part_number' => $this->faker->shuffle('abcdefghigj1234567891234567')
+            'part_number' => $this->faker->shuffle('abcdefghigj1234567891234567'), 
+            'minimum_stock' => 2,
         ];
     }
 }
