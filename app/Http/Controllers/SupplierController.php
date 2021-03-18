@@ -9,13 +9,14 @@ use Illuminate\Http\Request;
 class SupplierController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the suppliers.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         try {
+            // check that the incoming filter is the correct format
             $request->validate([
                 'supplier_name' => "nullable|string|max:255"
             ]);
@@ -26,6 +27,7 @@ class SupplierController extends Controller
             ]);
         }
 
+        // search the supplier list using the input filter as a fuzzy search
         $supplierName = $request->supplier_name;
         return response([
             'success' => true,
@@ -33,18 +35,9 @@ class SupplierController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created supplier in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -52,6 +45,7 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         try {
+            // validate the required data is present, or of the correct format
             $request->validate([
                 'name' => "required|string",
                 'partnership_start_date' => "required|date",
@@ -64,12 +58,14 @@ class SupplierController extends Controller
             ]);
         }
 
+        // grab the data required to create a new suppluer
         $params = $request->only([
             "name",
             "partnership_start_date",
             "partnership_end_date",
         ]);
 
+        // create the supplier
         $supplier = Supplier::create($params);
         $supplier->save();
 
@@ -80,7 +76,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified supplier.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -94,18 +90,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the specified supplier in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -115,7 +100,9 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::findOrFail($id);
         try {
+            // if the partnership start date isn't being updated, grab the existing one
             $startDate = $request->partnership_start_date ?? $supplier->partnership_start_date;
+            // check the required data is present
             $request->validate([
                 "name" => "nullable|string|max:255",
                 "partnership_start_date" => "date",
@@ -128,12 +115,14 @@ class SupplierController extends Controller
             ]);
         }
 
+        // grab the required info to update a supplier
         $params = $request->only([
             "name",
             "partnership_start_date",
             "partnership_end_date",
         ]);
 
+        // update the supplier
         $supplier->update($params);
         return response([
             'success' => true,
@@ -141,14 +130,4 @@ class SupplierController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

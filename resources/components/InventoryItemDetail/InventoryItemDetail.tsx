@@ -49,7 +49,7 @@ const InventoryItemDetail = ({
             fetchBomList(id)
         }
     }, [id])
-    const ignoredKeys = ['id', 'created_at' , 'updated_at']
+    const ignoredKeys = ['id', 'created_at' , 'updated_at', 'is_below_minimum']
     const toTitleText = (text: string) => {
         if (text.includes('_')) {
             const upperCaseText = text.charAt(0).toUpperCase() + text.slice(1)

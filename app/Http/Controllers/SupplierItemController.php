@@ -10,27 +10,7 @@ use Illuminate\Validation\ValidationException;
 class SupplierItemController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Attach an existing item to an existing supplier.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -38,6 +18,7 @@ class SupplierItemController extends Controller
     public function store(Request $request)
     {
         try {
+            // valdiate that the required info is present and valid
             $request->validate([
                 'item_id' => "required|integer|min:1",
                 'supplier_id' => "required|integer|min:1"
@@ -49,11 +30,13 @@ class SupplierItemController extends Controller
             ]);
         }
 
-        $item_id = $request->item_id;
-        $supplier_id = $request->supplier_id;
+        // fetch the required information from the request body
+        $itemId = $request->item_id;
+        $supplierId = $request->supplier_id;
 
-        $item = InventoryItem::findOrFail($item_id);
-        $supplier = Supplier::findOrFail($supplier_id);
+        // the required item and supplier, and 404 when non-exsistent
+        $item = InventoryItem::findOrFail($itemId);
+        $supplier = Supplier::findOrFail($supplierId);
 
         $item->supplier()->associate($supplier);
         $item->save();
@@ -62,50 +45,5 @@ class SupplierItemController extends Controller
             'success' => true,
             'data' => $item->refresh()->supplier
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

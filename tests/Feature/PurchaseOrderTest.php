@@ -120,4 +120,28 @@ class PurchaseOrderTest extends TestCase
         ]);
         $this->assertEquals($purchaseOrder->delivery_date,"2021-04-05");
     }
+
+    public function test_purchase_orders_can_be_indexed()
+    {
+        $user = User::first();
+        $index = $this->actingAs($user)->get('/purchase-order');
+        $indexData = $index->getOriginalContent();
+
+        $index->assertStatus(200);
+        $this->assertTrue($indexData['success']);
+        $this->assertCount(PurchaseOrder::count(), $indexData['data']);
+    }
+
+
+    public function test_purchase_order_can_be_shown()
+    {
+        $user = User::first();
+        $shown = $this->actingAs($user)->get('/purchase-order/1');
+        $shownData = $shown->getOriginalContent();
+
+        $shown->assertStatus(200);
+        $this->assertTrue($shownData['success']);
+        $orderA = PurchaseOrder::find(1);
+        $this->assertEquals($orderA, $shownData['data']);
+    }
 }

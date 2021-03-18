@@ -34,7 +34,8 @@ class InventoryItemFactory extends Factory
             'color' => $this->faker->colorName,
             'finish' => $this->faker->word,
             'material' => $this->faker->word,
-            'part_number' => $this->faker->shuffle('abcdefghigj1234567891234567')
+            'part_number' => $this->faker->shuffle('abcdefghigj1234567891234567'), 
+            'minimum_stock' => 2,
         ];
     }
 }
