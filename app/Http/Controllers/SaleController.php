@@ -41,13 +41,12 @@ class SaleController extends Controller
         try {
             // validate the data to be stored is correct
             $request->validate([
-                'client_name' => 'required|string',
-                "status" => "string|in:{$statuses}",
-                "payment_type" => "string|in:{$paymentTypes}",
+                'client_name' => 'required|string|max:255',
+                "status" => "required|string|in:{$statuses}",
+                "payment_type" => "required|string|in:{$paymentTypes}",
                 'card_number' => 'required|string|size:16',
-                'cardholder_name' => 'required|string',
-                'price' => 'required',
-
+                'cardholder_name' => 'required|string|max:255',
+                'price' => 'required|numeric|min:0',
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -67,7 +66,7 @@ class SaleController extends Controller
             "description",
         ]);
 
-        // create a new purchase order with the passed data
+        // create a new sale with the passed data
         $sale = Sale::create($params);
         $sale->save();
 
@@ -108,7 +107,45 @@ class SaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // create a list of possible statuses
+        $statuses = Sale::PENDING . "," . Sale::RECEIVED . "," . Sale::PAID . "," . Sale::CANCELLED;
+        $paymentTypes = Sale::VISA . "," . Sale::MASTER_CARD;
+        try {
+            // validate the data to be stored is correct
+            $request->validate([
+                'client_name' => 'string|max:255',
+                "status" => "string|in:{$statuses}",
+                "payment_type" => "string|in:{$paymentTypes}",
+                'card_number' => 'string|size:16',
+                'price' => 'numeric|min:0',
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        // find the sale to be updated, if non-existant 400
+        $sale = Sale::findOrFail($id);
+
+        // grab the data to be added from the request body
+        $params = $request->only([
+            "client_name",
+            "status",
+            "payment_type",
+            "card_number",
+            "cardholder_name",
+            "price",
+            "description",
+        ]);
+
+        // create a new sale with the passed data
+        $sale->update($params);
+        return response([
+            'success' => true,
+            'data' => $sale->refresh()
+        ]);
     }
 
     /**
