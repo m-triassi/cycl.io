@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Hash;
+use PhpParser\Builder;
 
 class Sale extends Model
 {
@@ -41,5 +42,15 @@ class Sale extends Model
         $this->attributes['last_four'] = substr($this->card_number, -4, 4);
         $this->attributes['card_number'] = Hash::make($this->card_number);
     }
+
+    /**
+     * scope query that allows for filtering sales by status
+     * @return Builder
+     */
+    public function scopeFilterByStatus($query,$status)
+    {
+        return $query->where('status','LIKE',$status."%");
+    }
+
 
 }
