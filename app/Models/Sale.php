@@ -52,5 +52,4 @@ class Sale extends Model
         return $query->where('status','LIKE',$status."%");
     }
 
-
 }
