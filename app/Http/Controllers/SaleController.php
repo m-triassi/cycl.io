@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class SaleController extends Controller
 {
@@ -44,9 +45,10 @@ class SaleController extends Controller
                 'client_name' => 'required|string|max:255',
                 "status" => "required|string|in:{$statuses}",
                 "payment_type" => "required|string|in:{$paymentTypes}",
-                'card_number' => 'required|string|size:16',
+                'card_number' => 'required|string|size:16|regex:/^[0-9]*$/',
                 'cardholder_name' => 'required|string|max:255',
                 'price' => 'required|numeric|min:0',
+                'description'=>'required|string|max:255',
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -118,6 +120,7 @@ class SaleController extends Controller
                 "payment_type" => "string|in:{$paymentTypes}",
                 'card_number' => 'string|size:16',
                 'price' => 'numeric|min:0',
+                'description' => 'string|max:255',
             ]);
         } catch (ValidationException $e) {
             return response([
