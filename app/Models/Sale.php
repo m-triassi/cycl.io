@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Hash;
-use PhpParser\Builder;
 
 class Sale extends Model
 {
@@ -47,7 +47,7 @@ class Sale extends Model
      * scope query that allows for filtering sales by status
      * @return Builder
      */
-    public function scopeFilterByStatus($query,$status)
+    public function scopeFilterByStatus(Builder $query,$status)
     {
         return $query->where('status','LIKE',$status."%");
     }
