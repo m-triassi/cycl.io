@@ -4,10 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\Sale;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class SaleTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      *
      * @test
