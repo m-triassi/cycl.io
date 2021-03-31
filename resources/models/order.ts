@@ -1,11 +1,14 @@
 import produce from 'immer'
-import {message} from 'antd'
-import {addOrder} from '../services/order'
+
+export type OrderItemFormDataType = {
+  supplier_id: number,
+  item_ids: [],
+}
 
 export type OrderItemStateType = {
     id: number,
     data?: any,
-    form: any
+    form: OrderItemFormDataType
 }
 
 const initialState: OrderItemStateType = {
@@ -27,20 +30,10 @@ const OrderItem = produce(
       case 'SET_ORDER_DETAIL_DATA':
         state.data = payload
         state.form.item_ids.push({'inventory_item_id': payload.id, 'quantity': 1})
+        state.form.supplier_id=payload.supplier_id
         break
-      case 'SET_ORDER_DETAIL_FORM':
-        state.form.item_ids[payload.key].quantity=payload.value.quantity
-        state.form.supplier_id=payload.value.supplier_id
-        break
-      case 'ADD_ORDER':
-        addOrder(state.form).then((response) => {
-          const {data} = response
-          if (data.success) {
-            message.success('Purchase Order added')
-          } else {
-            message.error('Purchase Order failed to be added')
-          }
-        })
+      case 'SET_ORDER_QUANTITY_FORM':
+        state.form.item_ids[payload.key].quantity=payload.value
         break
       default:
         return state

@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {InputNumber, Button, Empty, Table, Row, Col, Select, Typography} from 'antd'
+import {InputNumber, Button, Empty, Table, Row, Col, Select, Typography, Space} from 'antd'
 import {InventoryItemStateType} from 'models/inventory'
 import {BomMaterialStateType} from 'models/bom-material'
 import {StoreType, DispatchArgumentType} from '@types'
@@ -68,14 +68,14 @@ const BOMForm = (
          dispatch({type: 'SET_BOM_ITEMS', payload: newTable})
     }
 
-    const actionRow = (<Row gutter={{xs: 4, sm: 8, md: 16, lg: 24}}>
-      <Col span={6}>
-        {isEdit && <Button onClick={() => {onCancel()}}>Cancel</Button>}
-      </Col>
-      <Col span={6}>
-        {isEdit && <Button type='primary' onClick={() => {onConfirm()}}>Confirm</Button>}
-      </Col>
-    </Row>)
+    const actionRow = (
+      <Row gutter={{xs: 4, sm: 8, md: 16, lg: 24}}>
+        {isEdit?
+          <Space>
+            <Button onClick={() => {onCancel()}}>Cancel</Button>
+            <Button type='primary' onClick={() => {onConfirm()}}>Confirm</Button>
+          </Space>:null}
+      </Row>)
 
     const {Option} = Select
 
