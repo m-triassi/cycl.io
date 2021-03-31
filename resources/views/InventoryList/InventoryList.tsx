@@ -1,4 +1,5 @@
 import {Button, Col, Input, Row, Table, Typography} from 'antd'
+import {DownloadOutlined} from '@ant-design/icons'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
@@ -7,6 +8,7 @@ import {InventoryItemStateType} from 'models/inventory'
 import {filterInventory, getInventory} from 'services/inventory'
 import {DeleteButton, InventoryItemModal} from '@components'
 import {InventoryDetailDrawer} from './components'
+
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -146,6 +148,13 @@ const InventoryList = ({
             setIsDetailDrawerVisible(true)
           }})}
           scroll={{x: 'max-content'}} />
+        <Row>
+          <Button type='primary' onClick={() => window.open(`/stock/report`, '_blank')} icon={<DownloadOutlined />} style={{background: '#233D4D'}}>
+            Export CSV
+          </Button>
+        </Row>
+
+
       </>
     )
 }

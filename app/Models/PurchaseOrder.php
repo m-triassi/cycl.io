@@ -12,6 +12,8 @@ class PurchaseOrder extends Model
 
     public const PENDING = 'pending';
     public const RECEIVED = 'received';
+    public const PAID = 'paid';
+    public const CANCELLED = 'cancelled';
 
     protected $guarded = ['id'];
 

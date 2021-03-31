@@ -1,6 +1,6 @@
 import React from 'react'
-import {Button, Drawer, Typography} from 'antd'
-import {InventoryItemDetail} from '@components'
+import {Button, Drawer, Typography, Divider} from 'antd'
+import {BOMForm, InventoryItemDetail} from '@components'
 
 type InventoryDetailDrawerPropType = {
     isVisible: boolean,
@@ -25,7 +25,6 @@ const InventoryDetailDrawer = ({
       title={drawerTitle}
       onClose={() => setIsVisible(false)}
       visible={isVisible}
-      bodyStyle={{padding: '6px 24px 6px 24px'}}
       width='40%'
       footer={
         <Typography
@@ -38,10 +37,11 @@ const InventoryDetailDrawer = ({
         </Typography>
       }>
       <InventoryItemDetail isDrawer />
+      <Divider />
+      <BOMForm inventoryId={id} />
     </Drawer>
     )
 }
-
 
 InventoryDetailDrawer.displayName = 'InventoryDetailDrawer'
 export default InventoryDetailDrawer

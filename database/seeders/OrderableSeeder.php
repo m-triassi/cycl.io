@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\InventoryItem;
 use App\Models\PurchaseOrder;
+use App\Models\Sale;
 use Illuminate\Database\Seeder;
 
 class OrderableSeeder extends Seeder
@@ -21,6 +22,14 @@ class OrderableSeeder extends Seeder
                 $randomItems[] = ['inventory_item_id' => InventoryItem::inRandomOrder()->first()->id, 'quantity' => rand(0, 30)];
             }
             $purchaseOrder->order_items()->sync($randomItems);
+        }
+
+        foreach (Sale::all() as $sale) {
+            $randomItems = [];
+            for ($i = 0; $i < rand(1, 10); $i++) {
+                $randomItems[] = ['inventory_item_id' => InventoryItem::inRandomOrder()->first()->id, 'quantity' => rand(0, 30)];
+            }
+            $sale->order_items()->sync($randomItems);
         }
     }
 }

@@ -20,4 +20,9 @@ class OrderItem extends Model
     {
         return $this->morphedByMany(PurchaseOrder::class, 'orderable');
     }
+
+    public function item()
+    {
+        return $this->belongsTo(InventoryItem::class, 'inventory_item_id', 'id');
+    }
 }

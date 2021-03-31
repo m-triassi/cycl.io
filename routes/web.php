@@ -8,7 +8,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierItemController;
 use App\Http\Controllers\PurchaseOrderItemController;
+use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\PurchaseOrderController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +24,8 @@ use App\Http\Controllers\PurchaseOrderController;
 
 require __DIR__.'/auth.php';
 
+Route::get('/purchase-order', [PurchaseOrderController::class, "index"])->middleware(['auth']);
+Route::get('/purchase-order/{id}', [PurchaseOrderController::class, "show"])->middleware(['auth']);
 Route::post('/purchase-order', [PurchaseOrderController::class, "store"])->middleware(['auth']);
 Route::put('/purchase-order/{id}', [PurchaseOrderController::class, "update"])->middleware(['auth']);
 
@@ -50,6 +54,8 @@ Route::post('/user/roles', [UserRoleController::class, 'store'])->middleware(['a
 Route::delete('/user/roles', [UserRoleController::class, 'destroy'])->middleware(['auth']);
 
 Route::post('/roles', [RoleController::class, 'store'])->middleware(['auth']);
+
+Route::get('/stock/report', [StockReportController::class, 'show'])->middleware(['auth']);
 
 Route::get('/token', function () {
     if(config("app.debug")){
