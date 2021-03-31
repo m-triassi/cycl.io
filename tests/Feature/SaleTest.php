@@ -134,6 +134,11 @@ class SaleTest extends TestCase
         $this->assertNotNull($improperData['errors']);
     }
 
+    /**
+     *
+     * @test
+     * @return void
+     */
     public function test_sales_can_be_updated()
     {
         $sale = Sale::create([
