@@ -70,7 +70,6 @@ class SaleController extends Controller
 
         // create a new sale with the passed data
         $sale = Sale::create($params);
-        $sale->save();
 
         return response([
             'success' => true,
