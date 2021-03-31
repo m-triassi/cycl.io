@@ -138,9 +138,6 @@ class PurchaseOrderTest extends TestCase
         $index = $this->actingAs($user)->get('/purchase-order?supplier_id=1');
         $indexData = $index->getOriginalContent();
 
-        //dd($indexData['data']);
-
-
         $index->assertStatus(200);
         $this->assertTrue($indexData['success']);
         foreach ($indexData['data'] as $order)
