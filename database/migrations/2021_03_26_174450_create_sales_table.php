@@ -25,7 +25,7 @@ class CreateSalesTable extends Migration
             $table->string('last_four')->nullable();
             $table->string('cardholder_name');
             $table->float('price');
-            $table->timestamp('delivery_date');
+            $table->timestamp('delivery_date')->nullable();
             $table->timestamps();
         });
     }
