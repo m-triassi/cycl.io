@@ -13,11 +13,38 @@ class PurchaseOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED;
+        try {
+            // validate that the incoming data is correct
+            $request->validate([
+                "supplier_id" => "integer|min:0|exists:suppliers,id",
+                "status" => "string|in:{$statuses}",
+                "delivery_date" => "date|after:yesterday",
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        $filters = $request->only([
+            "supplier_id",
+            "status",
+            "delivery_date",
+        ]);
+
+        $builder = PurchaseOrder::query();
+
+        foreach ($filters as $key => $value) {
+            $builder->where($key, $value);
+        }
+
         return response([
             'success' => true,
-            'data' => PurchaseOrder::get()
+            'data' => $builder->get()
         ]);
     }
 
