@@ -3,27 +3,45 @@ import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import {InventoryItemStateType} from 'models/inventory'
+import {OrderListStateType} from 'models/order-list'
 import {filterInventoryWithParams} from 'services/inventory'
 import {filterVendorWithParams} from 'services/vendor'
-import pathToRegexp from 'path-to-regexp'
+import {filterPurchaseOrder} from 'services/order'
+import {pathToRegexp} from 'path-to-regexp'
+
 
 
 type SupplierDetailsPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
-    InventoryItem: InventoryItemStateType
+    InventoryItem: InventoryItemStateType,
+    OrderList: OrderListStateType
 }
 
 const SupplierDetails = ({
   dispatch,
   InventoryItem,
+  OrderList,
 }: SupplierDetailsPropType) => {
-    const {table} = InventoryItem
+    const {table: inventoryTable} = InventoryItem
+    const {table: ordersTable} = OrderList
     const [currentSupplierName, setCurrentSupplierName] = useState('')
     let currentSupplierID = ''
     const regexp = pathToRegexp('/Vendor/Suppliers/(\\d+)')
     const stringID = regexp.exec(window.location.pathname)
     if (stringID !== null){
       currentSupplierID = stringID[1]
+    }
+
+    const fetchSupplierName = () => {
+      filterVendorWithParams({'id': currentSupplierID}).then((response: any) => {
+        const {data} = response
+        if (data.success && data.length > 0) {
+          setCurrentSupplierName(data.data[0].name)
+        }
+        else {
+          setCurrentSupplierName('Supplier Not Found')
+        }
+      })
     }
 
     const fetchSupplierFilteredInventoryList = () => {
@@ -35,12 +53,11 @@ const SupplierDetails = ({
       })
     }
 
-    const fetchSupplierName = () => {
-      filterVendorWithParams({'id': currentSupplierID}).then((response: any) => {
+    const fetchSupplierFilteredOrderList = () => {
+      filterPurchaseOrder({supplier_id: currentSupplierID}).then((response: any) => {
         const {data} = response
         if (data.success) {
-          console.log(data.data[0])
-          setCurrentSupplierName(data.data[0].name)
+          dispatch({type: 'SET_ORDER_LIST', payload: data.data})
         }
       })
     }
@@ -48,6 +65,7 @@ const SupplierDetails = ({
     useEffect(() => {
       fetchSupplierName()
       fetchSupplierFilteredInventoryList()
+      fetchSupplierFilteredOrderList()
     }, [])
 
     const inventoryColumns = [
@@ -88,6 +106,29 @@ const SupplierDetails = ({
       }
     ]
 
+    const purchaseOrderColumns = [
+      {
+          title: 'Order ID',
+          key: 'id',
+          dataIndex: 'id',
+          render: (text: number) => (
+            <Typography.Text strong>{text}</Typography.Text>
+          )
+      },
+      {
+        title: 'Status',
+        key: 'status',
+        dataIndex: 'status',
+        render: (text: any) => `${text}`
+    },
+    {
+        title: 'Delivery Date',
+        key: 'delivery_date',
+        dataIndex: 'delivery_date',
+        render: (text: any) => `${text}`
+    },
+  ]
+
     return (
       <>
         <Row>
@@ -102,13 +143,20 @@ const SupplierDetails = ({
             Inventory Items
           </Typography.Title>
         </Row>
-        <Table bordered columns={inventoryColumns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
+        <Table bordered columns={inventoryColumns} dataSource={inventoryTable} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
+        <Row>
+          <Typography.Title level={2}>
+            Purchase Orders
+          </Typography.Title>
+        </Row>
+        <Table bordered columns={purchaseOrderColumns} dataSource={ordersTable} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
       </>
     )
 }
 
 const mapStateToProps = (state: StoreType) => ({
   InventoryItem: state.InventoryItem,
+  OrderList: state.OrderList,
 })
 
 SupplierDetails.displayName = 'SupplierDetails'
