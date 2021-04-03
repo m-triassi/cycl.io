@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\UserRoleController;
@@ -23,6 +24,9 @@ use App\Http\Controllers\PurchaseOrderController;
 */
 
 require __DIR__.'/auth.php';
+
+Route::post('/sale', [SaleController::class, "store"])->middleware(['auth']);
+Route::put('/sale/{id}', [SaleController::class, "update"])->middleware(['auth']);
 
 Route::get('/purchase-order', [PurchaseOrderController::class, "index"])->middleware(['auth']);
 Route::get('/purchase-order/{id}', [PurchaseOrderController::class, "show"])->middleware(['auth']);

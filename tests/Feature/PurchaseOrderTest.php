@@ -132,6 +132,17 @@ class PurchaseOrderTest extends TestCase
         $this->assertCount(PurchaseOrder::count(), $indexData['data']);
     }
 
+    public function test_purchase_orders_can_be_indexed_with_filter()
+    {
+        $user = User::first();
+        $index = $this->actingAs($user)->get('/purchase-order?supplier_id=1');
+        $indexData = $index->getOriginalContent();
+
+        $index->assertStatus(200);
+        $this->assertTrue($indexData['success']);
+        foreach ($indexData['data'] as $order)
+            $this->assertEquals('1', $order->supplier_id);
+    }
 
     public function test_purchase_order_can_be_shown()
     {

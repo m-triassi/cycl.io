@@ -15,15 +15,36 @@ class PurchaseOrderController extends Controller
      */
     public function index(Request $request)
     {
-        $filters = $request->only(['supplier_id', 'status']);
-        $orders = PurchaseOrder::query();
-        
-        foreach ($filters as $filter => $value) {
-            $orders = $orders->where($filter, $value);
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED;
+        try {
+            // validate that the incoming data is correct
+            $request->validate([
+                "supplier_id" => "integer|min:0|exists:suppliers,id",
+                "status" => "string|in:{$statuses}",
+                "delivery_date" => "date|after:yesterday",
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
         }
+
+        $filters = $request->only([
+            "supplier_id",
+            "status",
+            "delivery_date",
+        ]);
+
+        $builder = PurchaseOrder::query();
+
+        foreach ($filters as $key => $value) {
+            $builder->where($key, $value);
+        }
+
         return response([
             'success' => true,
-            'data' => $orders->get()
+            'data' => $builder->get()
         ]);
     }
 
@@ -36,7 +57,7 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         // create a list of possible statuses
-        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED;
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED;
         try {
             // validate the data to be stored is correct
             $request->validate([
@@ -92,7 +113,7 @@ class PurchaseOrderController extends Controller
     public function update(Request $request, $id)
     {
         // create a list of possible statuses
-        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED;
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED;
         try {
             // validate that the incoming data is correct
             $request->validate([

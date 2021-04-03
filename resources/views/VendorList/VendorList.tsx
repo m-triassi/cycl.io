@@ -115,7 +115,7 @@ const VendorList = ({
         <Row>
           <Col span={8}>
             <StyledRow>
-              <Button type='primary' onClick={() => setIsCreateModalVisible(true)} shape='round'>Add Vendor Item</Button>
+              <Button type='primary' onClick={() => setIsCreateModalVisible(true)} shape='round'>Add Vendor</Button>
             </StyledRow>
             <StyledRow>
               <Input
