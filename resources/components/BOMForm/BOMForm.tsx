@@ -72,8 +72,8 @@ const BOMForm = (
       <Row gutter={{xs: 4, sm: 8, md: 16, lg: 24}}>
         {isEdit?
           <Space>
-            <Button onClick={() => {onCancel()}}>Cancel</Button>
-            <Button type='primary' onClick={() => {onConfirm()}}>Confirm</Button>
+            <Button onClick={onCancel}>Cancel</Button>
+            <Button type='primary' onClick={onConfirm}>Confirm</Button>
           </Space>:null}
       </Row>)
 
@@ -123,7 +123,7 @@ const BOMForm = (
             <Title level={5}>Bill Of Material</Title>
           </Col>
           <Col span={8}>
-            {!isEdit && <Button shape='round' type='primary' onClick={() => {setEdit(true)}}>Edit</Button>}
+            {!isEdit && <Button shape='round' type='primary' onClick={() => setEdit(true)}>Edit</Button>}
           </Col>
         </Row>
         <Row gutter={[0,8]}>

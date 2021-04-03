@@ -113,7 +113,7 @@ const OrderForm = ({
               title='Purchase Successful'
               subTitle={`Order Number: ${orderId}`}
               extra={[
-                <Button onClick={()=>window.close()}>Continue</Button>,
+                <Button onClick={window.close}>Continue</Button>,
           ]} />
             <Descriptions layout='vertical' bordered>
               <Descriptions.Item label='ORDER SUMMARY'>
@@ -127,7 +127,7 @@ const OrderForm = ({
             {dataRow}
             <Row style={{paddingTop: 20}}>
               <Space>
-                <Button onClick={()=>window.close()}>Cancel</Button>
+                <Button onClick={window.close}>Cancel</Button>
                 <Button type='primary' onClick={onConfirm}>Confirm</Button>
               </Space>
             </Row>
