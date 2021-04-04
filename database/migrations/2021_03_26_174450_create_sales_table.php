@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Sale;
 
 class CreateSalesTable extends Migration
 {
@@ -15,16 +16,16 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
             $table->string('client_name');
+            $table->string('description')->nullable();
             // pending, complete, cancelled
-            $table->string('status');
+            $table->string('status')->default(Sale::PENDING);
             $table->string('payment_type');
             // to be hashed
             $table->string('card_number');
             $table->string('last_four')->nullable();
             $table->string('cardholder_name');
-            $table->float('price');
+            $table->float('price')->nullable();
             $table->timestamp('delivery_date')->nullable();
             $table->timestamps();
         });
