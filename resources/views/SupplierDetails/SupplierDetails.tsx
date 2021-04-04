@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {InventoryItemStateType} from 'models/inventory'
 import {OrderListStateType} from 'models/order-list'
 import {filterInventoryWithParams} from 'services/inventory'
-import {filterVendorWithParams} from 'services/vendor'
+import {getVendorByID, filterVendorWithParams} from 'services/vendor'
 import {filterPurchaseOrder} from 'services/order'
 import {pathToRegexp} from 'path-to-regexp'
 
@@ -25,18 +25,18 @@ const SupplierDetails = ({
     const {table: inventoryTable} = InventoryItem
     const {table: ordersTable} = OrderList
     const [currentSupplierName, setCurrentSupplierName] = useState('')
-    let currentSupplierID = ''
+    let currentSupplierID = -1
     const regexp = pathToRegexp('/Vendor/Suppliers/(\\d+)')
     const stringID = regexp.exec(window.location.pathname)
     if (stringID !== null){
-      currentSupplierID = stringID[1]
+      currentSupplierID = Number(stringID[1])
     }
 
     const fetchSupplierName = () => {
-      filterVendorWithParams({'id': currentSupplierID}).then((response: any) => {
+      getVendorByID(currentSupplierID).then((response: any) => {
         const {data} = response
-        if (data.success && data.length > 0) {
-          setCurrentSupplierName(data.data[0].name)
+        if (data.success) {
+          setCurrentSupplierName(data.data.name)
         }
         else {
           setCurrentSupplierName('Supplier Not Found')
@@ -143,13 +143,13 @@ const SupplierDetails = ({
             Inventory Items
           </Typography.Title>
         </Row>
-        <Table bordered columns={inventoryColumns} dataSource={inventoryTable} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
+        <Table bordered columns={inventoryColumns} dataSource={inventoryTable} pagination={{position: ['bottomCenter'], pageSize: 4}} scroll={{x: 'max-content'}} />
         <Row>
           <Typography.Title level={2}>
             Purchase Orders
           </Typography.Title>
         </Row>
-        <Table bordered columns={purchaseOrderColumns} dataSource={ordersTable} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
+        <Table bordered columns={purchaseOrderColumns} dataSource={ordersTable} pagination={{position: ['bottomCenter'], pageSize: 4}} scroll={{x: 'max-content'}} />
       </>
     )
 }

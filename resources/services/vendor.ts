@@ -10,6 +10,11 @@ export const addVendor = (payload: VendorItemFormDataType) => axios({
 
 export const getVendor = () => axios.get(vendorRoute)
 
+export const getVendorByID = (id: number) => axios({
+    method: 'GET',
+    url: vendorRoute.concat(`/${id}`)
+})
+
 export const filterVendor = (payload: string) => axios({
     method: 'GET',
     url: vendorRoute,
