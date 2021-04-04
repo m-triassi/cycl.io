@@ -9,13 +9,30 @@ use Illuminate\Validation\ValidationException;
 class SaleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the sales.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            // check that the incoming filter is the correct format
+            $request->validate([
+                'status' => "nullable|string|max:255"
+            ]);
+        } catch (ValidationException $e) {
+            return response([
+                'success' => false,
+                'errors' => $e->errors()
+            ]);
+        }
+
+        // search the status list using the input filter as a fuzzy search
+        $status = $request->status;
+        return response([
+            'success' => true,
+            'data' => Sale::where('status', 'like', "%{$status}%")->get()
+        ]);
     }
 
     /**
@@ -48,7 +65,7 @@ class SaleController extends Controller
                 'card_number' => 'required|string|size:16|regex:/^[0-9]*$/',
                 'cardholder_name' => 'required|string|max:255',
                 'price' => 'required|numeric|min:0',
-                'description'=>'required|string|max:255',
+                'description' => 'required|string|max:255',
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -78,14 +95,17 @@ class SaleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified sale.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        return response([
+            'success' => true,
+            'data' => Sale::findOrFail($id)
+        ]);
     }
 
     /**
