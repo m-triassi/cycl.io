@@ -9,13 +9,16 @@ use Illuminate\Validation\ValidationException;
 class SaleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the sales.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return response([
+            'success' => true,
+            'data' => Sale::get()
+        ]);
     }
 
     /**
@@ -78,14 +81,17 @@ class SaleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified sale.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        return response([
+            'success' => true,
+            'data' => Sale::findOrFail($id)
+        ]);
     }
 
     /**
