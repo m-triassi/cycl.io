@@ -11,6 +11,7 @@ use App\Http\Controllers\SupplierItemController;
 use App\Http\Controllers\PurchaseOrderItemController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\SaleItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ require __DIR__.'/auth.php';
 
 Route::post('/sale', [SaleController::class, "store"])->middleware(['auth']);
 Route::put('/sale/{id}', [SaleController::class, "update"])->middleware(['auth']);
+Route::put('/sale/orderables/{id}', [SaleItemController::class, "update"])->middleware(['auth']);
 
 Route::get('/purchase-order', [PurchaseOrderController::class, "index"])->middleware(['auth']);
 Route::get('/purchase-order/{id}', [PurchaseOrderController::class, "show"])->middleware(['auth']);

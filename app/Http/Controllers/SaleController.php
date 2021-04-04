@@ -43,12 +43,12 @@ class SaleController extends Controller
             // validate the data to be stored is correct
             $request->validate([
                 'client_name' => 'required|string|max:255',
-                "status" => "required|string|in:{$statuses}",
+                "status" => "string|in:{$statuses}",
                 "payment_type" => "required|string|in:{$paymentTypes}",
                 'card_number' => 'required|string|size:16|regex:/^[0-9]*$/',
                 'cardholder_name' => 'required|string|max:255',
-                'price' => 'required|numeric|min:0',
-                'description'=>'required|string|max:255',
+                'price' => 'numeric|min:0',
+                'description'=>'string|max:255',
             ]);
         } catch (ValidationException $e) {
             return response([
