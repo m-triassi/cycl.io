@@ -15,7 +15,7 @@ class PurchaseOrderController extends Controller
      */
     public function index(Request $request)
     {
-        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED;
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED . "," . PurchaseOrder::PAID;
         try {
             // validate that the incoming data is correct
             $request->validate([
@@ -57,7 +57,7 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         // create a list of possible statuses
-        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED;
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED . "," . PurchaseOrder::PAID;
         try {
             // validate the data to be stored is correct
             $request->validate([
@@ -113,7 +113,7 @@ class PurchaseOrderController extends Controller
     public function update(Request $request, $id)
     {
         // create a list of possible statuses
-        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED;
+        $statuses = PurchaseOrder::PENDING . "," . PurchaseOrder::RECEIVED . "," . PurchaseOrder::CANCELLED . "," . PurchaseOrder::PAID;
         try {
             // validate that the incoming data is correct
             $request->validate([

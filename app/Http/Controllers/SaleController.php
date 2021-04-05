@@ -54,7 +54,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         // create a list of possible statuses
-        $statuses = Sale::PENDING . "," . Sale::RECEIVED . "," . Sale::PAID . "," . Sale::CANCELLED;
+        $statuses = Sale::PENDING . "," . Sale::SHIPPED . "," . Sale::PAID . "," . Sale::CANCELLED;
         $paymentTypes = Sale::VISA . "," . Sale::MASTER_CARD;
         try {
             // validate the data to be stored is correct
@@ -129,7 +129,7 @@ class SaleController extends Controller
     public function update(Request $request, $id)
     {
         // create a list of possible statuses
-        $statuses = Sale::PENDING . "," . Sale::RECEIVED . "," . Sale::PAID . "," . Sale::CANCELLED;
+        $statuses = Sale::PENDING . "," . Sale::SHIPPED . "," . Sale::PAID . "," . Sale::CANCELLED;
         $paymentTypes = Sale::VISA . "," . Sale::MASTER_CARD;
         try {
             // validate the data to be stored is correct
