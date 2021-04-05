@@ -54,8 +54,8 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         // create a list of possible statuses
-        $statuses = Sale::PENDING . "," . Sale::RECEIVED . "," . Sale::PAID . "," . Sale::CANCELLED;
-        $paymentTypes = Sale::VISA . "," . Sale::MASTER_CARD;
+        $statuses = $this->getSaleStatuses();
+        $paymentTypes = $this->getPaymentTypes();
         try {
             // validate the data to be stored is correct
             $request->validate([
@@ -129,8 +129,8 @@ class SaleController extends Controller
     public function update(Request $request, $id)
     {
         // create a list of possible statuses
-        $statuses = Sale::PENDING . "," . Sale::RECEIVED . "," . Sale::PAID . "," . Sale::CANCELLED;
-        $paymentTypes = Sale::VISA . "," . Sale::MASTER_CARD;
+        $statuses = $this->getSaleStatuses();
+        $paymentTypes = $this->getPaymentTypes();
         try {
             // validate the data to be stored is correct
             $request->validate([
@@ -179,5 +179,26 @@ class SaleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    /**
+     * Return comma-seperated string containing all sale statuses
+     *
+     * @return string
+     */
+    private function getSaleStatuses(): string
+    {
+        return Sale::PENDING . "," . Sale::SHIPPED . "," . Sale::CANCELLED . "," . Sale::PAID;
+    }
+
+    /**
+     * Return comma-seperated string containing all payment types
+     *
+     * @return string
+     */
+    private function getPaymentTypes(): string
+    {
+        return Sale::VISA . "," . Sale::MASTER_CARD;
     }
 }
