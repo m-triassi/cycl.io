@@ -26,7 +26,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
 
         $redirected->assertStatus(302);
@@ -42,7 +42,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
 
         // Did we succeed?
@@ -60,7 +60,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -77,7 +77,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -94,7 +94,7 @@ class SaleTest extends TestCase
             'card_number' => '12341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -111,7 +111,7 @@ class SaleTest extends TestCase
             'card_number' => 'A234B234C234D234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -128,7 +128,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => 'eighty six dollars',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -166,7 +166,7 @@ class SaleTest extends TestCase
 
         // proper update
         $updated = $this->actingAs($user)->put("/sale/$sale->id", [
-            'status' => "received",
+            'status' => "shipped",
             'payment_type' => 'Master Card',
             'card_number' => '1234123466669999',
             'price' => '69.99',
@@ -174,7 +174,7 @@ class SaleTest extends TestCase
         $updatedData = $updated->getOriginalContent();
         $updated->assertStatus(200);
         $this->assertNotEquals($sale, $updatedData['data']);
-        $this->assertEquals("received", $updatedData['data']->status);
+        $this->assertEquals("shipped", $updatedData['data']->status);
         $this->assertNotEquals($sale->card_number, $updatedData['data']->card_number);
         $this->assertEquals("Master Card", $updatedData['data']->payment_type);
         $this->assertEquals("69.99", $updatedData['data']->price);
@@ -183,7 +183,7 @@ class SaleTest extends TestCase
         $updated = $this->actingAs($user)->put("/sale/$sale->id", [
             'status' => 'still not here yet',
         ]);
-        $this->assertEquals("received", $updatedData['data']->status);
+        $this->assertEquals("shipped", $updatedData['data']->status);
 
 
         // improper update, invalid payment type
@@ -212,5 +212,64 @@ class SaleTest extends TestCase
             'price' => 'eighty six dollars',
         ]);
         $this->assertEquals("69.99", $updatedData['data']->price);
+    }
+
+    /**
+     *
+     * @test
+     * @return void
+     */
+    public function test_sales_can_be_shown()
+    {
+
+        // Create a sale
+        $sale = Sale::create([
+            'description' => "This items will be a test sale",
+            'client_name' => "test name",
+            'status' => "shipped",
+            'payment_type' => "Visa",
+            'card_number' => "1234567890123456",
+            'cardholder_name' => "john doe",
+            'price' => 1,
+        ]);
+
+        $user = User::first();
+        $sales = $this->actingAs($user)->get("/sale/$sale->id");
+        $salesData = $sales->getOriginalContent();
+
+        $ids = $salesData['data']->pluck('id');
+
+        $sales->assertStatus(200);
+        $this->assertTrue($sales["success"]);
+        $this->assertContains($sale->id, $ids);
+    }
+
+    /**
+     *
+     * @test
+     * @return void
+     */
+    public function test_sales_can_be_indexed()
+    {
+        // make sure we're redirected if un-authenticated
+        $redirect = $this->get("/sale");
+        $redirect->assertStatus(302);
+
+        $user = User::first();
+        $index = $this->actingAs($user)->get("/sale");
+        $indexData = $index->getOriginalContent();
+
+        // check that we got everything
+        $index->assertStatus(200);
+        $this->assertTrue($indexData['success']);
+        $this->assertEquals(Sale::count(), count($indexData['data']));
+
+        // check filters work
+        $filtered = $this->actingAs($user)->get('/sale?status=quod');
+        $filteredData = $filtered->getOriginalContent();
+
+        $this->assertTrue($filteredData['success']);
+        $filtered->assertStatus(200);
+        $this->assertLessThan(Sale::count(), count($filteredData['data']));
     }
 }
