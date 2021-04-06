@@ -4,6 +4,7 @@ import InventoryItem from './inventory'
 import InventoryDetail from './inventory-detail'
 import BomMaterial from './bom-material'
 import VendorItem from './vendor'
+import ReceivableList from './receivable'
 import OrderItem from './order'
 import OrderList from './order-list'
 
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     BomMaterial,
     VendorItem,
     OrderItem,
-    OrderList
+    OrderList,
+    ReceivableList,
 })
 
 export default rootReducer
