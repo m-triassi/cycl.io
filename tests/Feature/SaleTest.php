@@ -166,7 +166,7 @@ class SaleTest extends TestCase
 
         // proper update
         $updated = $this->actingAs($user)->put("/sale/$sale->id", [
-            'status' => "received",
+            'status' => "shipped",
             'payment_type' => 'Master Card',
             'card_number' => '1234123466669999',
             'price' => '69.99',
@@ -174,7 +174,7 @@ class SaleTest extends TestCase
         $updatedData = $updated->getOriginalContent();
         $updated->assertStatus(200);
         $this->assertNotEquals($sale, $updatedData['data']);
-        $this->assertEquals("received", $updatedData['data']->status);
+        $this->assertEquals("shipped", $updatedData['data']->status);
         $this->assertNotEquals($sale->card_number, $updatedData['data']->card_number);
         $this->assertEquals("Master Card", $updatedData['data']->payment_type);
         $this->assertEquals("69.99", $updatedData['data']->price);
@@ -183,7 +183,7 @@ class SaleTest extends TestCase
         $updated = $this->actingAs($user)->put("/sale/$sale->id", [
             'status' => 'still not here yet',
         ]);
-        $this->assertEquals("received", $updatedData['data']->status);
+        $this->assertEquals("shipped", $updatedData['data']->status);
 
 
         // improper update, invalid payment type

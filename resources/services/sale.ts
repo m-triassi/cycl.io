@@ -3,8 +3,8 @@ import {SaleItemFormDataType} from '../models/sale'
 import {saleRoute} from '.'
 
 export const addSale = (payload: SaleItemFormDataType) => axios({
-    url: saleRoute,
-    method: 'POST',
+    url: saleRoute.concat(`/orderables/${0}`),
+    method: 'PUT',
     data: payload,
 })
 
@@ -16,12 +16,6 @@ export const filterSale = (payload: string) => axios({
     params: {
         q: payload
     }
-})
-
-export const editSale = (payload: any) => axios({
-    method: 'PUT',
-    url: saleRoute.concat(`/${payload.id}`),
-    data: payload.data,
 })
 
 export const deleteSale = (payload: number) => axios({

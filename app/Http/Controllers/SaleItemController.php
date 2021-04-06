@@ -20,7 +20,7 @@ class SaleItemController extends Controller
     public function update(Request $request, $id)
     {
         // create a list of possible statuses
-        $statuses = Sale::PENDING . "," . Sale::RECEIVED . "," . Sale::PAID . "," . Sale::CANCELLED;
+        $statuses = Sale::PENDING . "," . Sale::SHIPPED . "," . Sale::PAID . "," . Sale::CANCELLED;
         $paymentTypes = Sale::VISA . "," . Sale::MASTER_CARD;
         try {
             // validate the required data is present

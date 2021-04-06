@@ -1,33 +1,41 @@
 import produce from 'immer'
-import {message} from 'antd'
-import {addSale} from '../services/sale'
+
+
+export type ItemIdsFormDataType = {
+  inventory_item_id: number,
+  quantity: number,
+}
 
 export type SaleItemFormDataType = {
+    item_ids: Array<ItemIdsFormDataType>,
     client_name: string,
-    status: string,
     payment_type: string,
     card_number: string,
     cardholder_name: string,
-    price: number,
-    description: string,
+    description?: string,
+    price?:number
 }
 
 export type SaleItemStateType = {
   form: SaleItemFormDataType,
   table: any,
+  materialsTable: any,
+  tempPrice: number,
 }
 
 const initialState: SaleItemStateType = {
     form: {
+        item_ids: [],
         client_name: '',
-        status: '',
         payment_type: '',
         card_number: '',
         cardholder_name: '',
-        price: 0,
-        description: '',
+        description: undefined,
+        price: undefined
     },
     table: [],
+    materialsTable: [],
+    tempPrice: 0
 }
 
 const SaleItem = produce(
@@ -37,22 +45,31 @@ const SaleItem = produce(
       case 'SET_SALE_ITEMS':
         state.table = payload
         break
+      case 'SET_SALE_ITEM_IDS':
+        state.form.item_ids.push({inventory_item_id: payload, quantity: 1})
+        break
+      case 'DELETE_SALE_ITEM_ID':
+        state.form.item_ids.splice(payload,1)
+        break
+      case 'SALE_MATERIAL_CHANGE_TEMP_PRICE':
+        state.tempPrice=payload
+        break
+      case 'SET_SALE_QUANTITY_ITEM':
+        state.form.item_ids.forEach((v: ItemIdsFormDataType) => {
+          if (v.inventory_item_id===payload.id){
+            v.quantity=payload.value
+          }})
+        break
+      case 'SET_SALE_MATERIAL_ITEMS':
+        state.materialsTable = payload
+        break
       case 'SALE_MATERIAL_CHANGE_FORM_DATA':
         state.form[payload.key] = payload.value
         break
       case 'RESET_SALE_FORM_STATE':
+        state.materialsTable=[]
+        state.tempPrice=0
         state.form = initialState.form
-        break
-      case 'ADD_SALE':
-        addSale(state.form)
-        .then((response) => {
-          const {data} = response
-          if (data.success) {
-            message.success('Sale added')
-          } else {
-            message.error('Sale failed to be added')
-          }
-        })
         break
       default:
         return state

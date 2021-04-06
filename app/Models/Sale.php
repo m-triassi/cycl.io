@@ -19,7 +19,7 @@ class Sale extends Model
     protected $appends = ['cost'];
 
     public const PENDING = 'pending';
-    public const RECEIVED = 'received';
+    public const SHIPPED = 'shipped';
     public const PAID = 'paid';
     public const CANCELLED = 'cancelled';
 
