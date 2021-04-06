@@ -123,18 +123,4 @@ class MaterialController extends Controller
             'data' => $assembly->refresh()->materials
         ]);
     }
-
-
-    /**
-     * Transforms a comma seperated list of IDs into an array cleanly
-     *
-     * @param $input
-     * @return array
-     */
-    private function stringToArray($input) : array
-    {
-        // detect if the input is a string, if it is split it into an array on "," otherwise cast it to an array
-        return is_string($input) ? explode(',', str_replace(" ", "", $input))
-            : (array) $input;
-    }
 }

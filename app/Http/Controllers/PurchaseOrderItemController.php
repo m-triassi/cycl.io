@@ -45,14 +45,8 @@ class PurchaseOrderItemController extends Controller
             $purchaseOrder = PurchaseOrder::findOrFail($id);
         }
 
-        $itemIds = $request->item_ids;
-
-        // transform the
-        if (is_string($itemIds)) {
-            $itemIds = trim($itemIds, " ,");
-            $itemIds = Str::contains($itemIds, ",") ? explode(",", $itemIds) : [$itemIds];
-        }
-
+        // Get item ids from request data and parse into array
+        $itemIds = $this->stringToArray($request->item_ids);
 
         // attach the items to the order and save
         $purchaseOrder->order_items()->sync($itemIds);

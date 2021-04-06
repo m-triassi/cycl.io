@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class PurchaseOrderTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      *
      * @test
