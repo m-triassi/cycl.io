@@ -26,7 +26,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
 
         $redirected->assertStatus(302);
@@ -42,7 +42,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
 
         // Did we succeed?
@@ -60,7 +60,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -77,7 +77,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -94,7 +94,7 @@ class SaleTest extends TestCase
             'card_number' => '12341234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -111,7 +111,7 @@ class SaleTest extends TestCase
             'card_number' => 'A234B234C234D234',
             'cardholder_name' => 'Mr. Test',
             'price' => '86.99',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -128,7 +128,7 @@ class SaleTest extends TestCase
             'card_number' => '1234123412341234',
             'cardholder_name' => 'Mr. Test',
             'price' => 'eighty six dollars',
-            'description'=>'This is a test',
+            'description' => 'This is a test',
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -214,7 +214,7 @@ class SaleTest extends TestCase
         $this->assertEquals("69.99", $updatedData['data']->price);
     }
 
-        /**
+    /**
      *
      * @test
      * @return void
@@ -226,9 +226,9 @@ class SaleTest extends TestCase
         $sale = Sale::create([
             'description' => "This items will be a test sale",
             'client_name' => "test name",
-            'status' => "test status",
-            'payment_type' => "test payment",
-            'card_number' => "12341234123412349876987698769876",
+            'status' => "shipped",
+            'payment_type' => "Visa",
+            'card_number' => "1234567890123456",
             'cardholder_name' => "john doe",
             'price' => 1,
         ]);
