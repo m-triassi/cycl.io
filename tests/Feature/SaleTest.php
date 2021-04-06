@@ -213,4 +213,63 @@ class SaleTest extends TestCase
         ]);
         $this->assertEquals("69.99", $updatedData['data']->price);
     }
+
+        /**
+     *
+     * @test
+     * @return void
+     */
+    public function test_sales_can_be_shown()
+    {
+
+        // Create a sale
+        $sale = Sale::create([
+            'description' => "This items will be a test sale",
+            'client_name' => "test name",
+            'status' => "test status",
+            'payment_type' => "test payment",
+            'card_number' => "12341234123412349876987698769876",
+            'cardholder_name' => "john doe",
+            'price' => 1,
+        ]);
+
+        $user = User::first();
+        $sales = $this->actingAs($user)->get("/sale/$sale->id");
+        $salesData = $sales->getOriginalContent();
+
+        $ids = $salesData['data']->pluck('id');
+
+        $sales->assertStatus(200);
+        $this->assertTrue($sales["success"]);
+        $this->assertContains($sale->id, $ids);
+    }
+
+    /**
+     *
+     * @test
+     * @return void
+     */
+    public function test_sales_can_be_indexed()
+    {
+        // make sure we're redirected if un-authenticated
+        $redirect = $this->get("/sale");
+        $redirect->assertStatus(302);
+
+        $user = User::first();
+        $index = $this->actingAs($user)->get("/sale");
+        $indexData = $index->getOriginalContent();
+
+        // check that we got everything
+        $index->assertStatus(200);
+        $this->assertTrue($indexData['success']);
+        $this->assertEquals(Sale::count(), count($indexData['data']));
+
+        // check filters work
+        $filtered = $this->actingAs($user)->get('/sale?status=quod');
+        $filteredData = $filtered->getOriginalContent();
+
+        $this->assertTrue($filteredData['success']);
+        $filtered->assertStatus(200);
+        $this->assertLessThan(Sale::count(), count($filteredData['data']));
+    }
 }
