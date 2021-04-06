@@ -1,11 +1,12 @@
 
 import {Col, Row, Typography, Button, InputNumber, Divider} from 'antd'
-import React, {useState, useEffect, ReactNodeArray}  from 'react'
+import React, {useState, useEffect}  from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {pathToRegexp} from 'path-to-regexp'
 import {connect} from 'react-redux'
 import {OrderItemStateType} from 'models/order'
 import {getInventoryDetail} from 'services/inventory'
+import {dataDisplay} from '@utils'
 
 type OrderFormPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
@@ -40,50 +41,25 @@ const OrderForm = ({
       }
     }, [id])
     const ignoredKeys = ['id', 'created_at' , 'updated_at', 'cost', 'stock', 'supplier_id']
-    const toTitleText = (text: string) => {
-      if (text.includes('_')) {
-          const upperCaseText = text.charAt(0).toUpperCase() + text.slice(1)
-          return upperCaseText.replace('_', ' ')
-      }
-      return text.charAt(0).toUpperCase() + text.slice(1)
-  }
-
     const onQuantityChange = (value: any) => {
         setQuantity(value)
         setTotal(value*data.sale_price)
       }
+    const dataRow = dataDisplay(data, ignoredKeys)
+    dataRow.push(
+      <>
+        <Divider />
+        <Row gutter={[0, 8]}>
+          <Col span={6}><Text strong>Quantity:</Text></Col>
+          <Col span={8}><InputNumber data-cy='inventory-form-cost' min={1} onChange={(value) => onQuantityChange(value)} value={quantity} /></Col>
+        </Row>
+        <Row gutter={[0, 48]}>
+          <Col span={6}><Text strong>Total:</Text></Col>
+          <Col span={8}><Text>{`$ ${total===0?data.sale_price:total}`}</Text></Col>
+        </Row>
+      </>
+    )
 
-    const serializeInventoryItem = (value: any) => {
-      if (typeof value === 'object'){
-        return value.name
-      }
-        return value
-    }
-    const dataRow: ReactNodeArray = []
-      if (data) {
-          Object.entries(data).forEach(([key, value]: any) => {
-              if (ignoredKeys.includes(key) || !value) return null
-              dataRow.push(
-                <Row gutter={[0, 8]}>
-                  <Col span={6}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
-                  <Col span={8}><Text>{serializeInventoryItem(value)}</Text></Col>
-                </Row>
-              )
-          })
-          dataRow.push(
-            <>
-              <Divider />
-              <Row gutter={[0, 8]}>
-                <Col span={6}><Text strong>{toTitleText('Quantity:')}</Text></Col>
-                <Col span={8}><InputNumber data-cy='inventory-form-cost' min={1} onChange={(value) => onQuantityChange(value)} value={quantity} /></Col>
-              </Row>
-              <Row gutter={[0, 48]}>
-                <Col span={6}><Text strong>{toTitleText('Total:')}</Text></Col>
-                <Col span={8}><Text>{`$ ${total===0?data.sale_price:total}`}</Text></Col>
-              </Row>
-            </>
-          )
-    }
     return (
       <>
         <Row><Typography.Title>{`New Order - ${data.title}`}</Typography.Title></Row>
