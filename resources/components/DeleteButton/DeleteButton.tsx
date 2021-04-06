@@ -32,7 +32,9 @@ const DeleteButton = ({
     return (
       <>
         {contextHolder}
-        <DeleteOutlined style={{color: '#fe7f2d', fontSize: 22}} onClick={() => {deleteItemModal()}} />
+        <DeleteOutlined
+          style={{color: '#fe7f2d', fontSize: 22}}
+          onClick={() => deleteItemModal()} />
       </>
     )
 }

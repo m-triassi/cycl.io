@@ -31,7 +31,10 @@ const InventoryDetailDrawer = ({
           style={{
             textAlign: 'left',
           }}>
-          <Button type='primary' onClick={() => window.open(`/OrderForm/${id}`, '_blank')}>
+          <Button
+            shape='round'
+            type='primary'
+            onClick={() => window.open(`/OrderForm/${id}`, '_blank')}>
             Order
           </Button>
         </Typography>

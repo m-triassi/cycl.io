@@ -73,9 +73,12 @@ const InventoryList = ({
           title: 'Supplier',
           key: 'supplier_name',
           dataIndex: ['supplier', 'name'],
-          render: (text: string, record: any) => (
-            <Link href={`/Vendor/Suppliers/${record.supplier_id}`}>{record.supplier.name}</Link>
+          render: (text: string, record: any) => {
+            if (record.supplier_id && record.supplier) return (
+              <Link onClick={(e) => e.stopPropagation()} href={`/Vendor/Suppliers/${record.supplier_id}`}>{record.supplier.name}</Link>
             )
+              return 'No linked vendor'
+          }
         },
         {
           title: 'Size',
@@ -108,8 +111,11 @@ const InventoryList = ({
                 fetchInventoryList()
               }
               return (
-                <DeleteButton type='Inventory' onDelete={onDelete} />
-            )},
+                // eslint-disable-next-line
+                <div onClick={(e) => e.stopPropagation()}>
+                  <DeleteButton type='Inventory' onDelete={onDelete} />
+                </div>
+            )}
         },
     ]
     return (
@@ -123,7 +129,9 @@ const InventoryList = ({
           changeFormData={changeFormData}
           form={form} />
         <InventoryDetailDrawer isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} id={selectedRowId} />
-        <Row><Typography.Title>Inventory</Typography.Title></Row>
+        <Row>
+          <Typography.Title>Inventory</Typography.Title>
+        </Row>
         <Row>
           <Col span={8}>
             <StyledRow>
@@ -149,12 +157,15 @@ const InventoryList = ({
           }})}
           scroll={{x: 'max-content'}} />
         <Row>
-          <Button type='primary' onClick={() => window.open(`/stock/report`, '_blank')} icon={<DownloadOutlined />} style={{background: '#233D4D'}}>
+          <Button
+            type='primary'
+            shape='round'
+            onClick={() => window.open(`/stock/report`, '_blank')}
+            icon={<DownloadOutlined />}
+            style={{background: '#233D4D'}}>
             Export CSV
           </Button>
         </Row>
-
-
       </>
     )
 }

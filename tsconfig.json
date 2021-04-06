@@ -26,6 +26,7 @@
       "@components": ["components"],
       "@public": ["../public"],
       "@types": ["types"],
+      "@utils": ["utils"],
     }
   },
   "files": ["index.d.ts"],

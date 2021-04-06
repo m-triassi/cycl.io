@@ -37,7 +37,7 @@ const OrderForm = ({
 
       if (id !== 0 ) {
         fetchOrderDetail()
-    }
+      }
     }, [id])
     const ignoredKeys = ['id', 'created_at' , 'updated_at', 'cost', 'stock', 'supplier_id']
     const toTitleText = (text: string) => {

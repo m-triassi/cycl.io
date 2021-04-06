@@ -70,10 +70,10 @@ const BOMForm = (
 
     const actionRow = (<Row gutter={{xs: 4, sm: 8, md: 16, lg: 24}}>
       <Col span={6}>
-        {isEdit && <Button onClick={() => {onCancel()}}>Cancel</Button>}
+        {isEdit && <Button shape='round' onClick={() => {onCancel()}}>Cancel</Button>}
       </Col>
       <Col span={6}>
-        {isEdit && <Button type='primary' onClick={() => {onConfirm()}}>Confirm</Button>}
+        {isEdit && <Button shape='round' type='primary' onClick={() => {onConfirm()}}>Confirm</Button>}
       </Col>
     </Row>)
 
@@ -161,7 +161,6 @@ const BOMForm = (
 const mapStateToProps = (state: StoreType) => ({
   InventoryItem: state.InventoryItem,
   BomMaterial: state.BomMaterial,
-
 })
 
 BOMForm.displayName = 'BOMForm'
