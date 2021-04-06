@@ -30,6 +30,7 @@
         "ts-loader": "^8.0.14"
     },
     "dependencies": {
+        "@babel/plugin-transform-runtime": "^7.13.10",
         "@babel/preset-env": "^7.12.13",
         "@babel/preset-typescript": "^7.12.13",
         "@commitlint/cli": "^11.0.0",
@@ -47,6 +48,7 @@
         "antd": "^4.10.3",
         "babel-eslint": "^10.1.0",
         "babel-jest": "^26.6.3",
+        "babel-loader": "^8.2.2",
         "babel-plugin-import": "^1.13.3",
         "cross-env": "^7.0.3",
         "cypress": "6.5.0",
