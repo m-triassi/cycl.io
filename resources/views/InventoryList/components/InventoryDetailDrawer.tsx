@@ -5,6 +5,7 @@ import {BOMForm, InventoryItemDetail} from '@components'
 type InventoryDetailDrawerPropType = {
     isVisible: boolean,
     id: number,
+    title: string,
     setIsVisible: (payload: boolean) => void
 }
 
@@ -12,11 +13,12 @@ const InventoryDetailDrawer = ({
     isVisible,
     setIsVisible,
     id,
+    title,
 }: InventoryDetailDrawerPropType) => {
   if (id === 0 ) return null
   const drawerTitle = (
     <Button type='link' onClick={() => window.open(`/Production/Inventory/${id}`, '_blank')}>
-      Inventory Item Detail
+      {title.length > 0 ? title : 'Inventory Item Detail'}
     </Button>
   )
   return (

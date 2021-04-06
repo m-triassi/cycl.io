@@ -28,6 +28,7 @@ const InventoryList = ({
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const [isDetailDrawerVisible, setIsDetailDrawerVisible] = useState<boolean>(false)
     const [selectedRowId, setSelectedRowId] = useState<number>(0)
+    const [selectedRowName, setSelectedRowName] = useState<string>('')
     const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
     const onFilterInventory = (value: string) => {
@@ -128,7 +129,7 @@ const InventoryList = ({
           resetState={resetState}
           changeFormData={changeFormData}
           form={form} />
-        <InventoryDetailDrawer isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} id={selectedRowId} />
+        <InventoryDetailDrawer isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} id={selectedRowId} title={selectedRowName} />
         <Row>
           <Typography.Title>Inventory</Typography.Title>
         </Row>
@@ -151,6 +152,7 @@ const InventoryList = ({
           pagination={{position: ['bottomCenter']}}
           onRow={(record) => ({onClick: () => {
             setSelectedRowId(record.id)
+            setSelectedRowName(record.title)
             dispatch({type: 'CHANGE_DETAIL_ID', payload: record.id})
             dispatch({type: 'SET_INVENTORY_DETAIL_DATA', payload: record})
             setIsDetailDrawerVisible(true)

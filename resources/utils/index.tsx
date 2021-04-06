@@ -51,7 +51,7 @@ export const dataDisplay = (data: any, ignoredKeys: any, options?: any) => {
         Object.entries(data).forEach(([key, value]: any) => {
             if (ignoredKeys.includes(key) || !value) return null
             dataRow.push(
-              <Row>
+              <Row key={key}>
                 <Col span={options?.isDrawer ? 12 : 6}><Text strong>{toTitleText(key).concat(':')}</Text></Col>
                 <Col span={options?.isDrawer ? 12 : 6}>
                   <Text>

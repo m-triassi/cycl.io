@@ -2,7 +2,7 @@ import {connect} from 'react-redux'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {pathToRegexp} from 'path-to-regexp'
-import {Button, Col, message, Row} from 'antd'
+import {Button, Col, message, Row, Typography} from 'antd'
 import {InventoryItemModal} from '@components'
 import {editInventory, getInventoryDetail} from 'services/inventory'
 import {getBomMaterial} from 'services/bom-material'
@@ -19,6 +19,7 @@ const InventoryItemDetail = ({
     InventoryDetail,
     isDrawer,
 }: InventoryItemDetailPropType) => {
+  const {Title} = Typography
     const {id, data, form} = InventoryDetail
     const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false)
     const fetchInventoryDetail = () => {
@@ -49,7 +50,7 @@ const InventoryItemDetail = ({
             fetchBomList(id)
         }
     }, [id])
-    const ignoredKeys = ['id', 'created_at' , 'updated_at', 'is_below_minimum']
+    const ignoredKeys = ['id', 'created_at' , 'updated_at', 'is_below_minimum', 'title']
     const dataRow = dataDisplay(data, ignoredKeys, {isDrawer})
     const onSubmit = () => {
         editInventory({id, data: form}).then((response) => {
@@ -74,9 +75,10 @@ const InventoryItemDetail = ({
           changeFormData={changeFormData}
           form={data}
           isCreate={false} />
+        {isDrawer ? null : <Title>{data.title}</Title>}
         <Row style={{margin: 6}}>
           <Col span={6}>
-            <Button block onClick={() => setIsEditModalVisible(true)} shape='round' type='ghost'>Edit</Button>
+            <Button block onClick={() => setIsEditModalVisible(true)} shape='round' type='primary'>Edit</Button>
           </Col>
         </Row>
         {dataRow}
