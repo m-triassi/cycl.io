@@ -3,6 +3,11 @@ import {receivablerRoute} from '.'
 
 export const getReceivable = () => axios.get(receivablerRoute)
 
+export const getSpecificReceivable = (payload: number) => axios({
+    method: 'GET',
+    url: receivablerRoute.concat(`/${payload}`),
+})
+
 export const filterReceivable = (payload: {}) => axios({
     method: 'GET',
     url: receivablerRoute,
