@@ -4,12 +4,16 @@ namespace Tests\Feature;
 
 use App\Models\PurchaseOrder;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class PurchaseOrderTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      *
      * @test
@@ -21,7 +25,7 @@ class PurchaseOrderTest extends TestCase
         $redirected = $this->post('/purchase-order', [
             'supplier_id' => "1",
             'status' => "pending",
-            'delivery_date' => "2021-04-05",
+            'delivery_date' =>  Carbon::make('tomorrow'),
         ]);
 
         $redirected->assertStatus(302);
@@ -33,7 +37,7 @@ class PurchaseOrderTest extends TestCase
         $proper = $this->actingAs($user)->post('/purchase-order', [
             'supplier_id' => "1",
             'status' => "pending",
-            'delivery_date' => "2021-04-05",
+            'delivery_date' => Carbon::make('tomorrow'),
         ]);
 
         // Did we succeed?
@@ -47,7 +51,7 @@ class PurchaseOrderTest extends TestCase
         $improper = $this->actingAs($user)->post('/purchase-order', [
             'supplier_id' => "1",
             'status' => "not here yet",
-            'delivery_date' => "2021-04-05",
+            'delivery_date' =>  Carbon::make('tomorrow'),
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -60,7 +64,7 @@ class PurchaseOrderTest extends TestCase
         $improper = $this->actingAs($user)->post('/purchase-order', [
             'supplier_id' => "1",
             'status' => "pending",
-            'delivery_date' => "2020-04-05",
+            'delivery_date' =>  Carbon::make('-2 days'),
         ]);
         $improperData = $improper->getOriginalContent();
 
@@ -80,7 +84,7 @@ class PurchaseOrderTest extends TestCase
         $purchaseOrder = PurchaseOrder::create([
             'supplier_id' => "1",
             'status' => "pending",
-            'delivery_date' => "2021-04-05",
+            'delivery_date' =>  Carbon::make('tomorrow'),
         ]);
 
         // make sure we're redirected
@@ -96,7 +100,7 @@ class PurchaseOrderTest extends TestCase
         $updated = $this->actingAs($user)->put("/purchase-order/$purchaseOrder->id", [
             'supplier_id' => "2",
             'status' => "received",
-            'delivery_date' => "2021-04-18 12:30:00",
+            'delivery_date' =>  Carbon::make('tomorrow'),
         ]);
         $updatedData = $updated->getOriginalContent();
 
@@ -104,7 +108,7 @@ class PurchaseOrderTest extends TestCase
         $this->assertNotEquals($purchaseOrder, $updatedData['data']);
         $this->assertEquals("2", $updatedData['data']->supplier_id);
         $this->assertEquals("received", $updatedData['data']->status);
-        $this->assertEquals("2021-04-18 12:30:00", $updatedData['data']->delivery_date);
+        $this->assertEquals( Carbon::make('tomorrow'), $updatedData['data']->delivery_date);
 
 
         // improper update, invalid status
@@ -118,7 +122,7 @@ class PurchaseOrderTest extends TestCase
         $updated = $this->actingAs($user)->put("/purchase-order/$purchaseOrder->id", [
             'delivery_date' => "2020-04-18",
         ]);
-        $this->assertEquals($purchaseOrder->delivery_date,"2021-04-05");
+        $this->assertEquals($purchaseOrder->delivery_date, Carbon::make('tomorrow'));
     }
 
     public function test_purchase_orders_can_be_indexed()
