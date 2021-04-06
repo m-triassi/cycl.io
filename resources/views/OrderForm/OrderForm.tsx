@@ -6,26 +6,26 @@ import {pathToRegexp} from 'path-to-regexp'
 import {connect} from 'react-redux'
 import {OrderItemStateType} from 'models/order'
 import {getInventoryDetail} from 'services/inventory'
-import {dataDisplay} from '@utils'
+import {dataDisplay, numberFormatter} from '@utils'
 import {addOrder} from 'services/order'
 
 type OrderFormPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
     OrderItem: OrderItemStateType,
-  }
+}
 
 const OrderForm = ({
     dispatch,
     OrderItem
-  }: OrderFormPropType) => {
+}: OrderFormPropType) => {
     const {Text} = Typography
     const {id, data, form} = OrderItem
     const [quantity, setQuantity] = useState<number>(1)
     const [orderId, setorderId] = useState<number>(0)
     const [isOrderSuccessful, setisOrderSuccessful] = useState<boolean>(false)
     const [total, setTotal] = useState<number>(0)
-    const setOrderQuantity = (key: number, value: number) => dispatch({type: 'SET_ORDER_QUANTITY_FORM', payload: {key, value}})
 
+    const setOrderQuantity = (key: number, value: number) => dispatch({type: 'SET_ORDER_QUANTITY_FORM', payload: {key, value}})
     const fetchOrderDetail = () => {
       getInventoryDetail(id).then((response: any) => {
           if (response.data.success) {
@@ -33,7 +33,6 @@ const OrderForm = ({
           }
       })
     }
-
     const onConfirm =()=>{
       addOrder(form)
         .then((response) => {
@@ -46,6 +45,13 @@ const OrderForm = ({
         })
     }
 
+    const onQuantityChange = (value: any) => {
+      setQuantity(value)
+      const itemIndex = form.item_ids.findIndex((item: { inventory_item_id: number }) => item.inventory_item_id===id)
+      setOrderQuantity(itemIndex, value)
+      setTotal(value*data.sale_price)
+    }
+
     useEffect(() => {
       const regexp = pathToRegexp('/OrderForm/(\\d+)')
       const IdString = regexp.exec(window.location.pathname)
@@ -56,13 +62,8 @@ const OrderForm = ({
         fetchOrderDetail()
       }
     }, [id])
+
     const ignoredKeys = ['id', 'created_at' , 'updated_at', 'cost', 'stock', 'supplier_id']
-    const onQuantityChange = (value: any) => {
-        setQuantity(value)
-        const itemIndex=form.item_ids.findIndex((item: { inventory_item_id: number }) => item.inventory_item_id===id)
-        setOrderQuantity(itemIndex, value)
-        setTotal(value*data.sale_price)
-      }
     const dataRow = dataDisplay(data, ignoredKeys)
     dataRow.push(
       <>
@@ -73,7 +74,7 @@ const OrderForm = ({
         </Row>
         <Row gutter={[0, 48]}>
           <Col span={6}><Text strong>Total:</Text></Col>
-          <Col span={8}><Text>{`$ ${total===0?data.sale_price:total}`}</Text></Col>
+          <Col span={8}><Text>{`$ ${total===0? numberFormatter(data.sale_price) : numberFormatter(total)}`}</Text></Col>
         </Row>
       </>
     )
@@ -87,7 +88,7 @@ const OrderForm = ({
               title='Purchase Successful'
               subTitle={`Order Number: ${orderId}`}
               extra={[
-                <Button onClick={window.close}>Continue</Button>,
+                <Button onClick={() => window.close()}>Continue</Button>,
           ]} />
             <Descriptions layout='vertical' bordered>
               <Descriptions.Item label='ORDER SUMMARY'>

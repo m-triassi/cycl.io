@@ -123,7 +123,6 @@ const VendorList = ({
             </StyledRow>
           </Col>
         </Row>
-
         <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
       </>
     )

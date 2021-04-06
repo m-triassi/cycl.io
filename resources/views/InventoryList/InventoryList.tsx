@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import {InventoryItemStateType} from 'models/inventory'
 import {filterInventory, getInventory} from 'services/inventory'
 import {DeleteButton, InventoryItemModal} from '@components'
+import {numberFormatter} from '@utils'
 import {InventoryDetailDrawer} from './components'
-
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -94,13 +94,13 @@ const InventoryList = ({
           title: 'Cost',
           key: 'cost',
           dataIndex: 'cost',
-          render: (text: any) => `$ ${text}`
+          render: (text: any) => `$${numberFormatter(text)}`
         },
         {
           title: 'Sale price',
           key: 'sale_price',
           dataIndex: 'sale_price',
-          render: (text: any) => `$ ${text}`
+          render: (text: any) => `$${numberFormatter(text)}`
         },
         {
             title: 'Action',
