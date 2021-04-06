@@ -52,16 +52,4 @@ class UserRoleController extends Controller
         ]);
     }
 
-    /**
-     * Converts a comma separated string to an array
-     *
-     * @param $input
-     * @return array
-     */
-    private function stringToArray($input) : array
-    {
-        // convert a string to an array by splitting it on "," or casting it to an array
-        return is_string($input) ? explode(',', str_replace(" ", "", $input))
-            : (array) $input;
-    }
 }
