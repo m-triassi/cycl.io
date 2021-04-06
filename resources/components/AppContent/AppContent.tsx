@@ -1,6 +1,6 @@
 import React from 'react'
-import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, SettingPage} from 'views'
-import {RouterStateType} from 'models/router'
+import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, SettingPage} from '@views'
+import {RouterStateType} from '@models/router'
 import {InventoryItemDetail} from '@components'
 
 // import SalesList from '../index'

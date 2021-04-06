@@ -4,10 +4,10 @@ import React, {useState, useEffect}  from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {pathToRegexp} from 'path-to-regexp'
 import {connect} from 'react-redux'
-import {OrderItemStateType} from 'models/order'
-import {getInventoryDetail} from 'services/inventory'
+import {OrderItemStateType} from '@models/order'
+import {getInventoryDetail} from '@services/inventory'
 import {dataDisplay, numberFormatter} from '@utils'
-import {addOrder} from 'services/order'
+import {addOrder} from '@services/order'
 
 type OrderFormPropType = {
     dispatch: (arg: DispatchArgumentType) => void,

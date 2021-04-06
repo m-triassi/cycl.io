@@ -7,9 +7,9 @@ import SVG from 'react-inlinesvg'
 import {Link, useLocation, useHistory} from 'react-router-dom'
 import {AppContent} from '@components'
 import appModules from 'appModules.json'
-import {RouterStateType} from 'models/router'
+import {RouterStateType} from '@models/router'
 import {StoreType, DispatchArgumentType} from '@types'
-import logo from '@public/img/logo.svg'
+import logo from 'icons/logo.svg'
 import './BasicLayout.css'
 
 type BasicLayoutPropType = {

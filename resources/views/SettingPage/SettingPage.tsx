@@ -1,6 +1,6 @@
 import React from 'react'
 import {Button} from 'antd'
-import {logOut} from 'services/setting'
+import {logOut} from '@services/setting'
 
 const SettingPage = () => (
   <Button

@@ -1,6 +1,3 @@
-import React from 'react'
-import Adapter from 'enzyme-adapter-react-16'
-import {shallow, configure} from 'enzyme'
 import {
     numberFormatter,
     serializeItem,
@@ -8,7 +5,6 @@ import {
     dataDisplay,
 } from '../utils'
 
-configure({adapter: new Adapter()})
 const number = 22.051
 const toBeRoundedNumber = 22.049
 const mockInventoryItem = {
@@ -68,8 +64,8 @@ describe('util functions test', () => {
     it('dataDisplay test', () => {
         const dataRow = dataDisplay(mockInventoryItem, [])
         expect(dataRow).toHaveLength(16)
-        const dataDetail = () => <>{dataRow}</>
-        const component = shallow(<dataDetail />)
-        expect(component).toBeDefined()
+        dataRow.map((element) => {
+            expect(element.key).toBeDefined()
+        })
     })
 })

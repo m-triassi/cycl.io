@@ -4,8 +4,8 @@ import {StoreType, DispatchArgumentType} from '@types'
 import {pathToRegexp} from 'path-to-regexp'
 import {Button, Col, message, Row, Typography} from 'antd'
 import {InventoryItemModal} from '@components'
-import {editInventory, getInventoryDetail} from 'services/inventory'
-import {getBomMaterial} from 'services/bom-material'
+import {editInventory, getInventoryDetail} from '@services/inventory'
+import {getBomMaterial} from '@services/bom-material'
 import {dataDisplay} from '@utils'
 
 type InventoryItemDetailPropType = {

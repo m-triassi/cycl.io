@@ -2,8 +2,8 @@ import {Row, Table, Typography} from 'antd'
 import React, {useEffect} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
-import {OrderListStateType} from 'models/order-list'
-import {getOrder} from 'services/order'
+import {OrderListStateType} from '@models/order-list'
+import {getOrder} from '@services/order'
 
 
 type OrderListPropType = {
