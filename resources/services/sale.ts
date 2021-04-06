@@ -9,16 +9,3 @@ export const addSale = (payload: SaleItemFormDataType) => axios({
 })
 
 export const getSale = () => axios.get(saleRoute)
-
-export const filterSale = (payload: string) => axios({
-    method: 'GET',
-    url: saleRoute,
-    params: {
-        q: payload
-    }
-})
-
-export const deleteSale = (payload: number) => axios({
-    method: 'DELETE',
-    url: saleRoute.concat(`/${payload}`),
-})

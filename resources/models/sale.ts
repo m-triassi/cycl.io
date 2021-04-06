@@ -42,7 +42,7 @@ const SaleItem = produce(
   (state, action) => {
     const {type, payload} = action
     switch (type) {
-      case 'SET_SALE_ITEMS':
+      case 'SET_SALE_LIST':
         state.table = payload
         break
       case 'SET_SALE_ITEM_IDS':

@@ -4,11 +4,10 @@ import {StoreType, DispatchArgumentType} from '@types'
 import styled from 'styled-components'
 import {connect} from 'react-redux'
 import {SaleItemStateType} from 'models/sale'
-import {getOrder} from 'services/order'
 import {SaleItemModal} from '@components'
 import {getInventory} from 'services/inventory'
 import {InventoryItemStateType} from 'models/inventory'
-import {addSale} from 'services/sale'
+import {addSale, getSale} from 'services/sale'
 
 type SaleListPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
@@ -19,21 +18,13 @@ type SaleListPropType = {
 const StyledRow = styled(Row)`
     padding: 10px 0px;
 `
-const data2=[
-  {
-    id: 1,
-    client_name: 'bob',
-    delivery_date: 21-20-13,
-    price: 100
-  }
-]
 
 const SaleList = ({
     dispatch,
     SaleItem,
     InventoryItem
 }: SaleListPropType) => {
-    const {materialsTable, form, tempPrice} = SaleItem
+    const {materialsTable, form, tempPrice, table} = SaleItem
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const resetState = () => dispatch({type: 'RESET_SALE_FORM_STATE'})
     const changeFormData = (key: string, value: any) => dispatch({type: 'SALE_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
@@ -47,11 +38,11 @@ const SaleList = ({
         }
       })
     }
-    const fetchOrderList = () => {
-      getOrder().then((response: any) => {
+    const fetchSaleList = () => {
+      getSale().then((response: any) => {
         const {data} = response
         if (data.success) {
-          dispatch({type: 'SET_ORDER_LIST', payload: data.data})
+          dispatch({type: 'SET_SALE_LIST', payload: data.data})
         }
       })
     }
@@ -100,9 +91,10 @@ const SaleList = ({
  }
 
     useEffect(() => {
-      fetchOrderList()
+      fetchSaleList()
       fetchInventoryList()
     }, [])
+
     const columns = [
         {
             title: 'Sale ID',
@@ -161,7 +153,7 @@ const SaleList = ({
         <Table
           bordered
           columns={columns}
-          dataSource={data2}
+          dataSource={table}
           pagination={{position: ['bottomCenter']}}
           scroll={{x: 'max-content'}} />
       </>
