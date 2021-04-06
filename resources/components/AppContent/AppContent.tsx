@@ -43,7 +43,7 @@ const AppContent = ({
         component = (<h1>Hi Accounting</h1>)
         break
       case '/Settings':
-        component = (<SettingPage routeToPage={routeToPage} />)
+        component = (<SettingPage />)
         break
       case (route.match(/\/OrderForm\/\d+/) || {}).input:
         component = (<OrderForm />)

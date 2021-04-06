@@ -1,6 +1,6 @@
 import {request} from '@utils'
 
 export const logOut = () => request({
-    method: 'GET',
+    method: 'POST',
     url: '/logout'
 })

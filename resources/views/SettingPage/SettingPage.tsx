@@ -2,19 +2,15 @@ import React from 'react'
 import {Button} from 'antd'
 import {logOut} from 'services/setting'
 
-type SettingPagePropType = {
-    routeToPage: (url: string) => void
-}
-
-const SettingPage = ({
-    routeToPage
-}: SettingPagePropType) => (
+const SettingPage = () => (
   <Button
     shape='round'
     type='primary'
     onClick={() => {
       logOut()
-      routeToPage('/login')
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
     }}>
     Log Out
   </Button>
