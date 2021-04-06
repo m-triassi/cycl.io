@@ -31,17 +31,28 @@ class PurchaseOrderItemController extends Controller
             ]);
         }
 
-        // grab the list of item ids that will be attached to the purchase order
+        // If we didn't get a valid purchase order id, create one.
+        if ($id == 0) {
+            $purchaseOrder = PurchaseOrder::create($request->only([
+                'supplier_id',
+                'delivery_date',
+                'status'
+            ]));
+            // make sure we have the latest values from the database
+            $purchaseOrder = $purchaseOrder->refresh();
+        } else {
+            // otherwise find the purchase order we're looking for and 404 if it doesn't exist
+            $purchaseOrder = PurchaseOrder::findOrFail($id);
+        }
+
         $itemIds = $request->item_ids;
 
-        // transfrom the string into an array by splitting the string on ","
+        // transform the
         if (is_string($itemIds)) {
             $itemIds = trim($itemIds, " ,");
             $itemIds = Str::contains($itemIds, ",") ? explode(",", $itemIds) : [$itemIds];
         }
 
-        // find the order to be update or 404 on non-existence
-        $purchaseOrder = PurchaseOrder::findOrFail($id);
 
         // attach the items to the order and save
         $purchaseOrder->order_items()->sync($itemIds);
@@ -49,7 +60,7 @@ class PurchaseOrderItemController extends Controller
 
         return response([
             'success' => true,
-            'data' => $purchaseOrder->with('order_items')->findOrFail($id)
+            'data' => $purchaseOrder->load('order_items')->refresh()
         ]);
     }
 
