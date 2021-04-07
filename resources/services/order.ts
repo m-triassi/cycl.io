@@ -26,3 +26,15 @@ export const deleteOrder = (payload: number) => axios({
     method: 'DELETE',
     url: orderRoute.concat(`/${payload}`),
 })
+
+export const confirmPayable = (payload: number) => axios({
+    method: 'PUT',
+    url: orderRoute.concat(`/${payload}`),
+    data: {'status': 'paid'},
+})
+
+export const cancelPayable = (payload: number) => axios({
+    method: 'PUT',
+    url: orderRoute.concat(`/${payload}`),
+    data: {'status': 'cancelled'},
+})

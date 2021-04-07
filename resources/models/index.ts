@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
     BomMaterial,
     VendorItem,
     OrderItem,
-    OrderList
+    OrderList,
 })
 
 export default rootReducer
