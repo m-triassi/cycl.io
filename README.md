@@ -128,8 +128,8 @@ cp .env.example .env
 php artisan key:generate
 # You only need to do the above once
 # The below should be done every time to you pull 
-php artisan migrate
 composer install
+php artisan migrate
 yarn install
 yarn dev
 ```
