@@ -53,9 +53,9 @@ const PayableList = ({
       fetchPayableList()
     }, [])
 
-    useEffect(() => {
-      onFilterPayable()
-    }, [status])
+    // useEffect(() => {
+    //   onFilterPayable()
+    // }, [status])
 
     const columns = [
       {
