@@ -56,6 +56,7 @@ const SaleList = ({
             message.error('Sale failed to be added')
           }
         })
+      fetchSaleList()
       resetState()
     }
     const onChange = (value: any) => {
