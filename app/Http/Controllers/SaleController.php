@@ -29,9 +29,17 @@ class SaleController extends Controller
 
         // search the status list using the input filter as a fuzzy search
         $status = $request->status;
+        // instantiate an empty Sale query
+        $sale = Sale::query();
+        // if a status is passed, apply it as a filter
+
+        if ($status) {
+            $sale = $sale->where('status', "{$status}");
+        }
+
         return response([
             'success' => true,
-            'data' => Sale::where('status', 'like', "%{$status}%")->get()
+            'data' => $sale->get()
         ]);
     }
 
