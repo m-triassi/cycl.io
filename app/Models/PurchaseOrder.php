@@ -26,6 +26,8 @@ class PurchaseOrder extends Model
 
     public function getCostAttribute()
     {
-        return round($this->order_items->pluck('cost')->sum(), 2);
+        return round($this->order_items->map(function ($orderable) {
+            return $orderable->cost*$orderable->pivot->quantity;
+        })->sum(), 2);
     }
 }
