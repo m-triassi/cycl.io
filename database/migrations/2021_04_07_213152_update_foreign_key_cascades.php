@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class UpdateForeignKeyCascades extends Migration
 {
@@ -13,6 +14,11 @@ class UpdateForeignKeyCascades extends Migration
      */
     public function up()
     {
+        // if we're in a sqlite (aka CI/CD container) database, this wont work so skip.
+        if (config('database.default') == 'sqlite') {
+            return;
+        }
+
         Schema::table('orderables', function (Blueprint $table) {
             $table->dropForeign('orderables_inventory_item_id_foreign');
 
