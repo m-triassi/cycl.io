@@ -31,8 +31,8 @@ class SaleController extends Controller
         $status = $request->status;
         // instantiate an empty Sale query
         $sale = Sale::query();
-        // if a status is passed, apply it as a filter
 
+        // if a status is passed, apply it as a filter
         if ($status) {
             $sale = $sale->where('status', "{$status}");
         }
