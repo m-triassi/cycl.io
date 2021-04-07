@@ -22,7 +22,7 @@ class PurchaseOrderFactory extends Factory
      */
     public function definition()
     {
-        $statuses = [PurchaseOrder::PENDING, PurchaseOrder::SHIPPED, PurchaseOrder::PAID, PurchaseOrder::CANCELLED];
+        $statuses = [PurchaseOrder::PENDING, PurchaseOrder::RECEIVED, PurchaseOrder::PAID, PurchaseOrder::CANCELLED];
 
         return [
             'supplier_id' => Supplier::inRandomOrder()->first(),
