@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AvailableMaterialController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\MaterialController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\SupplierItemController;
 use App\Http\Controllers\PurchaseOrderItemController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\SaleItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sale/{id}', [SaleController::class, "show"]);
     Route::post('/sale', [SaleController::class, "store"]);
     Route::put('/sale/{id}', [SaleController::class, "update"]);
+    Route::put('/sale/orderables/{id}', [SaleItemController::class, "update"]);
 
     Route::get('/purchase-order', [PurchaseOrderController::class, "index"]);
     Route::get('/purchase-order/{id}', [PurchaseOrderController::class, "show"]);
@@ -51,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/inventory', [InventoryItemController::class, "store"]);
     Route::put('/inventory/{id}', [InventoryItemController::class, "update"]);
     Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"]);
+    Route::get('/materials/available', [AvailableMaterialController::class, "index"]);
 
     Route::get('/materials', [MaterialController::class, "index"]);
     Route::post('/materials', [MaterialController::class, "store"]);

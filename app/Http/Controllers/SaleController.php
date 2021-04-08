@@ -44,16 +44,6 @@ class SaleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -68,12 +58,12 @@ class SaleController extends Controller
             // validate the data to be stored is correct
             $request->validate([
                 'client_name' => 'required|string|max:255',
-                "status" => "required|string|in:{$statuses}",
+                "status" => "string|in:{$statuses}",
                 "payment_type" => "required|string|in:{$paymentTypes}",
                 'card_number' => 'required|string|size:16|regex:/^[0-9]*$/',
                 'cardholder_name' => 'required|string|max:255',
-                'price' => 'required|numeric|min:0',
-                'description' => 'required|string|max:255',
+                'price' => 'numeric|min:0',
+                'description'=>'string|max:255',
             ]);
         } catch (ValidationException $e) {
             return response([
@@ -114,17 +104,6 @@ class SaleController extends Controller
             'success' => true,
             'data' => Sale::findOrFail($id)
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -177,18 +156,6 @@ class SaleController extends Controller
             'data' => $sale->refresh()
         ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 
     /**
      * Return comma-seperated string containing all sale statuses
