@@ -30,7 +30,17 @@
         },
         {
             "name": "Accounting",
-            "url": "/Accounting"
+            "url": "/Accounting",
+            "subModules": [
+                {
+                    "name": "Payable",
+                    "url": "/Accounting/Payable"
+                },
+                {
+                    "name": "Receivable",
+                    "url": "/Accounting/Receivable"
+                }
+            ]
         },
         {
             "name": "Settings",

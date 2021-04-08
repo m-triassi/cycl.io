@@ -5,6 +5,7 @@ import {BomMaterialStateType} from '@models/bom-material'
 import {VendorItemStateType} from '@models/vendor'
 import {OrderItemStateType} from '@models/order'
 import {OrderListStateType} from '@models/order-list'
+import {ReceivableListStateType} from '@models/receivable'
 
 export type StoreType = {
     router: RouterStateType,
@@ -14,6 +15,7 @@ export type StoreType = {
     VendorItem: VendorItemStateType,
     OrderItem: OrderItemStateType,
     OrderList: OrderListStateType,
+    ReceivableList: ReceivableListStateType,
 }
 
 export type DispatchArgumentType = {
