@@ -9,3 +9,21 @@ export const addSale = (payload: SaleItemFormDataType) => axios({
 })
 
 export const getSale = () => axios.get(saleRoute)
+
+export const filterSale = (payload: {}) => axios({
+    method: 'GET',
+    url: saleRoute,
+    params: payload
+})
+
+export const confirmSale = (payload: number) => axios({
+    method: 'PUT',
+    url: saleRoute.concat(`/${payload}`),
+    data: {'status': 'paid'},
+})
+
+export const cancelSale = (payload: number) => axios({
+    method: 'PUT',
+    url: saleRoute.concat(`/${payload}`),
+    data: {'status': 'cancelled'},
+})

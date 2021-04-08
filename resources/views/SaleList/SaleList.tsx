@@ -1,13 +1,14 @@
-import {Row, Table, Typography, Button, Input, Col, message} from 'antd'
+import {Row, Table, Typography, Button, Input, Col, message, Space, Radio} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import styled from 'styled-components'
 import {connect} from 'react-redux'
 import {SaleItemStateType} from 'models/sale'
-import {SaleItemModal} from '@components'
+import {SaleItemModal,CheckButton, DeleteButton} from '@components'
 import {getInventory} from 'services/inventory'
 import {InventoryItemStateType} from 'models/inventory'
-import {addSale, getSale} from 'services/sale'
+import {addSale, filterSale} from 'services/sale'
+
 
 type SaleListPropType = {
     dispatch: (arg: DispatchArgumentType) => void,
@@ -26,6 +27,8 @@ const SaleList = ({
 }: SaleListPropType) => {
     const {materialsTable, form, tempPrice, table} = SaleItem
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
+    const statuses = ['', 'pending', 'paid', 'cancelled']
+    const [status, setStatus] = useState<string>(statuses[1])
     const resetState = () => dispatch({type: 'RESET_SALE_FORM_STATE'})
     const changeFormData = (key: string, value: any) => dispatch({type: 'SALE_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const changeFormQuantity = (id: number, value: any) => dispatch({type: 'SET_SALE_QUANTITY_ITEM', payload: {id, value}})
@@ -38,13 +41,13 @@ const SaleList = ({
         }
       })
     }
-    const fetchSaleList = () => {
-      getSale().then((response: any) => {
+    const fetchSaleListByState = () => {
+      filterSale({'status': status}).then((response: any) => {
         const {data} = response
         if (data.success) {
           dispatch({type: 'SET_SALE_LIST', payload: data.data})
-        }
-      })
+          }
+        })
     }
     const onSubmit = () => {
       addSale(form)
@@ -56,7 +59,7 @@ const SaleList = ({
             message.error('Sale failed to be added')
           }
         })
-      fetchSaleList()
+      fetchSaleListByState()
       resetState()
     }
     const onChange = (value: any) => {
@@ -93,9 +96,12 @@ const SaleList = ({
  }
 
     useEffect(() => {
-      fetchSaleList()
+      fetchSaleListByState()
       fetchInventoryList()
     }, [])
+    useEffect(() => {
+      fetchSaleListByState()
+    }, [status])
 
     const columns = [
         {
@@ -124,6 +130,29 @@ const SaleList = ({
         dataIndex: 'cost',
         render: (text: any) => `${text}`
     },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text: any, record: any) => {
+        const onConfirm = ()=>{
+          dispatch({type: 'CONFIRM_SALE', payload: record.id})
+          fetchSaleListByState()
+        }
+        const onCancel = ()=>{
+          dispatch({type: 'CANCEL_SALE', payload: record.id})
+          fetchSaleListByState()
+        }
+        if (record.status !== statuses[2] && record.status !== statuses[3]) {
+          return (
+            <Space size={25}>
+              <CheckButton type='Sale' onCheck={onConfirm} />
+              <DeleteButton type='Sale' onDelete={onCancel} />
+            </Space>
+          )
+        }
+        return (<></>)
+      }
+    }
     ]
     return (
       <>
@@ -151,6 +180,14 @@ const SaleList = ({
                 placeholder='Search Sale Item' />
             </StyledRow>
           </Col>
+        </Row>
+        <Row style={{marginBottom: 8}}>
+          <Radio.Group defaultValue={status} buttonStyle='solid'>
+            <Radio.Button onClick={() => setStatus(statuses[0])} value={statuses[0]}>All</Radio.Button>
+            <Radio.Button onClick={() => setStatus(statuses[1])} value={statuses[1]}>Pending</Radio.Button>
+            <Radio.Button onClick={() => setStatus(statuses[2])} value={statuses[2]}>Completed</Radio.Button>
+            <Radio.Button onClick={() => setStatus(statuses[3])} value={statuses[3]}>Cancelled</Radio.Button>
+          </Radio.Group>
         </Row>
         <Table
           bordered

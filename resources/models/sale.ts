@@ -1,4 +1,6 @@
 import produce from 'immer'
+import {message} from 'antd'
+import {cancelSale, confirmSale} from '../services/sale'
 
 
 export type ItemIdsFormDataType = {
@@ -70,6 +72,26 @@ const SaleItem = produce(
         state.materialsTable=[]
         state.tempPrice=0
         state.form = initialState.form
+        break
+      case 'CONFIRM_SALE':
+        confirmSale(payload).then((response)=>{
+          const {data} = response
+          if (data.success) {
+            message.success('Sale confirmed')
+          } else {
+            message.error('Sale failed to be confirmed')
+          }
+        })
+        break
+      case 'CANCEL_SALE':
+        cancelSale(payload).then((response)=>{
+          const {data} = response
+          if (data.success) {
+            message.success('Sale cancelled')
+          } else {
+            message.error('Sale failed to be cancelled')
+          }
+        })
         break
       default:
         return state
