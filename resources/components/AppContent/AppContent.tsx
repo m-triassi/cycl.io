@@ -1,5 +1,5 @@
 import React from 'react'
-import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, SaleList, PayableList, ReceivableList} from 'views'
+import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, SaleList, PayableList, ReceivableList, SupplierDetails} from 'views'
 import {RouterStateType} from 'models/router'
 import {InventoryItemDetail} from '@components'
 
@@ -28,7 +28,7 @@ const AppContent = ({
         component = (<InventoryList />)
         break
       case (route.match(/\/Vendor\/Suppliers\/\d+/) || {}).input:
-        component = (<h1>Hi Supplier</h1>)
+        component = (<SupplierDetails />)
         break
       case '/Vendor/Suppliers':
         component = (<VendorList />)

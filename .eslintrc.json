@@ -86,6 +86,7 @@
           "tsx": "never"
         }
      ],
+     "prefer-destructuring": ["error", {"object": true, "array": false}],
      "radix":"off"
     }
   }
