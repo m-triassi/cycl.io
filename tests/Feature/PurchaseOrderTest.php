@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class PurchaseOrderTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      *
      * @test
@@ -155,6 +157,8 @@ class PurchaseOrderTest extends TestCase
         $shown->assertStatus(200);
         $this->assertTrue($shownData['success']);
         $orderA = PurchaseOrder::find(1);
+        // force the loading of cost attribute
+        $orderA->cost;
         $this->assertEquals($orderA, $shownData['data']);
     }
 }

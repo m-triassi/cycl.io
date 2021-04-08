@@ -1,10 +1,7 @@
 import React from 'react'
-import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, SettingPage} from '@views'
+import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, SettingPage, ReceivableList} from '@views'
 import {RouterStateType} from '@models/router'
 import {InventoryItemDetail} from '@components'
-
-// import SalesList from '../index'
-// import AccountingList from '../index'
 
 type AppContentPropType = {
   router: RouterStateType,
@@ -39,8 +36,8 @@ const AppContent = ({
       case '/Sales':
         component = (<h1>Hi Sales</h1>)
         break
-      case '/Accounting':
-        component = (<h1>Hi Accounting</h1>)
+      case '/Accounting/Receivable':
+        component = (<ReceivableList />)
         break
       case '/Settings':
         component = (<SettingPage />)

@@ -9,17 +9,6 @@ use App\Models\PurchaseOrder;
 class InventoryItemObserver
 {
     /**
-     * Handle the InventoryItem "created" event.
-     *
-     * @param  \App\Models\InventoryItem  $inventoryItem
-     * @return void
-     */
-    public function created(InventoryItem $inventoryItem)
-    {
-        //
-    }
-
-    /**
      * Handle the InventoryItem "updated" event.
      *
      * @param  \App\Models\InventoryItem  $inventoryItem
@@ -28,8 +17,7 @@ class InventoryItemObserver
     public function updated(InventoryItem $inventoryItem)
     {
         //Check if item is below stock
-        if($inventoryItem->getIsBelowMinimumAttribute())
-        {
+        if($inventoryItem->is_below_minimum) {
             //Check if there is an existing order for said inventory item
             if(!OrderItem::where('inventory_item_id',$inventoryItem->id)->exists())
             {
@@ -53,38 +41,5 @@ class InventoryItemObserver
                 $orderItem->save();
             }
         }
-    }
-
-    /**
-     * Handle the InventoryItem "deleted" event.
-     *
-     * @param  \App\Models\InventoryItem  $inventoryItem
-     * @return void
-     */
-    public function deleted(InventoryItem $inventoryItem)
-    {
-        //
-    }
-
-    /**
-     * Handle the InventoryItem "restored" event.
-     *
-     * @param  \App\Models\InventoryItem  $inventoryItem
-     * @return void
-     */
-    public function restored(InventoryItem $inventoryItem)
-    {
-        //
-    }
-
-    /**
-     * Handle the InventoryItem "force deleted" event.
-     *
-     * @param  \App\Models\InventoryItem  $inventoryItem
-     * @return void
-     */
-    public function forceDeleted(InventoryItem $inventoryItem)
-    {
-        //
     }
 }
