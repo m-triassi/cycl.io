@@ -20,7 +20,7 @@ class PurchaseOrderController extends Controller
             // validate that the incoming data is correct
             $request->validate([
                 "supplier_id" => "integer|min:0|exists:suppliers,id",
-                "status" => "string|in:{$statuses}",
+                "status" => "nullable|string|in:{$statuses}",
                 "delivery_date" => "date|after:yesterday",
             ]);
         } catch (ValidationException $e) {
@@ -32,11 +32,14 @@ class PurchaseOrderController extends Controller
 
         $filters = $request->only([
             "supplier_id",
-            "status",
             "delivery_date",
         ]);
 
         $builder = PurchaseOrder::query();
+
+        if ($request->status) {
+            $builder->where("status", $request->status); 
+        }
 
         foreach ($filters as $key => $value) {
             $builder->where($key, $value);
