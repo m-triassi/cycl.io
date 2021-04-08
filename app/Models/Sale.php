@@ -36,7 +36,7 @@ class Sale extends Model
     {
         // return a new collection of item cost * sale quantity, then sum each value in that array for total cost
         return round($this->order_items->map(function ($orderable) {
-            return $orderable->cost*$orderable->pivot->quantity;
+            return $orderable->price*$orderable->pivot->quantity;
         })->sum(), 2);
     }
 
