@@ -3,7 +3,7 @@ import {OrderItemFormDataType} from '../models/order'
 import {orderRoute} from '.'
 
 export const addOrder = (payload: OrderItemFormDataType) => request({
-    url: orderRoute,
+    url: orderRoute.concat('/orderables/0'),
     method: 'POST',
     data: payload,
 })
