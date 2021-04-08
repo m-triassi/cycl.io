@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import {Badge, Row, Col, Typography, Table, Radio, Statistic, Space, Input} from 'antd'
+import {Badge, Row, Col, Typography, Table, Radio, Statistic, Space, Button, Drawer} from 'antd'
 import styled from 'styled-components'
 import {DollarOutlined} from '@ant-design/icons'
 import {connect} from 'react-redux'
 import {StoreType, DispatchArgumentType} from '@types'
-import {filterPurchaseOrder,getOrder} from 'services/order'
+import {filterPurchaseOrder, getSpecificPayable} from 'services/order'
 import {OrderListStateType} from 'models/order-list'
-import {DeleteButton} from '@components'
+import {DeleteButton, CheckButton} from '@components'
 
 
 const StyledRow = styled(Row)`
@@ -24,17 +24,26 @@ const PayableList = ({
 }: PayableListPropType) => {
     const {table} = Orders
     const [balance, setBalance] = useState<number>(0)
-    const statuses = ['', 'received', 'paid', 'cancelled']
-    const [status, setStatus] = useState<string>(statuses[1])
+    const [visible, setVisible] = useState(false)
+    const [currentSaleID, setCurrentSaleID] = useState<number>()
+    const [currentSaleDetails, setCurrentSaleDetails] = useState<any>()
 
-    const onFilterPayable = (value: string) => {
-      filterPurchaseOrder(value).then((response: any) => {
+    const showDrawer = (id: number) => {
+      setCurrentSaleID(id)
+      getSpecificPayable(id).then((response: any) => {
         const {data} = response
         if (data.success) {
-          dispatch({type: 'SET_ORDER_LIST', payload: data.data})
+          setCurrentSaleDetails(data.data)
         }
+        setVisible(true)
       })
     }
+    const onClose = () => {
+      setVisible(false)
+    }
+
+    const statuses = ['', 'received', 'paid', 'cancelled']
+    const [status, setStatus] = useState<string>(statuses[1])
 
     const fetchPayableList = () => {
       filterPurchaseOrder({'status': status}).then((response: any) => {
@@ -64,7 +73,7 @@ const PayableList = ({
         key: 'id',
         dataIndex: 'id',
         render: (text: number) => (
-          <Typography.Text strong>{text}</Typography.Text>
+          <Button type='text' style={{color: '#619b8a'}} onClick={() => showDrawer(text)}>{text}</Button>
         )
       },
       {
@@ -81,24 +90,25 @@ const PayableList = ({
       {
         title: 'Cost',
         key: 'cost',
-        dataIndex: 'cost'
+        dataIndex: 'cost',
+        render: (text: any) => `$ ${text}`
       },
       {
         title: 'Action',
         key: 'action',
         render: (text: any, record: any) => {
           const onConfirm = ()=>{
-            dispatch({type: 'CONFIRM_RECEIVABLE', payload: record.id})
+            dispatch({type: 'CONFIRM_PAYABLE', payload: record.id})
             fetchPayableList()
           }
           const onDelete = ()=>{
-            dispatch({type: 'CANCEL_RECEIVABLE', payload: record.id})
+            dispatch({type: 'CANCEL_PAYABLE', payload: record.id})
             fetchPayableList()
           }
           if (record.status !== statuses[2] && record.status !== statuses[3]) {
             return (
               <Space size={25}>
-                {/* <CheckButton type='Receivable' onCheck={onConfirm} /> */}
+                <CheckButton type='Payable' onCheck={onConfirm} />
                 <DeleteButton type='Payable' onDelete={onDelete} />
               </Space>
             )
@@ -130,17 +140,40 @@ const PayableList = ({
             </Space>
           </StyledRow>
         </Row>
-        <StyledRow>
-          <Input
-            onPressEnter={(e: any) => onFilterPayable(e.target.value)}
-            placeholder='Search bill item' />
-        </StyledRow>
+        <StyledRow />
         <Table
           bordered
           columns={columns}
           dataSource={table}
           pagination={{position: ['bottomCenter']}}
           scroll={{x: 'max-content'}} />
+        <Drawer
+          title={'Purchase Order Details - Order #'.concat(String(currentSaleID))}
+          placement='right'
+          onClose={onClose}
+          visible={visible}
+          width={512}>
+          <p>
+            Purchase order ID:
+            {' '}
+            {currentSaleDetails?.id}
+          </p>
+          <p>Expense Type: Purchase Order</p>
+          <p>
+            Bill Date:
+            {' '}
+            {currentSaleDetails?.created_at.substring(0, 10)}
+          </p>
+          <p>
+            Cost: $
+            {currentSaleDetails?.cost}
+          </p>
+          <p>
+            Status:
+            {' '}
+            {currentSaleDetails?.status.charAt(0).toUpperCase()+currentSaleDetails?.status.substring(1)}
+          </p>
+        </Drawer>
       </>
     )
 }

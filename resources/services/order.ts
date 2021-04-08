@@ -10,6 +10,11 @@ export const addOrder = (payload: OrderItemFormDataType) => axios({
 
 export const getOrder = () => axios.get(orderRoute)
 
+export const getSpecificPayable = (payload: number) => axios({
+    method: 'GET',
+    url: orderRoute.concat(`/${payload}`),
+})
+
 export const filterPurchaseOrder = (payload: {}) => axios({
     method: 'GET',
     url: orderRoute,
