@@ -21,10 +21,11 @@ class SaleFactory extends Factory
      */
     public function definition()
     {
+        $statuses = [Sale::PENDING, Sale::SHIPPED, Sale::PAID, Sale::CANCELLED];
         return [
             'description' => $this->faker->words(5, true),
             'client_name' => $this->faker->name,
-            'status' => $this->faker->word,
+            'status' => $statuses[$this->faker->numberBetween(0,3)],
             'payment_type' => $this->faker->word,
             'card_number' => $this->faker->numberBetween(11111111, 99999999) . $this->faker->numberBetween(11111111, 99999999),
             'last_four' => $this->faker->numberBetween(1111,9999),
