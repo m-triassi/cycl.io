@@ -1,4 +1,4 @@
-import {Button, Col, Form, Input, DatePicker, Modal, Row, Table, Typography} from 'antd'
+import {Button, Col, Form, Input, DatePicker, Modal, Row, Table, Typography, Radio} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
@@ -72,6 +72,13 @@ const VendorList = ({
             <Item required label='Partnership End Date'><DatePicker data-cy='vendor-form-partnership-end-date' onChange={(value) => changeFormData('partnership_end_date', value)} /></Item>
           </Col>
         </Row>
+        <Item required label='Payment Delay (days)'>
+          <Radio.Group data-cy='vendor-form-payment-delay' onChange={(e) => changeFormData('payment_delay', e.target.value)}>
+            <Radio value={0}>0</Radio>
+            <Radio value={30}>30</Radio>
+            <Radio value={60}>60</Radio>
+          </Radio.Group>
+        </Item>
       </Modal>
     )
     const columns = [
@@ -93,6 +100,12 @@ const VendorList = ({
           title: 'Partnership End Date',
           key: 'partnership_end_date',
           dataIndex: 'partnership_end_date',
+          render: (text: any) => `${text}`
+      },
+        {
+          title: 'Payment Delay (days)',
+          key: 'payment_delay',
+          dataIndex: 'payment_delay',
           render: (text: any) => `${text}`
       },
       {
