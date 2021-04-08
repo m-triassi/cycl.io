@@ -1,4 +1,5 @@
 export {default as SupplierDetails} from './SupplierDetails'
+export {default as ReceivableList} from './ReceivableList'
 export {default as VendorList} from './VendorList'
 export {default as InventoryList} from './InventoryList'
 export {default as WelcomePage} from './WelcomePage'
