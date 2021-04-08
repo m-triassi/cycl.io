@@ -6,6 +6,7 @@ import {VendorItemStateType} from '@models/vendor'
 import {OrderItemStateType} from '@models/order'
 import {OrderListStateType} from '@models/order-list'
 import {ReceivableListStateType} from '@models/receivable'
+import {SaleItemStateType} from '@models/sale'
 
 export type StoreType = {
     router: RouterStateType,
@@ -13,6 +14,7 @@ export type StoreType = {
     BomMaterial: BomMaterialStateType,
     InventoryDetail: InventoryDetailStateType,
     VendorItem: VendorItemStateType,
+    SaleItem: SaleItemStateType,
     OrderItem: OrderItemStateType,
     OrderList: OrderListStateType,
     ReceivableList: ReceivableListStateType,

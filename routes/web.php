@@ -12,6 +12,7 @@ use App\Http\Controllers\SupplierItemController;
 use App\Http\Controllers\PurchaseOrderItemController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\SaleItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sale/{id}', [SaleController::class, "show"]);
     Route::post('/sale', [SaleController::class, "store"]);
     Route::put('/sale/{id}', [SaleController::class, "update"]);
+    Route::put('/sale/orderables/{id}', [SaleItemController::class, "update"]);
 
     Route::get('/purchase-order', [PurchaseOrderController::class, "index"]);
     Route::get('/purchase-order/{id}', [PurchaseOrderController::class, "show"]);
