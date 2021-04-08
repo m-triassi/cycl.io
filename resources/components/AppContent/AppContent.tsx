@@ -1,5 +1,5 @@
 import React from 'react'
-import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, PayableList} from 'views'
+import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, PayableList, ReceivableList} from 'views'
 import {RouterStateType} from 'models/router'
 import {InventoryItemDetail} from '@components'
 
@@ -42,6 +42,9 @@ const AppContent = ({
       case '/Accounting/Payable':
         component = (<PayableList />)
       break
+      case '/Accounting/Receivable':
+        component = (<ReceivableList />)
+        break
       case '/Settings':
         component = (<h1>Hi Settings</h1>)
         break

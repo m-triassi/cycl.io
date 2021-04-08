@@ -22,10 +22,12 @@ class PurchaseOrderFactory extends Factory
      */
     public function definition()
     {
+        $statuses = [PurchaseOrder::PENDING, PurchaseOrder::RECEIVED, PurchaseOrder::PAID, PurchaseOrder::CANCELLED];
+
         return [
             'supplier_id' => Supplier::inRandomOrder()->first(),
             'delivery_date' => $this->faker->dateTimeBetween('now', '+3 months'),
-            'status' => $this->faker->word
+            'status' => $statuses[$this->faker->numberBetween(0, 3)]
         ];
     }
 }

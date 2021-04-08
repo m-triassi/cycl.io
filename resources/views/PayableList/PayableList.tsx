@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Badge, Row, Col, Typography, Table, Radio, Statistic, Space} from 'antd'
+import {Badge, Row, Col, Typography, Table, Radio, Statistic, Space, Input} from 'antd'
 import styled from 'styled-components'
 import {DollarOutlined} from '@ant-design/icons'
 import {connect} from 'react-redux'
@@ -27,24 +27,25 @@ const PayableList = ({
     const statuses = ['', 'received', 'paid', 'cancelled']
     const [status, setStatus] = useState<string>(statuses[1])
 
-    const fetchPayableList = () => {
-      getOrder().then((response: any) => {
+    const onFilterPayable = (value: string) => {
+      filterPurchaseOrder(value).then((response: any) => {
         const {data} = response
         if (data.success) {
           dispatch({type: 'SET_ORDER_LIST', payload: data.data})
-          // let tempBalance = 0
-          // data.data.forEach((element: any) => {
-          //   tempBalance += element.cost
-          // })
-          // setBalance(tempBalance)
         }
       })
     }
-    const onFilterPayable = () => {
+
+    const fetchPayableList = () => {
       filterPurchaseOrder({'status': status}).then((response: any) => {
         const {data} = response
         if (data.success) {
           dispatch({type: 'SET_ORDER_LIST', payload: data.data})
+          let tempBalance = 0
+          data.data.forEach((element: any) => {
+            tempBalance += element.cost
+          })
+          setBalance(tempBalance)
         }
       })
     }
@@ -53,9 +54,9 @@ const PayableList = ({
       fetchPayableList()
     }, [])
 
-    // useEffect(() => {
-    //   onFilterPayable()
-    // }, [status])
+    useEffect(() => {
+      fetchPayableList()
+    }, [status])
 
     const columns = [
       {
@@ -74,7 +75,8 @@ const PayableList = ({
       {
         title: 'Bill Date',
         key: 'created_at',
-        dataIndex: 'created_at'
+        dataIndex: 'created_at',
+        render: (text: any) => `${text.substring(0, 10)}`
       },
       {
         title: 'Cost',
@@ -85,10 +87,10 @@ const PayableList = ({
         title: 'Action',
         key: 'action',
         render: (text: any, record: any) => {
-          // const onConfirm = ()=>{
-          //   dispatch({type: 'CONFIRM_RECEIVABLE', payload: record.id})
-          //   fetchPayableList()
-          // }
+          const onConfirm = ()=>{
+            dispatch({type: 'CONFIRM_RECEIVABLE', payload: record.id})
+            fetchPayableList()
+          }
           const onDelete = ()=>{
             dispatch({type: 'CANCEL_RECEIVABLE', payload: record.id})
             fetchPayableList()
@@ -128,11 +130,11 @@ const PayableList = ({
             </Space>
           </StyledRow>
         </Row>
-        {/* <StyledRow>
+        <StyledRow>
           <Input
             onPressEnter={(e: any) => onFilterPayable(e.target.value)}
             placeholder='Search bill item' />
-        </StyledRow> */}
+        </StyledRow>
         <Table
           bordered
           columns={columns}

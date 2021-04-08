@@ -20,7 +20,7 @@ class PurchaseOrderObserverTest extends TestCase
      */
     public function test_order_updated_received_triggers_inventory_stock_update()
     {
-        $purchaseOrder = PurchaseOrder::first();
+        $purchaseOrder = PurchaseOrder::where('status', '!=', PurchaseOrder::RECEIVED)->first();
 
         //Get the order items corresponding to the PurchaseOrder
         $orderItems = OrderItem::where("orderable_id", $purchaseOrder->id)->get();

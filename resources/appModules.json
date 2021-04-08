@@ -35,6 +35,10 @@
                 {
                     "name": "Payable",
                     "url": "/Accounting/Payable"
+                },
+                {
+                    "name": "Receivable",
+                    "url": "/Accounting/Receivable"
                 }
             ]
         },
