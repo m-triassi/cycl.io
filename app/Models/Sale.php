@@ -40,6 +40,11 @@ class Sale extends Model
         })->sum(), 2);
     }
 
+    public function calculatePrice()
+    {
+        return round(collect($this->order_items->pluck('sale_price'))->sum(), 2);
+    }
+
     public function setCardNumberAttribute()
     {
         $this->attributes['last_four'] = substr($this->card_number, -4, 4);

@@ -2,6 +2,7 @@ import {RouterStateType} from '../models/router'
 import {InventoryItemStateType} from '../models/inventory'
 import {BomMaterialStateType} from '../models/bom-material'
 import {VendorItemStateType} from '../models/vendor'
+import {SaleItemStateType} from '../models/sale'
 import {OrderItemStateType} from '../models/order'
 import {OrderListStateType} from '../models/order-list'
 import {ReceivableListStateType} from '../models/receivable'
@@ -12,6 +13,7 @@ export type StoreType = {
     BomMaterial: BomMaterialStateType,
     InventoryDetail: any,
     VendorItem: VendorItemStateType,
+    SaleItem: SaleItemStateType,
     OrderItem: OrderItemStateType,
     OrderList: OrderListStateType,
     ReceivableList: ReceivableListStateType,
