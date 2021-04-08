@@ -57,7 +57,7 @@ const SaleItemModal = ({
           <Item required label='Client Name'><Input data-cy='sale-form-client-name' value={saleForm.client_name} onChange={(e) => changeFormData('client_name', e.target.value)} /></Item>
           <Item name='payment_type' label='Payment Type' hasFeedback rules={[{required: true, message: 'The selected payment type is invalid'}]}>
             <Select data-cy='sale-form-payment-type' placeholder='Please select a payment type' onSelect={(e) => changeFormData('payment_type', e)}>
-              <Option value='Visa'>Visa</Option>
+              <Option data-cy='sale-form-payment-type-option1' value='Visa'>Visa</Option>
               <Option value='Master Card'>Master Card</Option>
             </Select>
           </Item>

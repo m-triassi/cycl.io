@@ -39,7 +39,7 @@ const MaterialsTable = ({
             key: 'quantity',
             dataIndex: ['pivot','quantity'],
             width: 20,
-            render: (num: number, record: any) => <InputNumber min={1} max={999} value={record.pivot.quantity} onChange={(e)=>{onChangeQuantity(record.id,e)}} />
+            render: (num: number, record: any) => <InputNumber data-cy='sale-material-quantity' min={1} max={999} value={record.pivot.quantity} onChange={(e)=>{onChangeQuantity(record.id,e)}} />
         },
         {
             title: 'Title',
@@ -74,6 +74,7 @@ const MaterialsTable = ({
         <Row gutter={[0,8]}>
           <Col span={8}>
             <Select
+              data-cy='sale-material-select'
               showSearch
               style={{width: 200, marginBottom: 20}}
               placeholder='Select Item'
