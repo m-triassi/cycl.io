@@ -12,6 +12,23 @@ class Supplier extends Model
 
     protected $guarded = ['id'];
 
+    /**
+     * Constant indicating a supplier must pay after 60 days
+     */
+    public const DELAY_60 = 60;
+
+    /**
+     * Constant indicating a supplier must pay after 30 days
+     */
+    public const DELAY_30 = 30;
+
+    /**
+     * Constant indicating a supplier may pay immediately
+     */
+    public const DELAY_NONE = 0;
+
+
+
     public function inventory_items() : HasMany
     {
         return $this->hasMany(InventoryItem::class);

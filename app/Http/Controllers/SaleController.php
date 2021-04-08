@@ -29,20 +29,18 @@ class SaleController extends Controller
 
         // search the status list using the input filter as a fuzzy search
         $status = $request->status;
+        // instantiate an empty Sale query
+        $sale = Sale::query();
+
+        // if a status is passed, apply it as a filter
+        if ($status) {
+            $sale = $sale->where('status', "{$status}");
+        }
+
         return response([
             'success' => true,
-            'data' => Sale::where('status', 'like', "%{$status}%")->get()
+            'data' => $sale->get()
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -109,17 +107,6 @@ class SaleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -169,18 +156,6 @@ class SaleController extends Controller
             'data' => $sale->refresh()
         ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 
     /**
      * Return comma-seperated string containing all sale statuses

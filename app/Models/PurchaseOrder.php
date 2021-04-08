@@ -17,8 +17,18 @@ class PurchaseOrder extends Model
 
     protected $guarded = ['id'];
 
+    protected $appends = ['cost'];
+
     public function order_items() : MorphToMany
     {
         return $this->morphToMany(InventoryItem::class, 'orderable')->withPivot('quantity');
+    }
+
+    public function getCostAttribute()
+    {
+        // return a new collection of item cost * order quantity, then sum each value in that array for total cost
+        return round($this->order_items->map(function ($orderable) {
+            return $orderable->cost*$orderable->pivot->quantity;
+        })->sum(), 2);
     }
 }
