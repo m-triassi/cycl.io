@@ -8,9 +8,7 @@ const SettingPage = () => (
     type='primary'
     onClick={() => {
       logOut()
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
+      window.location.reload()
     }}>
     Log Out
   </Button>
