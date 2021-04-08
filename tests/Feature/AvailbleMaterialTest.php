@@ -4,12 +4,15 @@ namespace Tests\Feature;
 
 use App\Models\InventoryItem;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AvailbleMaterialTest extends TestCase
 {
+    use DatabaseTransactions;
+    
     /**
      * A basic feature test example.
      *
