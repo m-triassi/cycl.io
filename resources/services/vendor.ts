@@ -13,12 +13,23 @@ export const getVendor = () => request({
     url: vendorRoute
 })
 
+export const getVendorByID = (id: number) => request({
+    method: 'GET',
+    url: vendorRoute.concat(`/${id}`)
+})
+
 export const filterVendor = (payload: string) => request({
     method: 'GET',
     url: vendorRoute,
     params: {
         q: payload
     }
+})
+
+export const filterVendorWithParams = (payload: any) => request({
+    method: 'GET',
+    url: vendorRoute,
+    params: payload
 })
 
 export const editVendor = (payload: any) => request({
