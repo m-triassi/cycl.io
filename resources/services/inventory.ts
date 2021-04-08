@@ -26,6 +26,12 @@ export const filterInventory = (payload: string) => request({
     }
 })
 
+export const filterInventoryWithParams = (payload: {}) => axios({
+    method: 'GET',
+    url: inventoryRoute,
+    params: payload
+})
+
 export const editInventory = (payload: any) => request({
     method: 'PUT',
     url: inventoryRoute.concat(`/${payload.id}`),
