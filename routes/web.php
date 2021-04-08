@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AvailableMaterialController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\InventoryItemController;
 use App\Http\Controllers\MaterialController;
@@ -53,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/inventory', [InventoryItemController::class, "store"]);
     Route::put('/inventory/{id}', [InventoryItemController::class, "update"]);
     Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"]);
+    Route::get('/materials/available', [AvailableMaterialController::class, "index"]);
 
     Route::get('/materials', [MaterialController::class, "index"]);
     Route::post('/materials', [MaterialController::class, "store"]);
