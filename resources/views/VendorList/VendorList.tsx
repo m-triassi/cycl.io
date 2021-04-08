@@ -3,8 +3,8 @@ import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-import {VendorItemStateType} from 'models/vendor'
-import {filterVendor, getVendor} from 'services/vendor'
+import {VendorItemStateType} from '@models/vendor'
+import {filterVendor, getVendor} from '@services/vendor'
 import {DeleteButton} from '@components'
 
 const StyledRow = styled(Row)`
@@ -137,7 +137,6 @@ const VendorList = ({
             </StyledRow>
           </Col>
         </Row>
-
         <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
       </>
     )

@@ -87,6 +87,7 @@
         }
      ],
      "prefer-destructuring": ["error", {"object": true, "array": false}],
-     "radix":"off"
+     "radix":"off",
+     "react/jsx-props-no-spreading": "off"
     }
   }

@@ -1,21 +1,24 @@
-import axios from 'axios'
+import {request} from '@utils'
 import {VendorItemFormDataType} from '../models/vendor'
 import {vendorRoute} from '.'
 
-export const addVendor = (payload: VendorItemFormDataType) => axios({
+export const addVendor = (payload: VendorItemFormDataType) => request({
     url: vendorRoute,
     method: 'POST',
     data: payload,
 })
 
-export const getVendor = () => axios.get(vendorRoute)
+export const getVendor = () => request({
+    method: 'GET',
+    url: vendorRoute
+})
 
-export const getVendorByID = (id: number) => axios({
+export const getVendorByID = (id: number) => request({
     method: 'GET',
     url: vendorRoute.concat(`/${id}`)
 })
 
-export const filterVendor = (payload: string) => axios({
+export const filterVendor = (payload: string) => request({
     method: 'GET',
     url: vendorRoute,
     params: {
@@ -23,19 +26,19 @@ export const filterVendor = (payload: string) => axios({
     }
 })
 
-export const filterVendorWithParams = (payload: {}) => axios({
+export const filterVendorWithParams = (payload: any) => request({
     method: 'GET',
     url: vendorRoute,
     params: payload
 })
 
-export const editVendor = (payload: any) => axios({
+export const editVendor = (payload: any) => request({
     method: 'PUT',
     url: vendorRoute.concat(`/${payload.id}`),
     data: payload.data,
 })
 
-export const deleteVendor = (payload: number) => axios({
+export const deleteVendor = (payload: number) => request({
     method: 'DELETE',
     url: vendorRoute.concat(`/${payload}`),
 })

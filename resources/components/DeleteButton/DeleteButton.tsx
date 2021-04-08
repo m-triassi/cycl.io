@@ -15,24 +15,26 @@ const DeleteButton = ({
 
     const deleteItemModal = () => {
         modal.confirm({
-        title: `Delete ${type} Item`,
-        icon: <ExclamationCircleOutlined />,
-        okText: 'Delete',
-        cancelText: 'Cancel',
-        content: (
-          <Typography.Text>
-            <Row>This item will be permanantly deleted.</Row>
-            <Row><Typography.Text strong>Are you sure you want to delete this item?</Typography.Text></Row>
-          </Typography.Text>
-        ),
-        onOk: () => onDelete()
-      })
-      }
+          title: `Delete ${type} Item`,
+          icon: <ExclamationCircleOutlined />,
+          okText: 'Delete',
+          cancelText: 'Cancel',
+          content: (
+            <Typography.Text>
+              <Row>This item will be permanantly deleted.</Row>
+              <Row><Typography.Text strong>Are you sure you want to delete this item?</Typography.Text></Row>
+            </Typography.Text>
+          ),
+          onOk: () => onDelete()
+        })
+    }
 
     return (
       <>
         {contextHolder}
-        <DeleteOutlined style={{color: '#fe7f2d', fontSize: 22}} onClick={() => {deleteItemModal()}} />
+        <DeleteOutlined
+          style={{color: '#fe7f2d', fontSize: 22}}
+          onClick={() => deleteItemModal()} />
       </>
     )
 }

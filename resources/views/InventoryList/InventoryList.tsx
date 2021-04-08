@@ -4,11 +4,11 @@ import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-import {InventoryItemStateType} from 'models/inventory'
-import {filterInventory, getInventory} from 'services/inventory'
+import {InventoryItemStateType} from '@models/inventory'
+import {filterInventory, getInventory} from '@services/inventory'
 import {DeleteButton, InventoryItemModal} from '@components'
+import {numberFormatter} from '@utils'
 import {InventoryDetailDrawer} from './components'
-
 
 const StyledRow = styled(Row)`
     padding: 10px 0px;
@@ -28,6 +28,7 @@ const InventoryList = ({
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
     const [isDetailDrawerVisible, setIsDetailDrawerVisible] = useState<boolean>(false)
     const [selectedRowId, setSelectedRowId] = useState<number>(0)
+    const [selectedRowName, setSelectedRowName] = useState<string>('')
     const changeFormData = (key: string, value: any) => dispatch({type: 'INVENTORY_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_INVENTORY_FORM_STATE'})
     const onFilterInventory = (value: string) => {
@@ -73,9 +74,12 @@ const InventoryList = ({
           title: 'Supplier',
           key: 'supplier_name',
           dataIndex: ['supplier', 'name'],
-          render: (text: string, record: any) => (
-            <Link href={`/Vendor/Suppliers/${record.supplier_id}`}>{record.supplier.name}</Link>
+          render: (text: string, record: any) => {
+            if (record.supplier_id && record.supplier) return (
+              <Link onClick={(e) => e.stopPropagation()} href={`/Vendor/Suppliers/${record.supplier_id}`}>{record.supplier.name}</Link>
             )
+              return 'No linked vendor'
+          }
         },
         {
           title: 'Size',
@@ -91,13 +95,13 @@ const InventoryList = ({
           title: 'Cost',
           key: 'cost',
           dataIndex: 'cost',
-          render: (text: any) => `$ ${text}`
+          render: (text: any) => `$${numberFormatter(text)}`
         },
         {
           title: 'Sale price',
           key: 'sale_price',
           dataIndex: 'sale_price',
-          render: (text: any) => `$ ${text}`
+          render: (text: any) => `$${numberFormatter(text)}`
         },
         {
             title: 'Action',
@@ -108,8 +112,11 @@ const InventoryList = ({
                 fetchInventoryList()
               }
               return (
-                <DeleteButton type='Inventory' onDelete={onDelete} />
-            )},
+                // eslint-disable-next-line
+                <div onClick={(e) => e.stopPropagation()}>
+                  <DeleteButton type='Inventory' onDelete={onDelete} />
+                </div>
+            )}
         },
     ]
     return (
@@ -122,8 +129,10 @@ const InventoryList = ({
           resetState={resetState}
           changeFormData={changeFormData}
           form={form} />
-        <InventoryDetailDrawer isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} id={selectedRowId} />
-        <Row><Typography.Title>Inventory</Typography.Title></Row>
+        <InventoryDetailDrawer isVisible={isDetailDrawerVisible} setIsVisible={setIsDetailDrawerVisible} id={selectedRowId} title={selectedRowName} />
+        <Row>
+          <Typography.Title>Inventory</Typography.Title>
+        </Row>
         <Row>
           <Col span={8}>
             <StyledRow>
@@ -143,18 +152,22 @@ const InventoryList = ({
           pagination={{position: ['bottomCenter']}}
           onRow={(record) => ({onClick: () => {
             setSelectedRowId(record.id)
+            setSelectedRowName(record.title)
             dispatch({type: 'CHANGE_DETAIL_ID', payload: record.id})
             dispatch({type: 'SET_INVENTORY_DETAIL_DATA', payload: record})
             setIsDetailDrawerVisible(true)
           }})}
           scroll={{x: 'max-content'}} />
         <Row>
-          <Button type='primary' onClick={() => window.open(`/stock/report`, '_blank')} icon={<DownloadOutlined />} style={{background: '#233D4D'}}>
+          <Button
+            type='primary'
+            shape='round'
+            onClick={() => window.open(`/stock/report`, '_blank')}
+            icon={<DownloadOutlined />}
+            style={{background: '#233D4D'}}>
             Export CSV
           </Button>
         </Row>
-
-
       </>
     )
 }

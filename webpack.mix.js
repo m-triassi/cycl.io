@@ -25,6 +25,16 @@ mix.ts('resources/app.tsx', 'public/js')
     .alias({
         '@public': 'public',
     })
+    .options({
+        processCssUrls: false,
+        uglify: {
+            parallel: 8, // Use multithreading for the processing
+            uglifyOptions: {
+                mangle: true,
+                compress: false, // The slow bit
+            },
+        },
+    })
     .webpackConfig({
         watchOptions: {
             aggregateTimeout: 2000,
