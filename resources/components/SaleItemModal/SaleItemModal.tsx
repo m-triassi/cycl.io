@@ -11,7 +11,7 @@ type SaleItemModalPropType = {
     onChangeQuantity: (itemId: number, value: any) => void,
     isCreate: boolean,
     onChange: (value: any) => void,
-    onDelete: (value: any, index: number, cost: number) => void,
+    onDelete: (value: any, index: number, price: number) => void,
     saleForm: any,
     table: any,
     tempPrice: number

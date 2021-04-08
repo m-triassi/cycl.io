@@ -11,7 +11,7 @@ type MaterialsTablePropType = {
     form:any,
     onChange: (value: any) => void,
     onChangeQuantity:(itemId: number, value: any) => void,
-    onDelete: (value: any, index: number, cost: number) => void,
+    onDelete: (value: any, index: number, price: number) => void,
     selected: string,
     setSelected: (value: any) => void
 }
@@ -47,9 +47,9 @@ const MaterialsTable = ({
             dataIndex: 'title',
         },
         {
-            title: 'Cost',
-            key: 'cost',
-            dataIndex: 'cost',
+            title: 'Price',
+            key: 'sale_price',
+            dataIndex: 'sale_price',
         },
         {
             title: 'Supplier',
@@ -62,7 +62,7 @@ const MaterialsTable = ({
           render: (text: any, record: any) => {
             const onDeleteRecord = ()=>{
               const index = form.item_ids.findIndex((x: { invetory_item_id: number }) => x.invetory_item_id ===record.id)
-              onDelete(record.id, index, record.cost)
+              onDelete(record.id, index, record.sale_price)
             }
             return (
               <DeleteButton type='Sale' onDelete={onDeleteRecord} />

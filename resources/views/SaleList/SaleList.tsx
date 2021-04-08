@@ -63,7 +63,7 @@ const SaleList = ({
       const material={...InventoryItem.table.find((element: any) => element.id===value), ...{'pivot': {'quantity': 1}}}
       dispatch({type: 'SET_SALE_MATERIAL_ITEMS', payload: [...materialsTable, material]})
       dispatch({type: 'SET_SALE_ITEM_IDS', payload: value})
-      changeTempPrice(tempPrice+material.cost)
+      changeTempPrice(tempPrice+material.sale_price)
    }
    const onChangeQuantity = (itemId:number, value: any) => {
      changeFormQuantity(itemId,value)
@@ -71,13 +71,14 @@ const SaleList = ({
        newTable=newTable.map((item: any) => {
          if (item.id===itemId){
            if (item.pivot.quantity>value){
-            changeTempPrice(tempPrice-item.cost*(item.pivot.quantity-value))
+            changeTempPrice(tempPrice-item.sale_price*(item.pivot.quantity-value))
            } else if (item.pivot.quantity<value){
-            changeTempPrice(tempPrice+item.cost*(value-item.pivot.quantity))
+            changeTempPrice(tempPrice+item.sale_price*(value-item.pivot.quantity))
            }
            return {
              'id': item.id,
              'cost': item.cost,
+             'sale_price': item.sale_price,
              'supplier': {'name': item.supplier.name},
              'title': item.title,
              'pivot': {'assembly_id': materialsTable,'material_id': item.id, 'quantity': value}}
@@ -85,10 +86,10 @@ const SaleList = ({
             return item})
          dispatch({type: 'SET_SALE_MATERIAL_ITEMS', payload: newTable})
   }
-   const onDelete = (value: any, index: number, cost: number) => {
+   const onDelete = (value: any, index: number, price: number) => {
       dispatch({type: 'SET_SALE_MATERIAL_ITEMS', payload: materialsTable.filter((item: { id: any }) => item.id!==value)})
       dispatch({type: 'DELETE_SALE_ITEM_ID',payload: index})
-      changeTempPrice(tempPrice-cost)
+      changeTempPrice(tempPrice-price)
  }
 
     useEffect(() => {
@@ -119,8 +120,8 @@ const SaleList = ({
       },
       {
         title: 'Price',
-        key: 'price',
-        dataIndex: 'price',
+        key: 'cost',
+        dataIndex: 'cost',
         render: (text: any) => `${text}`
     },
     ]

@@ -26,44 +26,46 @@ use App\Http\Controllers\SaleItemController;
 
 require __DIR__.'/auth.php';
 
-Route::get('/sale', [SaleController::class, "index"])->middleware(['auth']);
-Route::get('/sale/{id}', [SaleController::class, "show"])->middleware(['auth']);
-Route::post('/sale', [SaleController::class, "store"])->middleware(['auth']);
-Route::put('/sale/{id}', [SaleController::class, "update"])->middleware(['auth']);
-Route::put('/sale/orderables/{id}', [SaleItemController::class, "update"])->middleware(['auth']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/sale', [SaleController::class, "index"]);
+    Route::get('/sale/{id}', [SaleController::class, "show"]);
+    Route::post('/sale', [SaleController::class, "store"]);
+    Route::put('/sale/{id}', [SaleController::class, "update"]);
+    Route::put('/sale/orderables/{id}', [SaleItemController::class, "update"]);
 
-Route::get('/purchase-order', [PurchaseOrderController::class, "index"])->middleware(['auth']);
-Route::get('/purchase-order/{id}', [PurchaseOrderController::class, "show"])->middleware(['auth']);
-Route::post('/purchase-order', [PurchaseOrderController::class, "store"])->middleware(['auth']);
-Route::put('/purchase-order/{id}', [PurchaseOrderController::class, "update"])->middleware(['auth']);
+    Route::get('/purchase-order', [PurchaseOrderController::class, "index"]);
+    Route::get('/purchase-order/{id}', [PurchaseOrderController::class, "show"]);
+    Route::post('/purchase-order', [PurchaseOrderController::class, "store"]);
+    Route::put('/purchase-order/{id}', [PurchaseOrderController::class, "update"]);
 
-Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"])->middleware(['auth']);
+    Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"]);
 
-Route::get('/supplier', [SupplierController::class, "index"])->middleware(['auth']);
-Route::get('/supplier/{id}', [SupplierController::class, "show"])->middleware(['auth']);
-Route::post('/supplier', [SupplierController::class, "store"])->middleware(['auth']);
-Route::put('/supplier/{id}', [SupplierController::class, "update"])->middleware(['auth']);
+    Route::get('/supplier', [SupplierController::class, "index"]);
+    Route::get('/supplier/{id}', [SupplierController::class, "show"]);
+    Route::post('/supplier', [SupplierController::class, "store"]);
+    Route::put('/supplier/{id}', [SupplierController::class, "update"]);
 
 
-Route::post('/supplier/items', [SupplierItemController::class, "store"])->middleware(['auth']);
+    Route::post('/supplier/items', [SupplierItemController::class, "store"]);
 
-Route::get('/inventory/{id}', [InventoryItemController::class, 'show'])->middleware(['auth']);
-Route::get('/inventory', [InventoryItemController::class, "index"])->middleware(['auth']);
-Route::post('/inventory', [InventoryItemController::class, "store"])->middleware(['auth']);
-Route::put('/inventory/{id}', [InventoryItemController::class, "update"])->middleware(['auth']);
-Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"])->middleware(['auth']);
+    Route::get('/inventory/{id}', [InventoryItemController::class, 'show']);
+    Route::get('/inventory', [InventoryItemController::class, "index"]);
+    Route::post('/inventory', [InventoryItemController::class, "store"]);
+    Route::put('/inventory/{id}', [InventoryItemController::class, "update"]);
+    Route::delete('/inventory/{id}', [InventoryItemController::class, "destroy"]);
 
-Route::get('/materials', [MaterialController::class, "index"])->middleware(['auth']);
-Route::post('/materials', [MaterialController::class, "store"])->middleware(['auth']);
-Route::get('/materials/{id}', [MaterialController::class, "show"])->middleware(['auth']);
-Route::put('/materials/{id}', [MaterialController::class, "update"])->middleware(['auth']);
+    Route::get('/materials', [MaterialController::class, "index"]);
+    Route::post('/materials', [MaterialController::class, "store"]);
+    Route::get('/materials/{id}', [MaterialController::class, "show"]);
+    Route::put('/materials/{id}', [MaterialController::class, "update"]);
 
-Route::post('/user/roles', [UserRoleController::class, 'store'])->middleware(['auth']);
-Route::delete('/user/roles', [UserRoleController::class, 'destroy'])->middleware(['auth']);
+    Route::post('/user/roles', [UserRoleController::class, 'store']);
+    Route::delete('/user/roles', [UserRoleController::class, 'destroy']);
 
-Route::post('/roles', [RoleController::class, 'store'])->middleware(['auth']);
+    Route::post('/roles', [RoleController::class, 'store']);
 
-Route::get('/stock/report', [StockReportController::class, 'show'])->middleware(['auth']);
+    Route::get('/stock/report', [StockReportController::class, 'show']);
+});
 
 Route::get('/token', function () {
     if(config("app.debug")){
