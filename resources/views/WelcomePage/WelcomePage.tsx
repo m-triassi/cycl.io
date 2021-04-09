@@ -16,18 +16,18 @@ const WelcomePage = ({
       <Divider>Overview</Divider>
       <Row gutter={16}>
         <Col span={8}>
-          <Card onClick={() => routeToPage('/Production/Inventory')} hoverable title='Inventory Overview'>
-            <Text>Preview of inventory</Text>
+          <Card onClick={() => routeToPage('/Production/Inventory')} hoverable title='Inventories Overview'>
+            <Text>Preview of inventories</Text>
           </Card>
         </Col>
         <Col span={8}>
-          <Card hoverable title='Placeholder Overview'>
-            <Text>Preview of placeholder</Text>
+          <Card onClick={() => routeToPage('/Vendor/Suppliers')} hoverable title='Suppliers Overview'>
+            <Text>Preview of suppliers</Text>
           </Card>
         </Col>
         <Col span={8}>
-          <Card hoverable title='Placeholder 2 Overview'>
-            <Text>Preview of placeholder</Text>
+          <Card onClick={() => routeToPage('/Vendor/Orders')} hoverable title='Orders Overview'>
+            <Text>Preview of orders</Text>
           </Card>
         </Col>
       </Row>

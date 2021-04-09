@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import {InputNumber, Button, Empty, Table, Row, Col, Select, Typography, Space} from 'antd'
-import {InventoryItemStateType} from 'models/inventory'
-import {BomMaterialStateType} from 'models/bom-material'
+import {InventoryItemStateType} from '@models/inventory'
+import {BomMaterialStateType} from '@models/bom-material'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import {DeleteButton} from '@components'
@@ -14,15 +14,14 @@ type BOMFormPropType = {
     inventoryId: number,
 }
 
-const BOMForm = (
-     {
-     dispatch,
-     InventoryItem,
-     BomMaterial,
-     inventoryId
- }:BOMFormPropType
-)  => {
+const BOMForm = ({
+  dispatch,
+  InventoryItem,
+  BomMaterial,
+  inventoryId
+}:BOMFormPropType) => {
     const {table, form} = BomMaterial
+    const {Option} = Select
     const {Title} = Typography
     const [isEdit, setEdit] = useState<boolean>(false)
     const changeFormData = (key: string, value: any) => dispatch({type: 'BOM_MATERIAL_PUSH_FORM_DATA', payload: {key, value}})
@@ -43,41 +42,42 @@ const BOMForm = (
       setEdit(false)
     }
 
-     const onChange = (value: any) => {
+    const onChange = (value: any) => {
       changeFormData('material_ids',value)
       changeFormData('quantities', 1)
       const tempValue={...InventoryItem.table.find((element: any) => element.id===value), ...{'pivot': {'assembly_id': inventoryId,'material_id': value, 'quantity': 1}}}
       const temp=[...table]
       temp.push(tempValue)
       dispatch({type: 'SET_BOM_ITEMS', payload: temp})
-
     }
 
-    const onChangeQuantity = (quantity: any, itemId: any) =>{
+    const onChangeQuantity = (quantity: any, itemId: any) => {
       const indexQ = form.material_ids.indexOf(itemId)
       changeFormQuantity(indexQ, quantity)
-       let newTable=[...table]
-       newTable=newTable.map((item: any) => {
-         if (item.id===itemId){
-           return {
-             'id': item.id,
-             'cost': item.cost,
-             'supplier': {'name': item.supplier.name},
-             'title': item.title,
-             'pivot': {'assembly_id': inventoryId,'material_id': item.id, 'quantity': quantity}} } return item})
-         dispatch({type: 'SET_BOM_ITEMS', payload: newTable})
+      let newTable=[...table]
+      newTable=newTable.map((item: any) => {
+        if (item.id===itemId){
+          return {
+            'id': item.id,
+            'cost': item.cost,
+            'supplier': {'name': item.supplier.name},
+            'title': item.title,
+            'pivot': {'assembly_id': inventoryId,'material_id': item.id, 'quantity': quantity}}
+          }
+          return item
+      })
+      dispatch({type: 'SET_BOM_ITEMS', payload: newTable})
     }
 
     const actionRow = (
       <Row gutter={{xs: 4, sm: 8, md: 16, lg: 24}}>
         {isEdit?
           <Space>
-            <Button onClick={onCancel}>Cancel</Button>
-            <Button type='primary' onClick={onConfirm}>Confirm</Button>
-          </Space>:null}
-      </Row>)
-
-    const {Option} = Select
+            <Button shape='round' onClick={onCancel}>Cancel</Button>
+            <Button shape='round' type='primary' onClick={onConfirm}>Confirm</Button>
+          </Space> : null}
+      </Row>
+    )
 
     const columns = [
         {
@@ -106,13 +106,13 @@ const BOMForm = (
           title: 'Action',
           key: 'action',
           render: (text: any, record: any) => {
-            const onDelete = ()=>{
+            const onDelete = () => {
               dispatch({type: 'SET_BOM_ITEMS', payload: table.filter((item: { id: any }) => item.id!==record.id)})
               const index = form.material_ids.indexOf(record.id)
               deleteBom(index)
             }
             return (
-              isEdit? <DeleteButton type='BOM' onDelete={onDelete} />: <DeleteOutlined style={{color: 'grey', fontSize: 22}} />
+              isEdit? <DeleteButton type='BOM' onDelete={onDelete} /> : <DeleteOutlined style={{color: 'grey', fontSize: 22}} />
           )},
       },
     ]
@@ -161,7 +161,6 @@ const BOMForm = (
 const mapStateToProps = (state: StoreType) => ({
   InventoryItem: state.InventoryItem,
   BomMaterial: state.BomMaterial,
-
 })
 
 BOMForm.displayName = 'BOMForm'

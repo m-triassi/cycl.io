@@ -1,10 +1,7 @@
 import React from 'react'
-import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, SaleList, ReceivableList} from 'views'
-import {RouterStateType} from 'models/router'
+import {InventoryList, WelcomePage, OrderForm, VendorList, OrderList, SettingPage, SaleList, ReceivableList, SupplierDetails, PayableList} from '@views'
+import {RouterStateType} from '@models/router'
 import {InventoryItemDetail} from '@components'
-
-// import SalesList from '../index'
-// import AccountingList from '../index'
 
 type AppContentPropType = {
   router: RouterStateType,
@@ -28,7 +25,7 @@ const AppContent = ({
         component = (<InventoryList />)
         break
       case (route.match(/\/Vendor\/Suppliers\/\d+/) || {}).input:
-        component = (<h1>Hi Supplier</h1>)
+        component = (<SupplierDetails />)
         break
       case '/Vendor/Suppliers':
         component = (<VendorList />)
@@ -39,11 +36,14 @@ const AppContent = ({
       case '/Sales':
         component = (<SaleList />)
         break
+      case '/Accounting/Payable':
+        component = (<PayableList />)
+      break
       case '/Accounting/Receivable':
         component = (<ReceivableList />)
         break
       case '/Settings':
-        component = (<h1>Hi Settings</h1>)
+        component = (<SettingPage />)
         break
       case (route.match(/\/OrderForm\/\d+/) || {}).input:
         component = (<OrderForm />)
