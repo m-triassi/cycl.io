@@ -86,6 +86,8 @@
           "tsx": "never"
         }
      ],
-     "radix":"off"
+     "prefer-destructuring": ["error", {"object": true, "array": false}],
+     "radix":"off",
+     "react/jsx-props-no-spreading": "off"
     }
   }

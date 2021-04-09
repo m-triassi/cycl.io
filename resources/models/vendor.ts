@@ -6,6 +6,7 @@ export type VendorItemFormDataType = {
     name: string,
     partnership_start_date: any,
     partnership_end_date: any,
+    payment_delay:any,
 }
 
 export type VendorItemStateType = {
@@ -18,6 +19,7 @@ const initialState: VendorItemStateType = {
         name: '',
         partnership_start_date: undefined,
         partnership_end_date: undefined,
+        payment_delay: undefined,
     },
     table: [],
 }

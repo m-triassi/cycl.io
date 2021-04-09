@@ -1,10 +1,10 @@
-import {Button, Col, Form, Input, DatePicker, Modal, Row, Table, Typography} from 'antd'
+import {Button, Col, Form, Input, DatePicker, Modal, Row, Table, Typography, Radio} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {StoreType, DispatchArgumentType} from '@types'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-import {VendorItemStateType} from 'models/vendor'
-import {filterVendor, getVendor} from 'services/vendor'
+import {VendorItemStateType} from '@models/vendor'
+import {filterVendor, getVendor} from '@services/vendor'
 import {DeleteButton} from '@components'
 
 const StyledRow = styled(Row)`
@@ -23,6 +23,7 @@ const VendorList = ({
     const {Item} = Form
     const {form, table} = VendorItem
     const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false)
+    const { Text, Link } = Typography
     const changeFormData = (key: string, value: any) => dispatch({type: 'VENDOR_MATERIAL_CHANGE_FORM_DATA', payload: {key, value}})
     const resetState = () => dispatch({type: 'RESET_VENDOR_FORM_STATE'})
     const onFilterVendor = (value: string) => {
@@ -71,6 +72,13 @@ const VendorList = ({
             <Item required label='Partnership End Date'><DatePicker data-cy='vendor-form-partnership-end-date' onChange={(value) => changeFormData('partnership_end_date', value)} /></Item>
           </Col>
         </Row>
+        <Item required label='Payment Delay (days)'>
+          <Radio.Group data-cy='vendor-form-payment-delay' onChange={(e) => changeFormData('payment_delay', e.target.value)}>
+            <Radio value={0}>0</Radio>
+            <Radio value={30}>30</Radio>
+            <Radio value={60}>60</Radio>
+          </Radio.Group>
+        </Item>
       </Modal>
     )
     const columns = [
@@ -78,9 +86,9 @@ const VendorList = ({
             title: 'Name',
             key: 'name',
             dataIndex: 'name',
-            render: (text: string) => (
-              <Typography.Text strong>{text}</Typography.Text>
-            )
+            render: (text: string, record: any) => (
+              <Link href={`/Vendor/Suppliers/${record.id}`}>{text}</Link>
+              )
         },
         {
             title: 'Partnership Start Date',
@@ -92,6 +100,12 @@ const VendorList = ({
           title: 'Partnership End Date',
           key: 'partnership_end_date',
           dataIndex: 'partnership_end_date',
+          render: (text: any) => `${text}`
+      },
+        {
+          title: 'Payment Delay (days)',
+          key: 'payment_delay',
+          dataIndex: 'payment_delay',
           render: (text: any) => `${text}`
       },
       {
@@ -123,7 +137,6 @@ const VendorList = ({
             </StyledRow>
           </Col>
         </Row>
-
         <Table bordered columns={columns} dataSource={table} pagination={{position: ['bottomCenter']}} scroll={{x: 'max-content'}} />
       </>
     )

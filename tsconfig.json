@@ -21,11 +21,14 @@
     "isolatedModules": false,
     "noEmit": false,
     "jsx": "react",
-    "baseUrl": "resources",
+    "baseUrl": "resources/",
     "paths": {
       "@components": ["components"],
-      "@public": ["../public"],
       "@types": ["types"],
+      "@utils": ["utils"],
+      "@services/*": ["services/*"],
+      "@models/*": ["models/*"],
+      "@views": ["views"]
     }
   },
   "files": ["index.d.ts"],
