@@ -23,7 +23,7 @@ class SupplierFactory extends Factory
     {
         $delays = [Supplier::DELAY_60, Supplier::DELAY_30, Supplier::DELAY_NONE];
         return [
-            'name' => $this->faker->words(2, true),
+            'name' => $this->faker->name(),
             'payment_delay' => $delays[$this->faker->numberBetween(0, 2)],
             'partnership_start_date' => $this->faker->dateTimeBetween("-2 years", "now"),
             'partnership_end_date' => $this->faker->dateTimeBetween("now", "+5 years")
