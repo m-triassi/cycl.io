@@ -4,7 +4,7 @@ import {orderRoute} from '.'
 
 export const addOrder = (payload: OrderItemFormDataType) => request({
     url: orderRoute.concat('/orderables/0'),
-    method: 'POST',
+    method: 'PUT',
     data: payload,
 })
 
