@@ -174,7 +174,7 @@ class SupplierTest extends TestCase
         $updated->assertStatus(200);
         $this->assertNotEquals($testSupplier, $updatedData['data']);
         $this->assertEquals("test supplier 2.0", $updatedData['data']->name);
-        $this->assertEquals("2021-03-16", $updatedData['data']->partnership_start_date);
+        $this->assertEquals("2021-03-16 00:00:00", $updatedData['data']->partnership_start_date);
     }
 
 }
