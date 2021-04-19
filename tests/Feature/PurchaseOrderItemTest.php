@@ -23,7 +23,7 @@ class PurchaseOrderItemTest extends TestCase
     public function test_items_can_be_updated_with_array()
     {
         $user = User::first();
-        $attached = $this->actingAs($user)->put('/purchase-order/orderables/1', [
+        $attached = $this->actingAs($user)->post('/purchase-order/orderables/1', [
             'item_ids' => [19, 20]
         ]);
 
@@ -50,7 +50,7 @@ class PurchaseOrderItemTest extends TestCase
     public function test_items_can_be_updated_with_string()
     {
         $user = User::first();
-        $attached = $this->actingAs($user)->put('/purchase-order/orderables/1', [
+        $attached = $this->actingAs($user)->post('/purchase-order/orderables/1', [
             'item_ids' => "17,18"
         ]);
 
