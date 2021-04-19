@@ -15,9 +15,11 @@ class AvailableMaterialController extends Controller
      */
     public function index(Request $request)
     {
+        // get the relevant inventory item and its materials
         $itemId = $request->item_id;
         $assembly = InventoryItem::with('materials')->findOrFail($itemId);
 
+        // get all inventory items excluding the chosen item and its materials
         return response([
             'success' => true,
             'data' => InventoryItem::whereNotIn('id', $assembly->materials->pluck('id')->push($itemId))->get()
