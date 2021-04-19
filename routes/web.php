@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/purchase-order', [PurchaseOrderController::class, "store"]);
     Route::put('/purchase-order/{id}', [PurchaseOrderController::class, "update"]);
 
-    Route::put('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"]);
+    Route::post('/purchase-order/orderables/{id}', [PurchaseOrderItemController::class, "update"]);
 
     Route::get('/supplier', [SupplierController::class, "index"]);
     Route::get('/supplier/{id}', [SupplierController::class, "show"]);
