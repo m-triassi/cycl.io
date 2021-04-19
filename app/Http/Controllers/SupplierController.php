@@ -67,7 +67,7 @@ class SupplierController extends Controller
         ]);
 
         $params['partnership_start_date'] = Carbon::make($params['partnership_start_date']);
-        $params['partnership_end_date'] = Carbon::make($params['partnership_end_date']);
+        $params['partnership_end_date'] = Carbon::make($params['partnership_end_date'] ?? null);
 
         // create the supplier
         $supplier = Supplier::create($params);
@@ -127,7 +127,7 @@ class SupplierController extends Controller
         ]);
 
         $params['partnership_start_date'] = Carbon::make($params['partnership_start_date']);
-        $params['partnership_end_date'] = Carbon::make($params['partnership_end_date']);
+        $params['partnership_end_date'] = Carbon::make($params['partnership_end_date'] ?? null);
 
         // update the supplier
         $supplier->update($params);
