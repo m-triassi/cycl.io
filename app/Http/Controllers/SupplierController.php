@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 
@@ -65,6 +66,9 @@ class SupplierController extends Controller
             "partnership_end_date",
         ]);
 
+        $params['partnership_start_date'] = Carbon::make($params['partnership_start_date']);
+        $params['partnership_end_date'] = Carbon::make($params['partnership_end_date'] ?? null);
+
         // create the supplier
         $supplier = Supplier::create($params);
         $supplier->save();
@@ -121,6 +125,9 @@ class SupplierController extends Controller
             "partnership_start_date",
             "partnership_end_date",
         ]);
+
+        $params['partnership_start_date'] = Carbon::make($params['partnership_start_date']);
+        $params['partnership_end_date'] = Carbon::make($params['partnership_end_date'] ?? null);
 
         // update the supplier
         $supplier->update($params);

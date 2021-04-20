@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\InventoryItem;
 use App\Models\PurchaseOrder;
+use App\Models\Sale;
 use App\Observers\InventoryItemObserver;
 use App\Observers\PurchaseOrderObserver;
+use App\Observers\SaleObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -33,5 +35,6 @@ class EventServiceProvider extends ServiceProvider
     {
         PurchaseOrder::observe(PurchaseOrderObserver::class);
         InventoryItem::observe(InventoryItemObserver::class);
+        Sale::observe(SaleObserver::class);
     }
 }

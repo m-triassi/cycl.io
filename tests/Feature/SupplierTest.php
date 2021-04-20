@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Supplier;
 use App\Models\InventoryItem;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -95,7 +96,7 @@ class SupplierTest extends TestCase
         $properData = $proper->getOriginalContent();
         $this->assertTrue($properData['success']);
         $this->assertEquals($suppliersBefore + 1, Supplier::count());
-        
+
 
         $suppliersBefore = Supplier::count();
         // Try proper inputs; name, partnership start date and end date
@@ -174,7 +175,7 @@ class SupplierTest extends TestCase
         $updated->assertStatus(200);
         $this->assertNotEquals($testSupplier, $updatedData['data']);
         $this->assertEquals("test supplier 2.0", $updatedData['data']->name);
-        $this->assertEquals("2021-03-16", $updatedData['data']->partnership_start_date);
+        $this->assertEquals(Carbon::make("2021-03-16"), Carbon::make($updatedData['data']->partnership_start_date));
     }
 
 }

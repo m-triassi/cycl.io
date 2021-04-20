@@ -94,13 +94,12 @@ class PurchaseOrderTest extends TestCase
 
         $redirected->assertStatus(302);
 
-
         $user = User::first();
         // proper update, supplier partnership end date does not precede partnership start date
         $updated = $this->actingAs($user)->put("/purchase-order/$purchaseOrder->id", [
             'supplier_id' => "2",
             'status' => "received",
-            'delivery_date' =>  Carbon::make('tomorrow'),
+            'delivery_date' =>  Carbon::make('tomorrow')->format('Y-m-d H:i:s'),
         ]);
         $updatedData = $updated->getOriginalContent();
 
@@ -108,7 +107,8 @@ class PurchaseOrderTest extends TestCase
         $this->assertNotEquals($purchaseOrder, $updatedData['data']);
         $this->assertEquals("2", $updatedData['data']->supplier_id);
         $this->assertEquals("received", $updatedData['data']->status);
-        $this->assertEquals( Carbon::make('tomorrow'), $updatedData['data']->delivery_date);
+        // date is "now" because the status is received, and thus will be auto updated by the observer
+        $this->assertEquals(now()->format('Y-m-d H:i:s'), $updatedData['data']->delivery_date);
 
 
         // improper update, invalid status
